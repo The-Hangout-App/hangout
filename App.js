@@ -3,22 +3,17 @@ import React from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { ThemeConsumer, ThemeProvider } from 'react-native-elements';
 import { Header } from 'react-native-elements/dist/header/Header';
+import { Input } from 'react-native-elements/dist/input/Input';
 import Login from './screens/Login';
 
 
 export default function App() {
-  return (
-    <ThemeProvider>
-      <Header placement="left"
-        leftComponent={{ icon: 'menu', color: '#fff' }}
-        centerComponent={{ text: 'Hangout', style: { color: '#fff' } }}
-        rightComponent={{ icon: 'home', color: '#fff' }}
-      />
-    </ThemeProvider>
+    return 	(<View style={styles.container}>
+      <Text>Login</Text>
+      <Input placeholder="Username"/>
+      <Input placeholder="Password" textContentType="password" secureTextEntry={true}/>
+  </View>)
       
-      
-    </View>
-  );
 }
 
 const styles = StyleSheet.create({
