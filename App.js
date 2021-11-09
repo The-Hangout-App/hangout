@@ -8,6 +8,8 @@ import { Input } from 'react-native-elements';
 import { Button } from 'react-native-elements';
 import TopHeader from './components/TopHeader';
 import Login from './screens/Login';
+import Register from './screens/Register';
+
 
 const theme = {
 
@@ -39,6 +41,7 @@ export default function App() {
               <NavigationContainer>
                 <Stack.Navigator initialRouteName="Login">
                   <Stack.Screen name="Login" component={Login} options={{ headerTitle: (props) => <TopHeader/> }}/>
+                  <Stack.Screen name="Register" component={Register} options={{ headerTitle: (props) => <TopHeader/> }}/>
                 </Stack.Navigator>
               </NavigationContainer>
             </ThemeProvider>)
