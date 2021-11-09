@@ -41,6 +41,7 @@ export default function App() {
               <NavigationContainer>
                 <Stack.Navigator initialRouteName="Login">
                   <Stack.Screen name="Login" component={Login} options={{ headerTitle: (props) => <TopHeader/> }}/>
+                  <Stack.Screen name="Register" component={Register} options={{ headerTitle: (props) => <TopHeader/> }}/>
                 </Stack.Navigator>
               </NavigationContainer>
             </ThemeProvider>)
