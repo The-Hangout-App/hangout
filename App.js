@@ -12,7 +12,7 @@ import Login from './screens/Login';
 const theme = {
 
   Input: {
-    color: "#71B6BF"
+    
   },
   Button: {
     buttonStyle: {
