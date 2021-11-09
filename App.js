@@ -8,6 +8,8 @@ import { Input } from 'react-native-elements';
 import { Button } from 'react-native-elements';
 import TopHeader from './components/TopHeader';
 import Login from './screens/Login';
+import Register from './screens/Register';
+
 
 const theme = {
 
