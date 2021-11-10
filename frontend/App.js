@@ -14,7 +14,7 @@ import Register from './screens/Register';
 const theme = {
 
   Input: {
-    color: "#71B6BF"
+    
   },
   Button: {
     buttonStyle: {
