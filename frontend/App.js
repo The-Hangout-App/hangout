@@ -7,18 +7,11 @@ import Login from './screens/Login';
 
 
 export default function App() {
-  return (
-    <ThemeProvider>
-      <Header placement="left"
-        leftComponent={{ icon: 'menu', color: '#fff' }}
-        centerComponent={{ text: 'Hangout', style: { color: '#fff' } }}
-        rightComponent={{ icon: 'home', color: '#fff' }}
-      />
-    </ThemeProvider>
-      
-      
-    </View>
-  );
+    return 	(<View style={styles.container}>
+                <Text>Login</Text>
+                <Input placeholder="Username"/>
+                <Input placeholder="Password" textContentType="password" secureTextEntry={true}/>
+            </View>)
 }
 
 const styles = StyleSheet.create({
