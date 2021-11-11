@@ -21,6 +21,17 @@ export class Repository {
         })
     }
 
+    login(username, password) {
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/user/${username}/${password}`, this.config)
+            .then(x => resolve(x.data))
+            .catch(e => {
+                alert(e);
+                reject();
+            });
+        })
+    }
+
 
     //Example post route
     addAccount(state) {
