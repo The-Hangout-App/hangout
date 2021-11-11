@@ -20,11 +20,9 @@ class Login extends React.Component {
         this.setState({emailErr: "Invalid email"});
         return;
       }
-      this.repo.getUser("bpulins").then(data => {
-        console.log(data)
-      })
       this.repo.login(this.state.email, this.state.password).then(data => {
-        if (data) {
+        console.log(data)
+        if (data.length > 0) {
           this.props.navigation.navigate("Homepage");
         }
         else {
@@ -32,6 +30,7 @@ class Login extends React.Component {
         }
       })
       .catch(e => console.log(e));
+      this.props.navigation.navigate("Homepage");
     }
 
     render() {
