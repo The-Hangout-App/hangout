@@ -4,9 +4,8 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
 import { Header, Text, ThemeProvider } from 'react-native-elements';
-import { Input } from 'react-native-elements';
-import { Button } from 'react-native-elements';
 import TopHeader from './components/TopHeader';
+import Homepage from './screens/Homepage';
 import Login from './screens/Login';
 import Register from './screens/Register';
 
@@ -42,24 +41,11 @@ export default function App() {
                 <Stack.Navigator initialRouteName="Login">
                   <Stack.Screen name="Login" component={Login} options={{ headerTitle: (props) => <TopHeader/> }}/>
                   <Stack.Screen name="Register" component={Register} options={{ headerTitle: (props) => <TopHeader/> }}/>
+                  <Stack.Screen name="Homepage" component={Homepage} options={{ headerTitle: (props) => <TopHeader/> }}/>
                 </Stack.Navigator>
               </NavigationContainer>
             </ThemeProvider>)
       
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  inputs: {
-    width: "90%",
-    height: 50,
-    borderColor: "black",
-    borderWidth: 2
-  },
-});
 

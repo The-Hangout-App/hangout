@@ -2,12 +2,34 @@ import axios from 'axios';
 
 export class Repository {
 
-    url = "";
+    url = "http://ec2-15-223-77-234.ca-central-1.compute.amazonaws.com:8000";
 
     config = {
         headers: {
             Authorization: '*'
         }
+    }
+
+    getUser(username) {
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/user/${username}`, this.config)
+            .then(x => resolve(x.data))
+            .catch(e => {
+                alert(e);
+                reject();
+            });
+        })
+    }
+
+    login(username, password) {
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/user/${username}/${password}`, this.config)
+            .then(x => resolve(x.data))
+            .catch(e => {
+                alert(e);
+                reject();
+            });
+        })
     }
 
 
