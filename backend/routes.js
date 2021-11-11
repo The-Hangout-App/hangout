@@ -115,7 +115,7 @@ app.post('/user/create', (req, res) => {
           var gender = req.body.gender
           var bio = req.body.bio
           // if there is no issue obtaining a connection, execute query
-          connection.query('INSERT INTO `hangout`.`users` (user_id, username, password, first_name, last_name, pronoun, age, gender, bio) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)',[user_id, username, password, email, first_name, last_name, pronoun, age, gender, bio], function (err, rows, fields) {
+          connection.query('INSERT INTO users (user_id, username, password, first_name, last_name, pronoun, age, gender, bio) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)',[user_id, username, password, email, first_name, last_name, pronoun, age, gender, bio], function (err, rows, fields) {
               if (err) { 
                   // if there is an error with the query, release the connection instance and log the error
                   connection.release()
