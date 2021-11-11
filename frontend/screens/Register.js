@@ -32,7 +32,6 @@ class Register extends React.Component {
             onChangeText={text => this.setState({password: text})}/>
 
 
-        <Button title="Register" onPress = { () => this.props.navigation.navigate('Profile')}/>
          
         </SafeAreaView>)
     }
