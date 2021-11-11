@@ -1,10 +1,10 @@
--- create database db
+-- create database hangout
 CREATE DATABASE hangout;
 
 -- use newly create database
 USE hangout;
 
--- create table in db
+-- create table in hangout
 CREATE TABLE `hangout`.`users` (
     `user_id` INT NOT NULL AUTO_INCREMENT, 
     `username` VARCHAR(30), 
