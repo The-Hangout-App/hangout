@@ -8,6 +8,8 @@ import TopHeader from './components/TopHeader';
 import Homepage from './screens/Homepage';
 import Login from './screens/Login';
 import Register from './screens/Register';
+import Profile from './screens/Profile';
+
 
 
 const theme = {
@@ -42,6 +44,7 @@ export default function App() {
                   <Stack.Screen name="Login" component={Login} options={{ headerTitle: (props) => <TopHeader/> }}/>
                   <Stack.Screen name="Register" component={Register} options={{ headerTitle: (props) => <TopHeader/> }}/>
                   <Stack.Screen name="Homepage" component={Homepage} options={{ headerTitle: (props) => <TopHeader/> }}/>
+                  <Stack.Screen name="Profile" component={Profile} options={{ headerTitle: (props) => <TopHeader/> }}/>
                 </Stack.Navigator>
               </NavigationContainer>
             </ThemeProvider>)

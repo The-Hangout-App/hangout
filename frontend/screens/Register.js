@@ -56,6 +56,7 @@ class Register extends React.Component {
           />
 
         <Button title="Register" onPress={this.handleRegister}/>
+
          
         </SafeAreaView>)
     }
