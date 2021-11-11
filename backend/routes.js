@@ -96,9 +96,7 @@ module.exports = function routes(app, logger) {
     });
   });
 
-}
-
-app.get('/user/', (req, res) => {
+app.get('/user', (req, res) => {
   console.log(req.query.username)
   // obtain a connection from our pool of connections
   pool.getConnection(function (err, connection){
@@ -193,3 +191,4 @@ app.post('/user/create', (req, res) => {
       });
     });
 
+  }
