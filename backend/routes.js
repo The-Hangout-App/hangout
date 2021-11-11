@@ -342,7 +342,6 @@ app.post('/user/create', (req, res) => {
     });
 
     app.post('/user/register', (req, res) => {
-      console.log(req.body.user_id , req.body.username,req.body.password,req.body.first_name,req.body.last_name,req.body.pronoun,req.body.age,req.body.gender,req.body.bio);
       // obtain a connection from our pool of connections
       pool.getConnection(function (err, connection){
           if(err){
@@ -353,11 +352,10 @@ app.post('/user/create', (req, res) => {
 
               var username = req.body.username
               var password = req.body.password
-              var first_name = req.body.first_name
-              var last_name = req.body.last_name
+  
 
               // if there is no issue obtaining a connection, execute query
-              connection.query('INSERT INTO users (username, password, first_name, last_name) VALUES(?, ?, ?, ?s)',[username, password, first_name, last_name], function (err, rows, fields) {
+              connection.query('INSERT INTO users (username, password) VALUES(?, ?)',[username, password], function (err, rows, fields) {
                   if (err) { 
                       // if there is an error with the query, release the connection instance and log the error
                       connection.release()
