@@ -22,6 +22,9 @@ class Login extends React.Component {
       this.repo.getUser("bpulins").then(data => {
         console.log(data)
       })
+      this.repo.login(this.state.email, this.state.password).then(data => {
+        console.log(data)
+      })
     }
 
 
@@ -44,6 +47,7 @@ class Login extends React.Component {
             leftIcon={<Icon name="lock"/>}
             errorStyle={{ color: 'red' }}
             errorMessage={this.state.pwErr}
+            inputStyle={styles.inputs}
           />
           <Button title="Login" onPress={this.handleLogin}/>
           <Text style={styles.text}>Don't have an account? <Text style={styles.txtLink} onPress = {() => this.props.navigation.navigate('Register')}>Create account</Text>
@@ -63,9 +67,6 @@ const styles = StyleSheet.create({
     },
     inputs: {
       width: "90%",
-      height: 50,
-      borderColor: "black",
-      borderWidth: 2
     },
     txtLink: {
       color: "#71B6BF",
