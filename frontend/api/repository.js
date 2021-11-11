@@ -32,6 +32,16 @@ export class Repository {
         })
     }
 
+    createAccount(data) {
+        return new Promise((resolve, reject) => {
+            axios.post(`${this.url}/user/register`, data, this.config)
+            .then(resp => {
+                resolve(resp.data);
+            })
+            .catch(err => console.log(err));
+        })
+    }
+
 
     //Example post route
     addAccount(state) {
@@ -57,7 +67,6 @@ export class Repository {
         });
     })}
     
-
     //Sample get route
     getAccountInfo(id) {
         return new Promise((resolve, reject) => {
