@@ -108,3 +108,14 @@ CREATE TABLE `hangout`.`messages` (
     FOREIGN KEY (`chat_id`) REFERENCES chat(`chat_id`),
     FOREIGN KEY (`sender_id`) REFERENCES users(`user_id`)
 );
+
+INSERT INTO `hangout`.`activity_category` 
+(`activity_category_name`)
+VALUES ('Food'),
+('Physical Activity'),
+('Arts and Culture');
+ 
+INSERT INTO `hangout`.`cards` 
+(`activity_category_id`, `activity_name`, `address`, `phone_number`, `photo_url`, `min_num_participants`, `max_num_participants`, `min_age`, `max_age`) 
+VALUES ('3', 'Perot Museum', '2201 N Field St, Dallas, Texas', '214-428-5555', '', 1, 20, 0, 100);
+
