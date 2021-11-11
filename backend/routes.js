@@ -1,4 +1,4 @@
-const pool = require('./db')
+const pool = require('./hangout')
 
 module.exports = function routes(app, logger) {
   // GET /
