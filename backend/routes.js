@@ -161,63 +161,125 @@ app.post('/user/create', (req, res) => {
   });
 });
 
-    // GET /user/{username} return a user given its username
-    app.get('/user/:username', (req, res) => {
-      // obtain a connection from our pool of connections
-      pool.getConnection(function (err, connection){
-        if(err){
-          // if there is an issue obtaining a connection, release the connection instance and log the error
-          logger.error('Problem obtaining MySQL connection',err)
-          res.status(400).send('Problem obtaining MySQL connection'); 
-        } else {
-          // if there is no issue obtaining a connection, execute query and release connection
-          var username = req.param('username');
-          connection.query("SELECT * FROM users WHERE username = ?", username, function (err, result, fields) {
-            connection.release();
-            if (err) {
-              logger.error("Error while fetching values: \n", err);
-              res.status(400).json({
-                "data": [],
-                "error": "Error obtaining values"
-              })
-            } else {
-              res.end(JSON.stringify(result)); // Result in JSON format
-              // res.status(200).json({
-              //   "data": rows
-              // });
-            }
-          });
-        }
-      });
-    });
-    
-        app.get('/user/:username/:password', (req, res) => {
-          // obtain a connection from our pool of connections
-          pool.getConnection(function (err, connection){
-            if(err){
-              // if there is an issue obtaining a connection, release the connection instance and log the error
-              logger.error('Problem obtaining MySQL connection',err)
-              res.status(400).send('Problem obtaining MySQL connection'); 
-            } else {
-              // if there is no issue obtaining a connection, execute query and release connection
-              var username = req.param('username');
-              var password = req.param('password');
-              connection.query(`SELECT * FROM users WHERE username = ? && password = ?`, [username, password], function (err, result, fields) {
-                connection.release();
-                if (err) {
-                  logger.error("Error while fetching values: \n", err);
-                  res.status(400).json({
-                    "data": [],
-                    "error": "Error obtaining values"
-                  })
-                } else {
-                  res.end(JSON.stringify(result)); // Result in JSON format
-                  // res.status(200).json({
-                  //   "data": rows
-                  // });
-                }
-              });
-            }
-          });
+//BRIGITTA - FROM HERE ON
+  // given a username, return a user 
+  app.get('/user/:username', (req, res) => {
+    // obtain a connection from our pool of connections
+    pool.getConnection(function (err, connection){
+      if(err){
+        // if there is an issue obtaining a connection, release the connection instance and log the error
+        logger.error('Problem obtaining MySQL connection',err)
+        res.status(400).send('Problem obtaining MySQL connection'); 
+      } else {
+        // if there is no issue obtaining a connection, execute query and release connection
+        var username = req.param('username');
+        connection.query("SELECT * FROM users WHERE username = ?", username, function (err, result, fields) {
+          connection.release();
+          if (err) {
+            logger.error("Error while fetching values: \n", err);
+            res.status(400).json({
+              "data": [],
+              "error": "Error obtaining values"
+            })
+          } else {
+            res.end(JSON.stringify(result)); // Result in JSON format
+            // res.status(200).json({
+            //   "data": rows
+            // });
+          }
         });
+      }
+    });
+  });
+    
+  //given a username and password, return a user
+  app.get('/user/:username/:password', (req, res) => {
+    // obtain a connection from our pool of connections
+    pool.getConnection(function (err, connection){
+      if(err){
+        // if there is an issue obtaining a connection, release the connection instance and log the error
+        logger.error('Problem obtaining MySQL connection',err)
+        res.status(400).send('Problem obtaining MySQL connection'); 
+      } else {
+        // if there is no issue obtaining a connection, execute query and release connection
+        var username = req.param('username');
+        var password = req.param('password');
+        connection.query(`SELECT * FROM users WHERE username = ? && password = ?`, [username, password], function (err, result, fields) {
+          connection.release();
+          if (err) {
+            logger.error("Error while fetching values: \n", err);
+            res.status(400).json({
+              "data": [],
+              "error": "Error obtaining values"
+            })
+          } else {
+            res.end(JSON.stringify(result)); // Result in JSON format
+            // res.status(200).json({
+            //   "data": rows
+            // });
+          }
+        });
+      }
+    });
+  });
+
+  //return an array of cards
+  app.get('/cards', (req, res) => {
+    // obtain a connection from our pool of connections
+    pool.getConnection(function (err, connection){
+      if(err){
+        // if there is an issue obtaining a connection, release the connection instance and log the error
+        logger.error('Problem obtaining MySQL connection',err)
+        res.status(400).send('Problem obtaining MySQL connection'); 
+      } else {
+        // if there is no issue obtaining a connection, execute query and release connection
+        connection.query(`SELECT * FROM cards`, function (err, result, fields) {
+          connection.release();
+          if (err) {
+            logger.error("Error while fetching values: \n", err);
+            res.status(400).json({
+              "data": [],
+              "error": "Error obtaining values"
+            })
+          } else {
+            res.end(JSON.stringify(result)); // Result in JSON format
+            // res.status(200).json({
+            //   "data": rows
+            // });
+          }
+        });
+      }
+    });
+  });
+
+  //given an activity category id, return an array of cards
+  app.get('/cards/:activity_category_id', (req, res) => {
+    // obtain a connection from our pool of connections
+    pool.getConnection(function (err, connection){
+      if(err){
+        // if there is an issue obtaining a connection, release the connection instance and log the error
+        logger.error('Problem obtaining MySQL connection',err)
+        res.status(400).send('Problem obtaining MySQL connection'); 
+      } else {
+        // if there is no issue obtaining a connection, execute query and release connection
+        var activity_type_id = req.param('activity_type_id');
+        connection.query(`SELECT * FROM cards WHERE activity_type_id = ?`, activity_type_id, function (err, result, fields) {
+          connection.release();
+          if (err) {
+            logger.error("Error while fetching values: \n", err);
+            res.status(400).json({
+              "data": [],
+              "error": "Error obtaining values"
+            })
+          } else {
+            res.end(JSON.stringify(result)); // Result in JSON format
+            // res.status(200).json({
+            //   "data": rows
+            // });
+          }
+        });
+      }
+    });
+  });
+
   }
