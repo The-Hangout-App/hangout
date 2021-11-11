@@ -341,7 +341,7 @@ app.post('/user/create', (req, res) => {
       });
     });
 
-    app.post('/user/create', (req, res) => {
+    app.post('/user/register', (req, res) => {
       console.log(req.body.user_id , req.body.username,req.body.password,req.body.first_name,req.body.last_name,req.body.pronoun,req.body.age,req.body.gender,req.body.bio);
       // obtain a connection from our pool of connections
       pool.getConnection(function (err, connection){
