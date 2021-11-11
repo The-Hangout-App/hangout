@@ -2,20 +2,25 @@ import React from "react";
 import { StyleSheet } from 'react-native';
 import { Button, Text, Input, Icon } from "react-native-elements";
 import { SafeAreaView } from "react-native-safe-area-context";
+import ActivityCard from "../components/ActivityCard";
 
 class Homepage extends React.Component {
 
     state = {
-      activities = [], //list read in from DB
+      activities: [{title: "In n Out Burger", imgSource: "https://www.usmagazine.com/wp-content/uploads/2018/08/in-n-out-burger-Republican-Party.jpg"}]
       
     }
 
     render() {
       
-        return (<SafeAreaView style={styles.container}>
-          
+        return (<SafeAreaView>
+          <ActivityCard activity={this.state.activities[0]}/>
         </SafeAreaView>)
 
+    }
+
+    componentDidMount() {
+      //API call here
     }
 
     
@@ -43,4 +48,4 @@ const styles = StyleSheet.create({
     }
   });
   
-  export default Login;
+  export default Homepage;

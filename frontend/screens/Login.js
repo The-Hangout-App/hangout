@@ -2,8 +2,11 @@ import React from "react";
 import { StyleSheet } from 'react-native';
 import { Button, Text, Input, Icon, Badge } from "react-native-elements";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Repository } from "../api/repository";
 
 class Login extends React.Component {
+
+    repo = new Repository();
 
     state = {
       email: "",
@@ -16,6 +19,12 @@ class Login extends React.Component {
       if (this.state.email == "") {
         this.setState({emailErr: "Invalid email"});
       }
+      this.repo.getUser("bpulins").then(data => {
+        console.log(data)
+      })
+      this.repo.login(this.state.email, this.state.password).then(data => {
+        console.log(data)
+      })
     }
 
 
@@ -28,7 +37,6 @@ class Login extends React.Component {
             onChange={(text) => this.setState({email: text})}
             textContentType="emailAddress"
             leftIcon={<Icon name="email"/>}
-            ref={emailRef}
             errorStyle={{ color: 'red' }}
             errorMessage={this.state.emailErr}
           />
@@ -37,22 +45,18 @@ class Login extends React.Component {
             textContentType="password"
             secureTextEntry={true} onChange={(text) => this.setState({password: text})}
             leftIcon={<Icon name="lock"/>}
-            ref={pwRef}
             errorStyle={{ color: 'red' }}
             errorMessage={this.state.pwErr}
+            inputStyle={styles.inputs}
           />
           <Button title="Login" onPress={this.handleLogin}/>
-          <Text style={styles.text}>Don't have an account? <Text style={styles.txtLink} onPress = {() => this.props.navigation.navigate('Register')}>Create account</Text></Text>
+          <Text style={styles.text}>Don't have an account? <Text style={styles.txtLink} onPress = {() => this.props.navigation.navigate('Register')}>Create account</Text>
+          </Text>
         </SafeAreaView>)
 
     }
 
-    
-
 }
-
-const emailRef = React.createRef()
-const pwRef = React.createRef()
 
 const styles = StyleSheet.create({
     container: {
@@ -63,12 +67,9 @@ const styles = StyleSheet.create({
     },
     inputs: {
       width: "90%",
-      height: 50,
-      borderColor: "black",
-      borderWidth: 2
     },
     txtLink: {
-      color: "#71B6BF"
+      color: "#71B6BF",
     },
     text: {
       marginTop: 10
