@@ -1,4 +1,4 @@
-const pool = require('./hangout')
+const pool = require('./db')
 
 module.exports = function routes(app, logger) {
   // GET /
@@ -25,7 +25,7 @@ module.exports = function routes(app, logger) {
             res.status(400).send('Problem dropping the table'); 
           } else {
             // if there is no error with the query, execute the next query and do not release the connection yet
-            connection.query('CREATE TABLE `hangout`.`test_table` (`id` INT NOT NULL AUTO_INCREMENT, `value` VARCHAR(45), PRIMARY KEY (`id`), UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);', function (err, rows, fields) {
+            connection.query('CREATE TABLE `db`.`test_table` (`id` INT NOT NULL AUTO_INCREMENT, `value` VARCHAR(45), PRIMARY KEY (`id`), UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);', function (err, rows, fields) {
               if (err) { 
                 // if there is an error with the query, release the connection instance and log the error
                 connection.release()
@@ -54,7 +54,7 @@ module.exports = function routes(app, logger) {
         res.status(400).send('Problem obtaining MySQL connection'); 
       } else {
         // if there is no issue obtaining a connection, execute query and release connection
-        connection.query('INSERT INTO `hangout`.`test_table` (`value`) VALUES(\'' + req.body.product + '\')', function (err, rows, fields) {
+        connection.query('INSERT INTO `db`.`test_table` (`value`) VALUES(\'' + req.body.product + '\')', function (err, rows, fields) {
           connection.release();
           if (err) {
             // if there is an error with the query, log the error
@@ -78,7 +78,7 @@ module.exports = function routes(app, logger) {
         res.status(400).send('Problem obtaining MySQL connection'); 
       } else {
         // if there is no issue obtaining a connection, execute query and release connection
-        connection.query('SELECT value FROM `hangout`.`test_table`', function (err, rows, fields) {
+        connection.query('SELECT value FROM `db`.`test_table`', function (err, rows, fields) {
           connection.release();
           if (err) {
             logger.error("Error while fetching values: \n", err);
