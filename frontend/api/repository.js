@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export class Repository {
 
-    url = "hangoutdockercompose.cujwz265lxoq.ca-central-1.rds.amazonaws.com";
+    url = "http://ec2-15-223-77-234.ca-central-1.compute.amazonaws.com:8000";
 
     config = {
         headers: {
@@ -10,9 +10,9 @@ export class Repository {
         }
     }
 
-    getUser(id) {
+    getUser(username) {
         return new Promise((resolve, reject) => {
-            axios.get(`${this.url}/user/${id}`, this.config)
+            axios.get(`${this.url}/user/${username}`, this.config)
             .then(x => resolve(x.data))
             .catch(e => {
                 alert(e);

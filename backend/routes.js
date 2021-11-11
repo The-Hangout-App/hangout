@@ -172,7 +172,7 @@ app.post('/user/create', (req, res) => {
         } else {
           // if there is no issue obtaining a connection, execute query and release connection
           var username = req.param('username');
-          con.query("SELECT * FROM users WHERE username = ?", username, function (err, result, fields) {
+          connection.query("SELECT * FROM users WHERE username = ?", username, function (err, result, fields) {
             connection.release();
             if (err) {
               logger.error("Error while fetching values: \n", err);

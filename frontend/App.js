@@ -38,7 +38,7 @@ const Stack = createNativeStackNavigator();
 export default function App() {
     return (<ThemeProvider theme={theme}>
               <NavigationContainer>
-                <Stack.Navigator initialRouteName="Homepage">
+                <Stack.Navigator initialRouteName="Login">
                   <Stack.Screen name="Login" component={Login} options={{ headerTitle: (props) => <TopHeader/> }}/>
                   <Stack.Screen name="Register" component={Register} options={{ headerTitle: (props) => <TopHeader/> }}/>
                   <Stack.Screen name="Homepage" component={Homepage} options={{ headerTitle: (props) => <TopHeader/> }}/>

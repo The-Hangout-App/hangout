@@ -6,7 +6,7 @@ import { Repository } from "../api/repository";
 
 class Login extends React.Component {
 
-    repo = Repository();
+    repo = new Repository();
 
     state = {
       email: "",
@@ -19,8 +19,8 @@ class Login extends React.Component {
       if (this.state.email == "") {
         this.setState({emailErr: "Invalid email"});
       }
-      this.repo.getUser(1).then(data => {
-        
+      this.repo.getUser("bpulins").then(data => {
+        console.log(data)
       })
     }
 
