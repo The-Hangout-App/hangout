@@ -341,5 +341,41 @@ app.post('/user/create', (req, res) => {
       });
     });
 
+    app.post('/user/create', (req, res) => {
+      console.log(req.body.user_id , req.body.username,req.body.password,req.body.first_name,req.body.last_name,req.body.pronoun,req.body.age,req.body.gender,req.body.bio);
+      // obtain a connection from our pool of connections
+      pool.getConnection(function (err, connection){
+          if(err){
+              // if there is an issue obtaining a connection, release the connection instance and log the error
+              logger.error('Problem obtaining MySQL connection',err)
+              res.status(400).send('Problem obtaining MySQL connection'); 
+          } else {
+
+              var username = req.body.username
+              var password = req.body.password
+              var first_name = req.body.first_name
+              var last_name = req.body.last_name
+
+              // if there is no issue obtaining a connection, execute query
+              connection.query('INSERT INTO users (username, password, first_name, last_name) VALUES(?, ?, ?, ?s)',[username, password, first_name, last_name], function (err, rows, fields) {
+                  if (err) { 
+                      // if there is an error with the query, release the connection instance and log the error
+                      connection.release()
+                      logger.error("Error while creating user: \n", err); 
+                      res.status(400).json({
+                          "data": [],
+                          "error": "MySQL error"
+                      })
+                  } else{
+                      res.status(200).json({
+                          "data": rows
+                      });
+                  }
+              });
+          }
+      });
+    });
+    
+
   }
 
