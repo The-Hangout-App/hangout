@@ -191,7 +191,6 @@ app.post('/user/create', (req, res) => {
       });
     });
     
-        // GET /user/{username} return a user given its username
         app.get('/user/:username/:password', (req, res) => {
           // obtain a connection from our pool of connections
           pool.getConnection(function (err, connection){
