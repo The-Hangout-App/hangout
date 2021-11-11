@@ -2,12 +2,23 @@ import axios from 'axios';
 
 export class Repository {
 
-    url = "";
+    url = "hangoutdockercompose.cujwz265lxoq.ca-central-1.rds.amazonaws.com";
 
     config = {
         headers: {
             Authorization: '*'
         }
+    }
+
+    getUser(id) {
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/user/${id}`, this.config)
+            .then(x => resolve(x.data))
+            .catch(e => {
+                alert(e);
+                reject();
+            });
+        })
     }
 
 

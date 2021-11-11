@@ -32,7 +32,7 @@ class Register extends React.Component {
             onChangeText={text => this.setState({password: text})}/>
 
 
-        <Button title = "Register"/>
+        <Button title="Register"/>
          
         </SafeAreaView>)
     }
