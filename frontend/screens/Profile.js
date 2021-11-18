@@ -29,7 +29,6 @@ class Profile extends React.Component {
                 activeOpacity={0.7}
                 style = {styles.profilePicWrap}
             />
-            <br/>
             <Text h3>Profile</Text>
             <View style= {styles.flexbox}>
                 <Input  
@@ -41,9 +40,6 @@ class Profile extends React.Component {
                 placeholder="Last Name" 
                 onChangeText={text => this.setState({lastName: text})}/>
              </View>
-            <br/>
-            <br/>
-            <br/>
                 <Input  
                 style={styles.inputs}
                 placeholder="Pronouns" 
