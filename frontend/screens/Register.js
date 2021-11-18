@@ -20,8 +20,9 @@ class Register extends React.Component {
        // this.setState({errTxt: "Passwords do not match"});
        // return;
       //}
-      const body = {username: this.state.email, password: this.state.password};
-      this.repo.createAccount(body);
+      //const body = {username: this.state.email, password: this.state.password};
+      //this.repo.createAccount(body);
+      this.props.navigation.navigate("Profile");
     }
 
     render() {
