@@ -2,7 +2,8 @@ import React from "react";
 import { StyleSheet } from 'react-native';
 import { Button, Text, Input, Icon } from "react-native-elements";
 import { SafeAreaView } from "react-native-safe-area-context";
-import ActivityCard from "../components/ActivityCard";
+import ActivityCard from '../components/ActivityCard'
+import TinderCard from 'react-tinder-card'
 
 class Homepage extends React.Component {
 
@@ -10,11 +11,15 @@ class Homepage extends React.Component {
       activities: [{title: "In n Out Burger", imgSource: "https://www.usmagazine.com/wp-content/uploads/2018/08/in-n-out-burger-Republican-Party.jpg"}]
       
     }
-
     render() {
-      
         return (<SafeAreaView>
-          <ActivityCard activity={this.state.activities[0]}/>
+          {this.state.activities.map((act) =>
+            <TinderCard>
+                <ActivityCard activity={act}/>
+            </TinderCard>
+          )}  
+          
+          
         </SafeAreaView>)
 
     }
