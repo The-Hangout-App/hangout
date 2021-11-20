@@ -1,15 +1,17 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Button, Text} from 'react-native';
 import React from 'react';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
-import { Header, Text, ThemeProvider } from 'react-native-elements';
+import { Header, ThemeProvider } from 'react-native-elements';
 import TopHeader from './components/TopHeader';
 import Homepage from './screens/Homepage';
 import Login from './screens/Login';
 import Register from './screens/Register';
 import Profile from './screens/Profile';
-
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
 const theme = {
@@ -34,8 +36,8 @@ const theme = {
   }
 
 };
-
 const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
 export default function App() {
     return (<ThemeProvider theme={theme}>
@@ -46,8 +48,33 @@ export default function App() {
                   <Stack.Screen name="Homepage" component={Homepage} options={{ headerTitle: (props) => <TopHeader/> }}/>
                   <Stack.Screen name="Profile" component={Profile} options={{ headerTitle: (props) => <TopHeader/> }}/>
                 </Stack.Navigator>
+                </NavigationContainer>
+            <NavigationContainer>
+                <Tab.Navigator
+                                    screenOptions={({ route }) => ({
+                                      tabBarIcon: ({ focused, color, size }) => {
+                                    let iconName;
+
+                                    if (route.name === 'Home') {
+                                    iconName = focused
+                                      ? 'ios-information-circle'
+                                      : 'ios-information-circle-outline';
+                                      } else if (route.name === 'Settings') {
+                                        iconName = focused ? 'ios-list-box' : 'ios-list';
+                                      }
+
+                                        // You can return any component that you like here!
+                                    return <Ionicons name={iconName} size={size} color={color} />;
+                                    },
+                                tabBarActiveTintColor: 'tomato',
+                            tabBarInactiveTintColor: 'gray',
+                          })}
+                        >
+                          <Tab.Screen name="Home" component={Homepage} />
+                          <Tab.Screen name="Settings" component={Profile} />
+                 </Tab.Navigator>
               </NavigationContainer>
-            </ThemeProvider>)
+            </ThemeProvider>);
       
 }
 

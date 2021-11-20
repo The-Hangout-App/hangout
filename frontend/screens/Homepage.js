@@ -12,15 +12,19 @@ class Homepage extends React.Component {
       
     }
     render() {
-        return (<SafeAreaView>
+        return (
+        <SafeAreaView>
+        
           {this.state.activities.map((act) =>
             <TinderCard>
                 <ActivityCard activity={act}/>
             </TinderCard>
-          )}  
+          )
+          }  
           
           
         </SafeAreaView>)
+
 
     }
 

@@ -57,6 +57,8 @@ class Login extends React.Component {
           <Button title="Login" onPress={this.handleLogin}/>
           <Text style={styles.text}>Don't have an account? <Text style={styles.txtLink} onPress = {() => this.props.navigation.navigate('Register')}>Create account</Text>
           </Text>
+
+          
         </SafeAreaView>)
 
     }
