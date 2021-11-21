@@ -275,6 +275,7 @@ if(err){
   logger.error('Problem obtaining MySQL connection',err)
   res.status(400).send('Problem obtaining MySQL connection'); 
 } else {
+    var user_id = req.param('userID');
     var username_new = req.body.username_old
     var password_new = req.body.password_old
     var first_name_new = req.body.first_name_old
@@ -284,7 +285,7 @@ if(err){
     var age_new = req.body.age_old
     var bio_new = req.body.bio_old
 
-    connection.query("UPDATE users SET username = ?, password = ?, first_name = ?, last_name = ?, pronoun = ?, gender = ?, age = ?, bio = ?", [username_new, password_new, first_name_new, last_name_new, pronoun_new, gender_new, age_new, bio_new], function (err, result, fields) {
+    connection.query("UPDATE users SET username = ?, password = ?, first_name = ?, last_name = ?, pronoun = ?, gender = ?, age = ?, bio = ? WHERE user_id = ?", [username_new, password_new, first_name_new, last_name_new, pronoun_new, gender_new, age_new, bio_new, user_id], function (err, result, fields) {
     connection.release();
     if (err) {
       logger.error("Error while fetching values: \n", err);
@@ -300,7 +301,9 @@ if(err){
 });
 });
 
+//wyatt
 //delete user
+//tested
 app.delete('/DeleteUser/:userID', (req, res) => {
 pool.getConnection(function (err, connection){
 if(err){
