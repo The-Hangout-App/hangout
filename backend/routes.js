@@ -307,8 +307,7 @@ if(err){
   logger.error('Problem obtaining MySQL connection',err)
   res.status(400).send('Problem obtaining MySQL connection'); 
 } else {
-    var user_id = req.param('user_id');
-  
+    var user_id = req.param('userID');
     connection.query("DELETE FROM users WHERE user_id = ?", user_id, function (err, result, fields) {
     connection.release();
     if (err) {
