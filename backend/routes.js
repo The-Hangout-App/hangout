@@ -269,6 +269,7 @@ app.post('/registerUser', (req, res) => {
 
 //wyatt
 //update user
+//tested
 app.put('/updateUser/:userID', (req, res) => {
 pool.getConnection(function (err, connection){
 if(err){
