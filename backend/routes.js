@@ -162,7 +162,7 @@ app.get('/chat/:chat_id', (req, res) => {
 });
 
 //BRIGITTA - FROM HERE ON
-// given a username, return a user 
+//given a username, return a user 
 app.get('/user/:username', (req, res) => {
   // obtain a connection from our pool of connections
   pool.getConnection(function (err, connection){
@@ -215,7 +215,8 @@ app.get('/user/:username/:password', (req, res) => {
 });
 
 //wyatt
-// given a userID, return a user 
+//given a userID, return a user 
+//tested
 app.get('/getUserByID/:userID', (req, res) => {
   pool.getConnection(function (err, connection){
     if(err){
@@ -223,7 +224,7 @@ app.get('/getUserByID/:userID', (req, res) => {
       res.status(400).send('Problem obtaining MySQL connection'); 
     } else {
       var user_id = req.param('userID');
-      connection.query("SELECT * FROM users WHERE user_id = ?", user_id, function (err, result, fields) {
+      connection.query("SELECT * FROM hangout.users WHERE user_id = ?", user_id, function (err, result, fields) {
         connection.release();
         if (err) {
           logger.error("Error while fetching values: \n", err);
@@ -241,6 +242,7 @@ app.get('/getUserByID/:userID', (req, res) => {
 
 //wyatt
 //register user
+//tested
 app.post('/registerUser', (req, res) => {
   pool.getConnection(function (err, connection){
   if(err){
@@ -305,7 +307,7 @@ if(err){
   logger.error('Problem obtaining MySQL connection',err)
   res.status(400).send('Problem obtaining MySQL connection'); 
 } else {
-    var user_id = req.body.user_id
+    var user_id = req.param('user_id');
   
     connection.query("DELETE FROM users WHERE user_id = ?", user_id, function (err, result, fields) {
     connection.release();
