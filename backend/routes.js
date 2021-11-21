@@ -276,14 +276,14 @@ if(err){
   res.status(400).send('Problem obtaining MySQL connection'); 
 } else {
     var user_id = req.param('userID');
-    var username_new = req.body.username_old
-    var password_new = req.body.password_old
-    var first_name_new = req.body.first_name_old
-    var last_name_new = req.body.last_name_old
-    var pronoun_new = req.body.pronoun_old
-    var gender_new = req.body.gender_old
-    var age_new = req.body.age_old
-    var bio_new = req.body.bio_old
+    var username_new = req.body.username
+    var password_new = req.body.password
+    var first_name_new = req.body.first_name
+    var last_name_new = req.body.last_name
+    var pronoun_new = req.body.pronoun
+    var gender_new = req.body.gender
+    var age_new = req.body.age
+    var bio_new = req.body.bio
 
     connection.query("UPDATE users SET username = ?, password = ?, first_name = ?, last_name = ?, pronoun = ?, gender = ?, age = ?, bio = ? WHERE user_id = ?", [username_new, password_new, first_name_new, last_name_new, pronoun_new, gender_new, age_new, bio_new, user_id], function (err, result, fields) {
     connection.release();
