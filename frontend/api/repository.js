@@ -42,6 +42,28 @@ export class Repository {
         })
     }
 
+    getGroups(activityID) {
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/activities/${activityID}/groups`, this.config)
+            .then(x => resolve(x.data))
+            .catch(e => {
+                alert(e);
+                reject();
+            });
+        })
+    }
+
+    getUsersInGroup(groupID) {
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/groups/${groupID}/`, this.config)
+            .then(x => resolve(x.data))
+            .catch(e => {
+                alert(e);
+                reject();
+            });
+        })
+    }
+
 
     //Example post route
     addAccount(state) {

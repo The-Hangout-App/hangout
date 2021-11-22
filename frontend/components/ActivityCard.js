@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, SwipeableListView, View } from 'react-native';
 import { Card, Image, Text } from 'react-native-elements';
 import { Button } from 'react-native-elements/dist/buttons/Button';
 
@@ -9,7 +9,7 @@ export default function ActivityCard(props) {
 
     return (
         
-        <Card>
+        <Card style={styles.card}>
             <Card.Title>{props.activity.title}</Card.Title>
             <Card.Divider/>
             <Image source={{uri: props.activity.imgSource}} style={styles.img}/>
@@ -26,12 +26,6 @@ export default function ActivityCard(props) {
         </Card>
         
     );
-/*
-    <View style={styles.card}>
-            <Text>{props.activity.title}</Text>
-            <Image source={{uri: props.activity.imgSource}} style={styles.img}/>
-    </View>
-*/
 
 }
 
@@ -48,7 +42,6 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "row",
         justifyContent: "space-between",
-
         alignSelf: "center"
     },
     img: {
@@ -56,6 +49,7 @@ const styles = StyleSheet.create({
         height: "50%"
     },
     card: {
+        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         width: 300,
