@@ -25,7 +25,8 @@
     "react-native-swipeable-cards": "^1.1.23",
     "react-native-web": "0.17.1",
     "react-spring": "^9.3.0",
-    "react-tinder-card": "^1.4.5"
+    "react-tinder-card": "^1.4.5",
+    "styled-components": "^5.3.3"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"
