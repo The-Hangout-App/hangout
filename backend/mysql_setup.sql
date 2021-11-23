@@ -167,9 +167,10 @@ ADD `zipcode` VARCHAR(10);
 
 CREATE TABLE `hangout`.`users_in_groups` (
 	`group_pk` INT NOT NULL AUTO_INCREMENT, -- primary key
-	`group_id` INT,
+	`group_id` INT, -- foreign key
     `user_id` INT, -- forign key
     PRIMARY KEY (`group_pk`),
+    FOREIGN KEY (`group_id`) REFERENCES `groups`(group_id),
     FOREIGN KEY (`user_id`) REFERENCES users(user_id)
 );
 
