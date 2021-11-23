@@ -411,7 +411,7 @@ app.get('/groups/:card_id', (req, res) => {
       res.status(400).send('Problem obtaining MySQL connection'); 
     } else {
       var card_id = req.param('card_id');
-      connection.query(`SELECT group_id FROM groups WHERE card_id = ?`, card_id, function (err, result, fields) {
+      connection.query("SELECT group_id FROM `groups` WHERE card_id = ?", card_id, function (err, result, fields) {
         connection.release();
         if (err) {
           logger.error("Error while fetching values: \n", err);
