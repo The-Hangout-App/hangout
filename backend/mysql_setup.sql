@@ -173,7 +173,7 @@ CREATE TABLE `hangout`.`users_in_groups` (
     FOREIGN KEY (`user_id`) REFERENCES users(user_id)
 );
 
-CREATE TABLE `hangout`.`group` (
+CREATE TABLE `hangout`.`groups` (
 	`group_id` INT NOT NULL AUTO_INCREMENT, -- primary key
     `card_id` INT, -- forign key
     PRIMARY KEY (`group_id`),
@@ -184,7 +184,7 @@ DROP TABLE `hangout`.`matches`;
 DROP TABLE `hangout`.`logs`;
 
 
-INSERT INTO `hangout`.`group` 
+INSERT INTO `hangout`.`groups` 
 (`group_id`, `card_id`)
 VALUES (1, 3), -- card 3 (The Nutcracker) is associated with group 1 
 (2, 4), -- card 4 (Dallas Farmers Market) is associated with group 2
