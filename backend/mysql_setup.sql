@@ -122,7 +122,6 @@ VALUES ('3', 'Perot Museum', '2201 N Field St, Dallas, Texas', '214-428-5555', '
 ALTER TABLE cards 
 MODIFY COLUMN photo_url VARCHAR(200);
 
-
 INSERT INTO `hangout`.`cards` 
 (`activity_category_id`, `activity_name`, `address`, `phone_number`, `photo_url`, `min_num_participants`, `max_num_participants`, `min_age`, `max_age`, `city`, `state`, `zipcode`) 
 VALUES 
@@ -158,3 +157,43 @@ VALUES
 (1, 'Taco Bell Restaurant', '2404 N Washington Ave', '(214)821-4866', 'https://d1ralsognjng37.cloudfront.net/009fb4ac-0445-441f-84aa-86a484351127.jpeg', 1, 10, 0, 100, 'Dallas', 'Texas', '75204'), 
 (1, 'Trader Joes Grocery Shopping', '4525 Cole Avenue', '(214)599-2155', 'https://www.signalsaz.com/wp-content/uploads/2020/03/trader-joes-1.jpg', 1, 5, 0, 100, 'Dallas', 'Texas', '75205');
 
+ALTER TABLE cards
+MODIFY COLUMN image_url VARCHAR(200);
+
+ALTER TABLE `hangout`.`cards` 
+ADD `city` VARCHAR(20),
+ADD `state` VARCHAR(10),
+ADD `zipcode` VARCHAR(10);
+
+CREATE TABLE `hangout`.`users_in_groups` (
+	`group_pk` INT NOT NULL AUTO_INCREMENT, -- primary key
+	`group_id` INT,
+    `user_id` INT, -- forign key
+    PRIMARY KEY (`group_pk`),
+    FOREIGN KEY (`user_id`) REFERENCES users(user_id)
+);
+
+CREATE TABLE `hangout`.`group` (
+	`group_id` INT NOT NULL AUTO_INCREMENT, -- primary key
+    `card_id` INT, -- forign key
+    PRIMARY KEY (`group_id`),
+    FOREIGN KEY (`card_id`) REFERENCES cards(card_id)
+);
+
+DROP TABLE `hangout`.`matches`;
+DROP TABLE `hangout`.`logs`;
+
+
+INSERT INTO `hangout`.`group` 
+(`group_id`, `card_id`)
+VALUES (1, 3), -- card 3 (The Nutcracker) is associated with group 1 
+(2, 4), -- card 4 (Dallas Farmers Market) is associated with group 2
+(3, 7), -- card 7 (Studio Arts Art Classes) is associated with group 3
+(4, 7); -- card 7 (Studio Arts Art Classes) is associated with group 4
+
+INSERT INTO `hangout`.`users_in_groups` 
+(`group_pk`, `group_id`, `user_id`)
+VALUES (1, 1, 3), -- user 3 is in group 1
+(2, 1, 4), -- user 4 is also in group 1
+(3, 1, 5), -- user 5 is also in group 1
+(4, 2, 6); -- user 6 is in group 2
