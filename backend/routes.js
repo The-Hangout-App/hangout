@@ -378,14 +378,14 @@ app.get('/cards/:activity_category_id', (req, res) => {
 //zech 
 //tested
 //given a group_id, return an array of user_ids
-app.get('/users_in_group/:group_id', (req, res) => {
+app.get('/users_in_groups/:group_id', (req, res) => {
   pool.getConnection(function (err, connection){
     if(err){
       logger.error('Problem obtaining MySQL connection',err)
       res.status(400).send('Problem obtaining MySQL connection'); 
     } else {
       var group_id = req.param('group_id');
-      connection.query(`SELECT * FROM group WHERE group_id = ?`, group_id, function (err, result, fields) {
+      connection.query(`SELECT user_id FROM users_in_groups WHERE group_id = ?`, group_id, function (err, result, fields) {
         connection.release();
         if (err) {
           logger.error("Error while fetching values: \n", err);
@@ -404,14 +404,14 @@ app.get('/users_in_group/:group_id', (req, res) => {
 //zech
 //tested
 //given a card, return an array of groups
-app.get('/group/:card_id', (req, res) => {
+app.get('/groups/:card_id', (req, res) => {
   pool.getConnection(function (err, connection){
     if(err){
       logger.error('Problem obtaining MySQL connection',err)
       res.status(400).send('Problem obtaining MySQL connection'); 
     } else {
       var card_id = req.param('card_id');
-      connection.query(`SELECT * FROM groups WHERE card_id = ?`, card_id, function (err, result, fields) {
+      connection.query(`SELECT group_id FROM groups WHERE card_id = ?`, card_id, function (err, result, fields) {
         connection.release();
         if (err) {
           logger.error("Error while fetching values: \n", err);
