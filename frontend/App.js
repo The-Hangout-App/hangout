@@ -11,6 +11,7 @@ import Register from './screens/Register';
 import Profile from './screens/Profile';
 import Groups from './screens/Groups';
 import GroupDetails from './screens/GroupDetails';
+import CreateGroup from './screens/CreateGroup';
 
 
 
@@ -43,7 +44,7 @@ export default function App() {
 
     return (<ThemeProvider theme={theme}>
               <NavigationContainer>
-                <Stack.Navigator initialRouteName="Login" screenOptions={{
+                <Stack.Navigator initialRouteName="CreateGroup" screenOptions={{
                   headerStyle: styles.header,
                   headerTitle: "Hangout",
                   //headerTitleAlign: "center",
@@ -55,6 +56,7 @@ export default function App() {
                   <Stack.Screen name="Profile" component={Profile}/>
                   <Stack.Screen name="Groups" component={Groups}/>
                   <Stack.Screen name="GroupDetails" component={GroupDetails}/>
+                  <Stack.Screen name="CreateGroup" component={CreateGroup}/>
                 </Stack.Navigator>
               </NavigationContainer>
             </ThemeProvider>)
