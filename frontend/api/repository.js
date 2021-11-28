@@ -10,6 +10,17 @@ export class Repository {
         }
     }
 
+    getActivity(cardId) {
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/activities/${cardId}`, this.config)
+            .then(x => resolve(x.data))
+            .catch(e => {
+                alert(e);
+                reject();
+            });
+        })
+    }
+
     getUser(username) {
         return new Promise((resolve, reject) => {
             axios.get(`${this.url}/user/${username}`, this.config)
@@ -61,6 +72,16 @@ export class Repository {
                 alert(e);
                 reject();
             });
+        })
+    }
+
+    createGroup(body) {
+        return new Promise((resolve, reject) => {
+            axios.post(`${this.url}/groups`, body, this.config)
+            .then(resp => {
+                resolve(resp.data);
+            })
+            .catch(err => console.log(err));
         })
     }
 

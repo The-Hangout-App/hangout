@@ -67,7 +67,7 @@ const alreadyRemoved = [];
 
 export default function Homepage(props) {
 
-  const [activities, setActitivies] = useState([{title: "In n Out Burger", imgSource: "https://www.usmagazine.com/wp-content/uploads/2018/08/in-n-out-burger-Republican-Party.jpg"}, {title: "In n Out Burger 2", imgSource: "https://www.usmagazine.com/wp-content/uploads/2018/08/in-n-out-burger-Republican-Party.jpg"}]);
+  const [activities, setActitivies] = useState([{cardId: 1, title: "In n Out Burger", imgSource: "https://www.usmagazine.com/wp-content/uploads/2018/08/in-n-out-burger-Republican-Party.jpg"}, {title: "In n Out Burger 2", imgSource: "https://www.usmagazine.com/wp-content/uploads/2018/08/in-n-out-burger-Republican-Party.jpg"}]);
   const [lastDirection, setLastDirection] = useState();
   const [currentActivity, setCurrentActivity] = useState(activities[0]);
 
@@ -104,7 +104,7 @@ export default function Homepage(props) {
     act = activities[activities.length - 1]
 
     if (dir === "right") {
-      props.navigation.navigate("Groups", {activity: act, group: 1});
+      props.navigation.navigate("Groups", {cardId: act.cardId});
     }
   }
 

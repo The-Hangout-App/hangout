@@ -63,3 +63,11 @@ export default function App() {
 }
 
 
+const styles = StyleSheet.create({
+  header: {
+    backgroundColor: "#71B6BF",
+  },
+  title: {
+    color: "white"
+  }
+})

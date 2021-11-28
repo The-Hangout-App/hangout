@@ -1,6 +1,7 @@
 import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import React, { useEffect, useState } from 'react';
 import { Button, Icon, ListItem, Text } from "react-native-elements";
+import { Repository } from "../api/repository";
 
 export default function Groups(props) {
 
@@ -19,6 +20,8 @@ export default function Groups(props) {
 
     const [groups, setGroups] = useState([{gid: 1, members: 3, maxMembers: 5}, {gid: 2, members: 3, maxMembers: 5}]);
 
+    const repo = new Repository();
+
     const toGroup = (groupId) => {
         props.navigation.navigate("GroupDetails", {gid: groupId})
     }
@@ -26,6 +29,13 @@ export default function Groups(props) {
     const toCreateGroup = () => {
         props.navigation.navigate("CreateGroup");
     }
+
+    useEffect(() => {
+        repo.getActivity(props.route.params.cardId).then(act => {
+            var body = {}
+            repo.createGroup(act)
+        })
+    }, []);
 
     return (
         <ScrollView>
