@@ -19,7 +19,7 @@ var sha512 = function(password, salt) {
 	return value;
 };
 
-app.post('/createUser', function(req, res) {
+app.post('/createUser', (req, res) =>  {
   console.log(req.body);
 
   var username = req.body.username;
@@ -51,7 +51,7 @@ app.post('/auth', function(req, res, next) {
     connection.query('SELECT user_id, passwordSalt, password FROM users WHERE username = ?', [username], function(err, results, fields) {
       if(results.length > 0) {
         var storedSalt = results[0].passwordSalt;
-        var storedHash = results[0].passwordHash;
+        var storedHash = results[0].password;
         if(storedHash == sha512(userPassword, storedSalt)) {
           req.session.loggedin = true;
           req.session.userID = results[0].user_id;
