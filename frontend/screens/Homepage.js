@@ -103,7 +103,7 @@ export default function Homepage(props) {
     act = activities[activities.length - 1]
 
     if (dir === "right") {
-      props.navigation.navigate("Groups", {activity: act});
+      props.navigation.navigate("Groups", {activity: act, group: 1});
     }
   }
 

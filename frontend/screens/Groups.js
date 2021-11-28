@@ -1,5 +1,5 @@
 import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { Button, Icon, ListItem, Text } from "react-native-elements";
 
 export default function Groups(props) {
@@ -23,6 +23,10 @@ export default function Groups(props) {
         props.navigation.navigate("GroupDetails", {gid: groupId})
     }
 
+    const toCreateGroup = () => {
+        props.navigation.navigate("CreateGroup");
+    }
+
     return (
         <ScrollView>
             <View style={styles.container}>
@@ -39,7 +43,7 @@ export default function Groups(props) {
                     </ListItem>
                 </TouchableOpacity>
             )}
-            <Button title="Create New Group" buttonStyle={styles.btnCreate}/>
+            <Button title="Create New Group" buttonStyle={styles.btnCreate} onPress={toCreateGroup}/>
         </ScrollView>
     );
 
