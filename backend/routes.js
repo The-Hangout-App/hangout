@@ -19,6 +19,31 @@ var sha512 = function(password, salt) {
 	return value;
 };
 
+router.post('/createUser', function(req, res) {
+  console.log(req.body);
+
+  var username = req.body.username;
+  var userPassword = req.body.password;
+
+  connection.query('SELECT username FROM users WHERE username = ?', [username], function(err, results, fields) {
+    if(results.length != 0) {
+      res.send('Username already in use!');
+    }
+    else {
+      var salt = passOps.generateSalt(16);
+      var passwordHash = passOps.sha512(userPassword, salt);
+
+ 
+        connection.query(`INSERT INTO users  (username, password, passwordSalt) VALUES ('${username}', '${passwordHash}', '${salt}');`);
+        req.session.loggedin = true;
+        req.session.userID = user_id;
+        res.send("Account Created");
+      });
+    }
+  });
+});
+
+
 router.post('/auth', function(req, res, next) {
   var username = req.body.username;
   var userPassword = req.body.password;
@@ -53,8 +78,6 @@ router.post('/auth', function(req, res, next) {
     res.end();
   }
 });
-
-
 
 
 
