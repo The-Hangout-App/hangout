@@ -11,7 +11,9 @@ import Homepage from './screens/Homepage';
 import Login from './screens/Login';
 import Register from './screens/Register';
 import Profile from './screens/Profile';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import Groups from './screens/Groups';
+import GroupDetails from './screens/GroupDetails';
+import CreateGroup from './screens/CreateGroup';
 
 
 const theme = {
@@ -42,11 +44,19 @@ const Tab = createBottomTabNavigator();
 export default function App() {
     return (<ThemeProvider theme={theme}>
               <NavigationContainer>
-                <Stack.Navigator initialRouteName="Login">
-                  <Stack.Screen name="Login" component={Login} options={{ headerTitle: (props) => <TopHeader/> }}/>
-                  <Stack.Screen name="Register" component={Register} options={{ headerTitle: (props) => <TopHeader/> }}/>
-                  <Stack.Screen name="Homepage" component={Homepage} options={{ headerTitle: (props) => <TopHeader/> }}/>
-                  <Stack.Screen name="Profile" component={Profile} options={{ headerTitle: (props) => <TopHeader/> }}/>
+                <Stack.Navigator initialRouteName="CreateGroup" screenOptions={{
+                  headerStyle: styles.header,
+                  headerTitle: "Hangout",
+                  //headerTitleAlign: "center",
+                  headerTitleStyle: styles.title
+                }}>
+                  <Stack.Screen name="Login" component={Login}/>
+                  <Stack.Screen name="Register" component={Register}/>
+                  <Stack.Screen name="Homepage" component={Homepage} options={{headerBackVisible: false}}/>
+                  <Stack.Screen name="Profile" component={Profile}/>
+                  <Stack.Screen name="Groups" component={Groups}/>
+                  <Stack.Screen name="GroupDetails" component={GroupDetails}/>
+                  <Stack.Screen name="CreateGroup" component={CreateGroup}/>
                 </Stack.Navigator>
                 </NavigationContainer>
             </ThemeProvider>);

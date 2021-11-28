@@ -19,6 +19,7 @@ export default function GroupDetails(props) {
         <ScrollView>
             <View style={styles.container}>
                 <Text h3 style={styles.txtHeader}>{`${props.route.params}`}</Text>
+                <Text>{`Meeting time: ${"time"}`}</Text>
             </View>
             {members.map((user, index) => 
                 <TouchableOpacity key={index} onPress={() => ""}>
