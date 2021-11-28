@@ -9,27 +9,6 @@ import { Button } from "react-native-elements";
 //https://www.npmjs.com/package/react-tinder-card
 //https://github.com/3DJakob/react-tinder-card-demo/blob/master/src/examples/Advanced.js
 
-
-    state = {
-      activities: [{title: "In n Out Burger", imgSource: "https://www.usmagazine.com/wp-content/uploads/2018/08/in-n-out-burger-Republican-Party.jpg"}]
-      
-    }
-    render() {
-        return (
-        <SafeAreaView>
-        
-          {this.state.activities.map((act) =>
-            <TinderCard>
-                <ActivityCard activity={act}/>
-            </TinderCard>
-          )
-          }  
-          
-          
-        </SafeAreaView>)
-
-
-
 const Container = styled.View` 
     display: flex;
     align-items: center;
