@@ -24,7 +24,7 @@ app.post('/createUser', function(req, res) {
 
   var username = req.body.username;
   var userPassword = req.body.password;
-
+  pool.getConnection(function (err, connection){
   connection.query('SELECT username FROM users WHERE username = ?', [username], function(err, results, fields) {
     if(results.length != 0) {
       res.send('Username already in use!');
@@ -37,6 +37,7 @@ app.post('/createUser', function(req, res) {
           };
   });
 });
+});
 
 
 app.post('/auth', function(req, res, next) {
@@ -47,7 +48,7 @@ app.post('/auth', function(req, res, next) {
   console.log(userPassword);
 
   if(username && userPassword) {
-    connection.query('SELECT user_id, passwordSalt, passwordHash FROM account WHERE username = ?', [username], function(err, results, fields) {
+    connection.query('SELECT user_id, passwordSalt, password FROM users WHERE username = ?', [username], function(err, results, fields) {
       if(results.length > 0) {
         var storedSalt = results[0].passwordSalt;
         var storedHash = results[0].passwordHash;
