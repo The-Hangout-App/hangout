@@ -3,6 +3,105 @@ const pool = require('./hangout')
 module.exports = function routes(app, logger) {
 
 //JACK
+
+
+app.post('/groups', (req, res) => {
+
+  // obtain a connection from our pool of connections
+  pool.getConnection(function (err, connection){
+      if(err){
+          // if there is an issue obtaining a connection, release the connection instance and log the error
+          logger.error('Problem obtaining MySQL connection',err)
+          res.status(400).send('Problem obtaining MySQL connection'); 
+      } else {
+          var card_id = req.body.card_id
+          var chat_id = req.body.chat_id
+          var group_id = req.body.group_id
+          var numMembers = req.body.numMembers
+          var maxMembers = req.body.maxMembers
+          var date = req.body.password
+          var time = req.body.first_name
+    
+          // if there is no issue obtaining a connection, execute query
+          connection.query('INSERT INTO groups (card_id, chat_id, group_id, numMembers, maxMembers, date, time) VALUES(?, ?, ?, ?, ?, ?, ?)',[card_id, chat_id, group_id, numMembers, maxMembers, date, time], function (err, rows, fields) {
+              if (err) { 
+                  // if there is an error with the query, release the connection instance and log the error
+                  connection.release()
+                  logger.error("Error while creating user: \n", err); 
+                  res.status(400).json({
+                      "data": [],
+                      "error": "MySQL error"
+                  })
+              } else{
+                  res.status(200).json({
+                      "data": rows
+                  });
+              }
+          });
+      }
+  });
+});
+
+app.get('/user/:userID/profile', (req, res) => {
+
+  pool.getConnection(function (err, connection){
+    if(err){
+      // if there is an issue obtaining a connection, release the connection instance and log the error
+      logger.error('Problem obtaining MySQL connection',err)
+      res.status(400).send('Problem obtaining MySQL connection'); 
+    } else {
+      // if there is no issue obtaining a connection, execute query and release connection
+      var activity_id = req.param('activityID');
+      connection.query("SELECT * FROM cards WHERE card_id = ?", activity_id, function (err, result, fields) {
+        connection.release();
+        if (err) {
+          logger.error("Error while fetching values: \n", err);
+          res.status(400).json({
+            "data": [],
+            "error": "Error obtaining values"
+          })
+        } else {
+          res.end(JSON.stringify(result)); // Result in JSON format
+          // res.status(200).json({
+          //   "data": rows
+          // });
+        }
+      });
+    }
+  });
+});
+
+
+app.get('/activities/:activityID', (req, res) => {
+
+  pool.getConnection(function (err, connection){
+    if(err){
+      // if there is an issue obtaining a connection, release the connection instance and log the error
+      logger.error('Problem obtaining MySQL connection',err)
+      res.status(400).send('Problem obtaining MySQL connection'); 
+    } else {
+      // if there is no issue obtaining a connection, execute query and release connection
+      var activity_id = req.param('activityID');
+      connection.query("SELECT * FROM cards WHERE card_id = ?", activity_id, function (err, result, fields) {
+        connection.release();
+        if (err) {
+          logger.error("Error while fetching values: \n", err);
+          res.status(400).json({
+            "data": [],
+            "error": "Error obtaining values"
+          })
+        } else {
+          res.end(JSON.stringify(result)); // Result in JSON format
+          // res.status(200).json({
+          //   "data": rows
+          // });
+        }
+      });
+    }
+  });
+});
+
+
 app.post('/user/create', (req, res) => {
   console.log(req.body.user_id , req.body.username,req.body.password,req.body.first_name,req.body.last_name,req.body.pronoun,req.body.age,req.body.gender,req.body.bio);
   // obtain a connection from our pool of connections

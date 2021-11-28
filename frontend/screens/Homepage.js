@@ -95,6 +95,7 @@ export default function Homepage(props) {
       const index = activities.map(activity => activity.title).indexOf(toBeRemoved) // Find the index of which to make the reference to
       alreadyRemoved.push(toBeRemoved) // Make sure the next card gets removed next time if this card do not have time to exit the screen
       childRefs[index].current.swipe(dir) // Swipe the card!
+
     }
   }
 

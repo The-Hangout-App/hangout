@@ -44,7 +44,7 @@ export class Repository {
 
     getGroups(activityID) {
         return new Promise((resolve, reject) => {
-            axios.get(`${this.url}/activities/${activityID}/groups`, this.config)
+            axios.get(`${this.url}/activities/${activityID}`, this.config)
             .then(x => resolve(x.data))
             .catch(e => {
                 alert(e);
@@ -63,6 +63,14 @@ export class Repository {
             });
         })
     }
+
+    deleteUser(userID){
+        return new Promise((resolve, reject) => {
+        axios.delete(`${this.url}/DeleteUser/${userID}`)
+        .catch(e => {
+            reject();
+        });
+    })}
 
 
     //Example post route
