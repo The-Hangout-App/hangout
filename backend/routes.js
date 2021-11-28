@@ -596,4 +596,29 @@ app.get('/groups/:card_id', (req, res) => {
   });
 });
 
+//zech
+//given a userID, return an array of groups that a user has joined
+app.get('/groups/:user_id', (req, res) => {
+  pool.getConnection(function (err, connection){
+    if(err){
+      logger.error('Problem obtaining MySQL connection',err)
+      res.status(400).send('Problem obtaining MySQL connection'); 
+    } else {
+      var user_id = req.param('user_id');
+      connection.query("SELECT group_id FROM `groups` WHERE user_id = ?", user_id, function (err, result, fields) {
+        connection.release();
+        if (err) {
+          logger.error("Error while fetching values: \n", err);
+          res.status(400).json({
+            "data": [],
+            "error": "Error obtaining values"
+          })
+        } else {
+          res.end(JSON.stringify(result)); 
+        }
+      });
+    }
+  });
+});
+
 }
