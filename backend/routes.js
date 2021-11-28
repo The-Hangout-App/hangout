@@ -30,8 +30,8 @@ app.post('/createUser', function(req, res) {
       res.send('Username already in use!');
     }
     else {
-      var salt = passOps.generateSalt(16);
-      var passwordHash = passOps.sha512(userPassword, salt);
+      var salt = generateSalt(16);
+      var passwordHash = sha512(userPassword, salt);
       
       connection.query(`INSERT INTO users  (username, password, passwordSalt) VALUES ('${username}', '${passwordHash}', '${salt}');`);
           };
@@ -52,7 +52,7 @@ app.post('/auth', function(req, res, next) {
       if(results.length > 0) {
         var storedSalt = results[0].passwordSalt;
         var storedHash = results[0].passwordHash;
-        if(storedHash == passOps.sha512(userPassword, storedSalt)) {
+        if(storedHash == sha512(userPassword, storedSalt)) {
           req.session.loggedin = true;
           req.session.userID = results[0].user_id;
           console.log("successful login");
