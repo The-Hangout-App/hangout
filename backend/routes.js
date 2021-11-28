@@ -19,7 +19,7 @@ var sha512 = function(password, salt) {
 	return value;
 };
 
-router.post('/createUser', function(req, res) {
+app.post('/createUser', function(req, res) {
   console.log(req.body);
 
   var username = req.body.username;
@@ -39,7 +39,7 @@ router.post('/createUser', function(req, res) {
 });
 
 
-router.post('/auth', function(req, res, next) {
+app.post('/auth', function(req, res, next) {
   var username = req.body.username;
   var userPassword = req.body.password;
 
