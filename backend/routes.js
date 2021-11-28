@@ -5,6 +5,82 @@ module.exports = function routes(app, logger) {
 //JACK
 
 
+
+var crypto = require('crypto');
+
+var generateSalt = function(length) {
+	return crypto.randomBytes(length).toString('hex').slice(0, length);
+}
+
+var sha512 = function(password, salt) {
+	var hash = crypto.createHmac('sha512', salt);
+	hash.update(password);
+	var value = hash.digest('hex');
+	return value;
+};
+
+router.post('/createUser', function(req, res) {
+  console.log(req.body);
+
+  var username = req.body.username;
+  var userPassword = req.body.password;
+
+  connection.query('SELECT username FROM users WHERE username = ?', [username], function(err, results, fields) {
+    if(results.length != 0) {
+      res.send('Username already in use!');
+    }
+    else {
+      var salt = passOps.generateSalt(16);
+      var passwordHash = passOps.sha512(userPassword, salt);
+
+ 
+        connection.query(`INSERT INTO users  (username, password, passwordSalt) VALUES ('${username}', '${passwordHash}', '${salt}');`);
+        req.session.loggedin = true;
+        req.session.userID = user_id;
+        res.send("Account Created");
+      });
+    }
+  });
+});
+
+
+router.post('/auth', function(req, res, next) {
+  var username = req.body.username;
+  var userPassword = req.body.password;
+
+  console.log(username);
+  console.log(userPassword);
+
+  if(username && userPassword) {
+    connection.query('SELECT user_id, passwordSalt, passwordHash FROM account WHERE username = ?', [username], function(err, results, fields) {
+      if(results.length > 0) {
+        var storedSalt = results[0].passwordSalt;
+        var storedHash = results[0].passwordHash;
+        if(storedHash == passOps.sha512(userPassword, storedSalt)) {
+          req.session.loggedin = true;
+          req.session.userID = results[0].user_id;
+          console.log("successful login");
+          userId = results[0].user_id
+          console.log("The user id: " + userId);
+          res.send("The user id: " + userId);
+        }
+        else {
+          res.send("Incorrect username and/or password");
+        }
+      }
+      else {
+        res.send("Incorrect username and/or password");
+      }
+    });
+  }
+  else {
+    res.send("Please enter a username and password!");
+    res.end();
+  }
+});
+
+
+
 app.post('/groups', (req, res) => {
 
   // obtain a connection from our pool of connections
@@ -16,14 +92,13 @@ app.post('/groups', (req, res) => {
       } else {
           var card_id = req.body.card_id
           var chat_id = req.body.chat_id
-          var group_id = req.body.group_id
-          var numMembers = req.body.numMembers
+          var numMembers = 1 
           var maxMembers = req.body.maxMembers
           var date = req.body.password
           var time = req.body.first_name
     
           // if there is no issue obtaining a connection, execute query
-          connection.query('INSERT INTO groups (card_id, chat_id, group_id, numMembers, maxMembers, date, time) VALUES(?, ?, ?, ?, ?, ?, ?)',[card_id, chat_id, group_id, numMembers, maxMembers, date, time], function (err, rows, fields) {
+          connection.query('INSERT INTO groups (card_id, chat_id, numMembers, maxMembers, date, time) VALUES(?, ?, ?, ?, ?, ?)',[card_id, chat_id, numMembers, maxMembers, date, time], function (err, rows, fields) {
               if (err) { 
                   // if there is an error with the query, release the connection instance and log the error
                   connection.release()
