@@ -605,7 +605,7 @@ app.get('/groups/:user_id', (req, res) => {
       res.status(400).send('Problem obtaining MySQL connection'); 
     } else {
       var user_id = req.param('user_id');
-      connection.query("SELECT group_id FROM `groups` WHERE user_id = ?", user_id, function (err, result, fields) {
+      connection.query("SELECT group_id FROM `users_in_groups` WHERE user_id = ?", user_id, function (err, result, fields) {
         connection.release();
         if (err) {
           logger.error("Error while fetching values: \n", err);
