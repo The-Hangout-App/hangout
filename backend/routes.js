@@ -32,14 +32,9 @@ router.post('/createUser', function(req, res) {
     else {
       var salt = passOps.generateSalt(16);
       var passwordHash = passOps.sha512(userPassword, salt);
-
- 
-        connection.query(`INSERT INTO users  (username, password, passwordSalt) VALUES ('${username}', '${passwordHash}', '${salt}');`);
-        req.session.loggedin = true;
-        req.session.userID = user_id;
-        res.send("Account Created");
-      });
-    }
+      
+      connection.query(`INSERT INTO users  (username, password, passwordSalt) VALUES ('${username}', '${passwordHash}', '${salt}');`);
+          };
   });
 });
 
