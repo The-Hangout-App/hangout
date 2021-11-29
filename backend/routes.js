@@ -6,8 +6,7 @@ module.exports = function routes(app, logger) {
 
 //JACK
 
-
-app.post('/user/logging', (req, res) => {
+app.post('/user/loggingIn', (req, res) => {
   // obtain a connection from our pool of connections
   pool.getConnection(function (err, connection){
       if(err){
@@ -18,47 +17,85 @@ app.post('/user/logging', (req, res) => {
 
           var username = req.body.username
           var password = req.body.password
-
+        console.log(password)
 
           // if there is no issue obtaining a connection, execute query
-          if(username && password )
-          {
-          connection.query('SELECT * FROM users WHERE username = ? AND password = ?',[username, password], function (err, results, fields) {
-              if (results.length > 0) { 
+          connection.query('SELECT * FROM users WHERE username = ? AND password = ?',[username, password], function (err, rows, fields) {
+              if (err) { 
                   // if there is an error with the query, release the connection instance and log the error
-                  response.send('Correct Password')
-              } else{
-                  response.send("Incorrect username and password")
+                  connection.release()
+                  logger.error("Error while creating user: \n", err); 
+                  res.status(400).json({
+                      "data": [],
+                      "error": "MySQL error"
+                  })
+              } else if (rows.length > 0){
+                  res.status(200).json({
+                      "data": rows
+                  });
+                  res.send("Correct Password and username")
               }
-          });}
-          else{
-            response.send("Please enter Username and Password!")
-          }
+              else{
+                res.send("Incorrect Username and Password")
+              }
+          });
       }
   });
 });
 
-    // POST /user/login
-    app.post('/user/login', function(request, response) {
-      var username = request.body.username;
-      var password = request.body.password;
-      console.log(username)
-      if (username && password) {
-        connection.query('SELECT * FROM users WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
-          if (results.length > 0) {
-            request.session.loggedin = true;
-            request.session.username = username;
-            response.send('Correct Password');
-          } else {
-            response.send('Incorrect Username and/or Password!');
-          }			
-          response.end();
-        });
-      } else {
-        response.send('Please enter Username and Password!');
-        response.end();
-      }
-    });
+
+// app.post('/user/logging', (req, res) => {
+//   // obtain a connection from our pool of connections
+//   pool.getConnection(function (err, connection){
+//       if(err){
+//           // if there is an issue obtaining a connection, release the connection instance and log the error
+//           logger.error('Problem obtaining MySQL connection',err)
+//           res.status(400).send('Problem obtaining MySQL connection'); 
+//       } else {
+
+//           var username = req.body.username
+//           var password = req.body.password
+
+
+//           // if there is no issue obtaining a connection, execute query
+//           if(username && password )
+//           {
+//           connection.query('SELECT * FROM users WHERE username = ? AND password = ?',[username, password], function (err, results, fields) {
+//               if (results.length > 0) { 
+//                   // if there is an error with the query, release the connection instance and log the error
+//                   response.send('Correct Password')
+//               } else{
+//                   response.send("Incorrect username and password")
+//               }
+//           });}
+//           else{
+//             response.send("Please enter Username and Password!")
+//           }
+//       }
+//   });
+// });
+
+//     // POST /user/login
+//     app.post('/user/login', function(request, response) {
+//       var username = request.body.username;
+//       var password = request.body.password;
+//       console.log(username)
+//       if (username && password) {
+//         connection.query('SELECT * FROM users WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
+//           if (results.length > 0) {
+//             request.session.loggedin = true;
+//             request.session.username = username;
+//             response.send('Correct Password');
+//           } else {
+//             response.send('Incorrect Username and/or Password!');
+//           }			
+//           response.end();
+//         });
+//       } else {
+//         response.send('Please enter Username and Password!');
+//         response.end();
+//       }
+//     });
 
 var crypto = require('crypto');
 
