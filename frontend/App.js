@@ -15,7 +15,6 @@ import Groups from './screens/Groups';
 import GroupDetails from './screens/GroupDetails';
 import CreateGroup from './screens/CreateGroup';
 
-
 const theme = {
 
   Input: {
@@ -133,3 +132,11 @@ export default App;
 // }
 
 
+const styles = StyleSheet.create({
+  header: {
+    backgroundColor: "#71B6BF",
+  },
+  title: {
+    color: "white"
+  }
+})

@@ -1,8 +1,9 @@
 import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { Button, Icon, ListItem, Text } from "react-native-elements";
+import { Repository } from "../api/repository";
 
-export default function Groups(props) {
+class Groups extends React.Component {
 
     /* Receives Props:
     - activity: activity that was swiped on
@@ -17,33 +18,71 @@ export default function Groups(props) {
     }
     */
 
-    const [groups, setGroups] = useState([{gid: 1, members: 3, maxMembers: 5}, {gid: 2, members: 3, maxMembers: 5}]);
-
-    const toGroup = (groupId) => {
-        props.navigation.navigate("GroupDetails", {gid: groupId})
+    state = {
+        groups: [],
+        activity: {
+            activity_category_id: 1,
+            activity_name: "",
+            address: "",
+            card_id: 0,
+            city: "",
+            max_age: 1,
+            max_num_participants: 1,
+            min_age: 0,
+            min_num_participants: 1,
+            phone_number: "",
+            photo_url: "",
+            state: "",
+            zipcode: "",
+        }
     }
 
-    return (
+    repo = new Repository();
+
+    toGroup = (groupIndex) => { //groupIndex is used to get the group from the state array
+        this.props.navigation.navigate("GroupDetails", {group_id: this.state.groups[groupIndex].group_id})
+    }
+
+    toCreateGroup = () => {
+        this.props.navigation.navigate("CreateGroup");
+    }
+
+    componentDidMount() {
+        this.repo.getActivity(this.props.route.params.card_id).then(act => {
+            this.setState({activity: act[0]})
+            console.log(this.state.activity)
+        }).catch(e => console.log(e));
+        this.repo.getGroups(this.props.route.params.card_id).then(groupsList => {
+            console.log(groupsList);
+            this.setState({groups: groupsList})
+            console.log(this.state.groups)
+        }).catch(e => console.log(e));
+    }
+
+    render() {
+        return (
         <ScrollView>
             <View style={styles.container}>
-                <Text h3 style={styles.txtHeader}>{`${props.route.params.activity.title} Groups:`}</Text>
+                <Text h3 style={styles.txtHeader}>{`${this.state.activity.activity_name} Groups:`}</Text>
             </View>
-            {groups.map((group, index) => 
-                <TouchableOpacity key={group.gid} onPress={() => toGroup()}>
+            {this.state.groups.map((group, index) => 
+                <TouchableOpacity key={index} onPress={() => this.toGroup(index)}>
                     <ListItem bottomDivider>
                         <ListItem.Content>
                             <ListItem.Title>{`Group ${index + 1}`}</ListItem.Title>
-                            <ListItem.Subtitle>{`${group.members} / ${group.maxMembers}`}</ListItem.Subtitle>
+                            <ListItem.Subtitle>{`${group.numMembers} / ${group.maxMembers}`}</ListItem.Subtitle>
                         </ListItem.Content>
-                        <Icon name="chevron-forward-outline" type="ionicon" onPress={() => toGroup()}/>
+                        <Icon name="chevron-forward-outline" type="ionicon" onPress={() => this.toGroup(index)}/>
                     </ListItem>
                 </TouchableOpacity>
             )}
-            <Button title="Create New Group" buttonStyle={styles.btnCreate}/>
+            <Button title="Create New Group" buttonStyle={styles.btnCreate} onPress={this.toCreateGroup}/>
         </ScrollView>
-    );
-
+        );
+    }
 }
+
+export default Groups;
 
 /*{list.map((group, index) => {
 
@@ -75,5 +114,7 @@ const styles = StyleSheet.create({
     },
     btnCreate: {
         marginTop: 15,
+        width: "90%",
+        alignSelf: "center"
     }
 })
