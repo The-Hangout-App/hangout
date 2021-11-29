@@ -604,12 +604,11 @@ app.get('/getUserByID/:userID', (req, res) => {
 
 app.post('/registerUser', async (req, res) => {
   try{
-    pool.getConnection(function (err, connection){
     const {username, password} = req.body;
     const hash = await bcrypt.hash(password, 10); //salt the password 10 times
     //await hangout(`users`).insert({username:username, hash:hash});
-    res.status(200).json('All good');
-    await connection.query("INSERT INTO users (username, password) VALUES (?,?)", [username, hash], function (err, result, fields) {
+    pool.getConnection(function (err, connection){
+    connection.query("INSERT INTO users (username, password) VALUES (?,?)", [username, hash], function (err, result, fields) {
     connection.release();
     if (err) {
       res.status(500).send('Something went wrong 1');
