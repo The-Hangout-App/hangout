@@ -1,3 +1,4 @@
+const { response } = require('express');
 const pool = require('./hangout')
 
 module.exports = function routes(app, logger) {
@@ -5,6 +6,58 @@ module.exports = function routes(app, logger) {
 //JACK
 
 
+app.post('/user/logging', (req, res) => {
+  // obtain a connection from our pool of connections
+  pool.getConnection(function (err, connection){
+      if(err){
+          // if there is an issue obtaining a connection, release the connection instance and log the error
+          logger.error('Problem obtaining MySQL connection',err)
+          res.status(400).send('Problem obtaining MySQL connection'); 
+      } else {
+
+          var username = req.body.username
+          var password = req.body.password
+
+
+          // if there is no issue obtaining a connection, execute query
+          if(username && password )
+          {
+          connection.query('SELECT * FROM users WHERE username = ? AND password = ?',[username, password], function (err, results, fields) {
+              if (results.length > 0) { 
+                  // if there is an error with the query, release the connection instance and log the error
+                  response.send('Correct Password')
+              } else{
+                  response.send("Incorrect username and password")
+              }
+          });}
+          else{
+            response.send("Please enter Username and Password!")
+          }
+      }
+  });
+});
+
+    // POST /user/login
+    app.post('/user/login', function(request, response) {
+      var username = request.body.username;
+      var password = request.body.password;
+      console.log(username)
+      if (username && password) {
+        connection.query('SELECT * FROM users WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
+          if (results.length > 0) {
+            request.session.loggedin = true;
+            request.session.username = username;
+            response.send('Correct Password');
+          } else {
+            response.send('Incorrect Username and/or Password!');
+          }			
+          response.end();
+        });
+      } else {
+        response.send('Please enter Username and Password!');
+        response.end();
+      }
+    });
 
 var crypto = require('crypto');
 
@@ -19,8 +72,27 @@ var sha512 = function(password, salt) {
 	return value;
 };
 
+app.post('/createUser', (req, res) =>  {
+  console.log(req.body);
 
-router.post('/auth', function(req, res, next) {
+  var username = req.body.username;
+  var userPassword = req.body.password;
+  pool.getConnection(function (err, connection){
+  connection.query('SELECT username FROM users WHERE username = ?', [username], function(err, results, fields) {
+    if(results.length != 0) {
+      res.send('Username already in use!');
+    }
+    else {
+      var salt = generateSalt(16);
+      var passwordHash = sha512(userPassword, salt);
+      
+      connection.query(`INSERT INTO users  (username, password, passwordSalt) VALUES ('${username}', '${passwordHash}', '${salt}');`);
+          };
+  });
+});
+});
+
+app.post('/auth', function(req, res, next) {
   var username = req.body.username;
   var userPassword = req.body.password;
 
@@ -28,11 +100,11 @@ router.post('/auth', function(req, res, next) {
   console.log(userPassword);
 
   if(username && userPassword) {
-    connection.query('SELECT user_id, passwordSalt, passwordHash FROM account WHERE username = ?', [username], function(err, results, fields) {
+    connection.query('SELECT user_id, passwordSalt, password FROM users WHERE username = ?', [username], function(err, results, fields) {
       if(results.length > 0) {
         var storedSalt = results[0].passwordSalt;
-        var storedHash = results[0].passwordHash;
-        if(storedHash == passOps.sha512(userPassword, storedSalt)) {
+        var storedHash = results[0].password;
+        if(storedHash == sha512(userPassword, storedSalt)) {
           req.session.loggedin = true;
           req.session.userID = results[0].user_id;
           console.log("successful login");
@@ -561,6 +633,31 @@ app.get('/groups/:card_id', (req, res) => {
     } else {
       var card_id = req.param('card_id');
       connection.query("SELECT * FROM `groups` WHERE card_id = ?", card_id, function (err, result, fields) {
+        connection.release();
+        if (err) {
+          logger.error("Error while fetching values: \n", err);
+          res.status(400).json({
+            "data": [],
+            "error": "Error obtaining values"
+          })
+        } else {
+          res.end(JSON.stringify(result)); 
+        }
+      });
+    }
+  });
+});
+
+//zech
+//given a userID, return an array of groups that a user has joined
+app.get('/groups/:user_id', (req, res) => {
+  pool.getConnection(function (err, connection){
+    if(err){
+      logger.error('Problem obtaining MySQL connection',err)
+      res.status(400).send('Problem obtaining MySQL connection'); 
+    } else {
+      var user_id = req.param('user_id');
+      connection.query("SELECT group_id FROM `users_in_groups` WHERE user_id = ?", user_id, function (err, result, fields) {
         connection.release();
         if (err) {
           logger.error("Error while fetching values: \n", err);
