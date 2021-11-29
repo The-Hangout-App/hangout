@@ -499,7 +499,7 @@ app.post('/groups/:groupid/:userid', (req, res) => {
        group_id = req.param('groupid');
        console.log(user_id)
        console.log(group_id)
-       connection.query("UPDATE groups SET numMembers = numMembers + 1 where group_id= ? ", [group_id], function (err, result, fields) {
+       connection.query("UPDATE hangout.groups SET numMembers = numMembers + 1 where group_id= ?", [group_id], function (err, result, fields) {
         if (err) {
           logger.error("Error while fetching values: \n", err);
           res.status(400).json({
