@@ -607,7 +607,8 @@ app.post('/registerUser', (req, res) => {
       logger.error('Problem obtaining MySQL connection',err)
       res.status(400).send('Problem obtaining MySQL connection'); 
     } else {
-          var {username, password} = req.body;
+          var username = req.body.username
+          var password = req.body.password
           var hash = bcrypt.hash(password, 10); //salt the password 10 times
           connection.query("INSERT INTO users (username, password) VALUES (?,?)", [username, hash], function (err, result, fields) {
           connection.release();
