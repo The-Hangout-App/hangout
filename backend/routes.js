@@ -490,6 +490,31 @@ app.post('/registerUser', (req, res) => {
   });
 });
 
+app.post('/groups/:groupid/:userid', (req, res) => {
+  pool.getConnection(function (err, connection){
+  if(err){
+    logger.error('Problem obtaining MySQL connection',err)
+    res.status(400).send('Problem obtaining MySQL connection'); 
+  } else {
+       user_id = req.param('userID');
+       group_id = req.param('groupid');
+       connection.query("UPDATE groups SET  numMembers = numMembers + 1 where group_id= ? ", [group_id], function (err, result, fields) {
+        connection.release();});
+      connection.query("INSERT INTO users_in_groups ( group_id, user_id) VALUES (?,?)", [user_id, group_id], function (err, result, fields) {
+      connection.release();
+      if (err) {
+        logger.error("Error while fetching values: \n", err);
+        res.status(400).json({
+        "data": [],
+        "error": "Error obtaining values"
+        })
+      } else {
+          res.end(JSON.stringify(result)); 
+        }
+      });
+    }
+  });
+});
 //wyatt
 //update user
 //tested
