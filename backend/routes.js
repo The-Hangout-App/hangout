@@ -565,6 +565,7 @@ app.get('/getUserByID/:userID', (req, res) => {
 
 app.post('/registerUser', async (req, res) => {
   try{
+    pool.getConnection(function (err, connection){
     const {username, password} = req.body;
     const hash = await bcrypt.hash(password, 10); //salt the password 10 times
     //await hangout(`users`).insert({username:username, hash:hash});
@@ -575,6 +576,7 @@ app.post('/registerUser', async (req, res) => {
       res.status(500).send('Something went wrong 1');
     }
     });
+  });
   } catch(e){
       console.log(e);
       res.status(500).send('Something went wrong 2');
