@@ -601,24 +601,37 @@ app.get('/getUserByID/:userID', (req, res) => {
 //   });
 // });
 
-// async function hashPassword(password) {
-//   const saltRounds = 10;
-//   const hashedPassword = await new Promise((resolve, reject) => {
-//     bcrypt.hash(password, saltRounds, function(err, hash) {
-//       if (err) reject(err)
-//       resolve(hash)
-//     });
-//   })
-//   console.log(password);
-//   console.log(hashedPassword);
-//   return hashedPassword
+async function hashPassword(password) {
+  const saltRounds = 10;
+  const hashedPassword = await new Promise((resolve, reject) => {
+    bcrypt.hash(password, saltRounds, function(err, hash) {
+      if (err) reject(err)
+      resolve(hash)
+    });
+  })
+  console.log(password);
+  console.log(hashedPassword);
+  return hashedPassword
+}
+
+// var hashPassword = async function(password){
+//   console.log(bcrypt.hash(password,10));
+//   var hashPwd = await bcrypt.hash(password,10);
+//   console.log(hashPwd);
+//   return hashPwd
 // }
 
-var hashPassword = async function(password){
-  console.log(bcrypt.hash(password,10));
-  var hashPwd = bcrypt.hash(password,10);
-  console.log(hashPwd);
-  return hashPwd
+// const saltPassword = async (password) => {
+//   const newHash = await bcrypt.hash(password, 10, (err, hash) => {
+//     if (err) return err;
+//     return hash;
+//   });
+//   return newHash; // no need to await here
+// }
+
+function helper() {
+  var hashedPassword = await hashPassword(password);
+  return hashedPassword
 }
 
 app.post('/registerUser', (req, res) => {
@@ -630,7 +643,8 @@ app.post('/registerUser', (req, res) => {
           var username = req.body.username
           var password = req.body.password
           //var hash = bcrypt.hash(password, 10); //salt the password 10 times
-          var hashedPassword = hashPassword(password);
+          var hashedPassword = helper();
+          //var hashedPassword = await hashPassword(password);
           console.log('HELLO 1');
           console.log(hashedPassword);
           console.log('HELLO 2');
