@@ -1,39 +1,63 @@
 import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import React, { useEffect, useState } from 'react'
-import { Avatar, Button, Input, ListItem, Text } from "react-native-elements";
+import { Avatar, Button, Icon, Input, ListItem, Text } from "react-native-elements";
 import DateTimePicker from '@react-native-community/datetimepicker'
 
-export default function MyGroups(props) {
+class MyGroups extends React.Component {
 
-    const [groups, setGroups] = useState([{gid: 1, members: 3, maxMembers: 5, actId: 3}, {gid: 2, members: 3, maxMembers: 5, actId: 4}]);
+    state = {
+        groups: [],
+    }
 
-    const toGroup = (groupId) => {
+    toGroup = (groupId) => {
         props.navigation.navigate("GroupDetails", {gid: groupId})
     }
 
-    const getActivityName = (actId) => {
+    getActivityName = (actId) => {
         //GET request and filter out the activity name
         return "Sample activity name"
     }
 
-    return (
-        <ScrollView>
-            <View style={styles.container}>
-                <Text h3 style={styles.txtHeader}>My groups</Text>
-            </View>
-            {groups.map((group, index) => 
-                <TouchableOpacity key={group.gid} onPress={() => toGroup()}>
-                    <ListItem bottomDivider>
-                        <ListItem.Content>
-                            <ListItem.Title>{getActivityName(group.actId)}</ListItem.Title>
-                            <ListItem.Subtitle>{`${group.members} / ${group.maxMembers}`}</ListItem.Subtitle>
-                        </ListItem.Content>
-                        <Icon name="chevron-forward-outline" type="ionicon" onPress={() => toGroup()}/>
-                    </ListItem>
-                </TouchableOpacity>
-            )}
-            <Button title="Create New Group" buttonStyle={styles.btnCreate}/>
-        </ScrollView>
-    );
-
+    render() {
+        return (
+            <ScrollView>
+                <View style={styles.container}>
+                    <Text h3 style={styles.txtHeader}>My groups</Text>
+                </View>
+                {groups.map((group, index) => 
+                    <TouchableOpacity key={group.gid} onPress={() => toGroup()}>
+                        <ListItem bottomDivider>
+                            <ListItem.Content>
+                                <ListItem.Title>{getActivityName(group.actId)}</ListItem.Title>
+                                <ListItem.Subtitle>{`${group.members} / ${group.maxMembers}`}</ListItem.Subtitle>
+                            </ListItem.Content>
+                            <Icon name="chevron-forward-outline" type="ionicon" onPress={() => toGroup()}/>
+                        </ListItem>
+                    </TouchableOpacity>
+                )}
+            </ScrollView>
+        );
+    }
 }
+
+const styles = StyleSheet.create({
+    btnJoin: {
+        backgroundColor: "#71B6BF"
+    },
+    icoStyle: {
+        backgroundColor: "#71B6BF",
+        borderRadius: 1
+    },
+    container: {
+        alignItems: "center"
+    },
+    txtHeader: {
+        margin: 15,
+        textAlign: "center"
+    },
+    btnCreate: {
+        marginTop: 15,
+        width: "90%",
+        alignSelf: "center"
+    }
+})
