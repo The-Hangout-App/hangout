@@ -569,9 +569,15 @@ app.post('/registerUser', async (req, res) => {
     const hash = await bcrypt.hash(password, 10); //salt the password 10 times
     await hangout(`users`).insert({username:username, hash:hash});
     res.status(200).json('All good');
+    connection.query("INSERT INTO users (username, password) VALUES (?,?)", [username, password], function (err, result, fields) {
+    connection.release();
+    if (err) {
+      res.status(500).send('Something went wrong 1');
+    }
+    });
   } catch(e){
       console.log(e);
-      res.status(500).send('Something went wrong');
+      res.status(500).send('Something went wrong 2');
   }
 });
   
