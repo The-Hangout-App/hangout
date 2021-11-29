@@ -820,7 +820,7 @@ app.get('/groups/:user_id', (req, res) => {
 
 //zech
 //given a groupID, return a single group object
-app.get('/groups/:group_id', (req, res) => {
+app.get('/groups/groupid/:group_id', (req, res) => {
   pool.getConnection(function (err, connection){
     if(err){
       logger.error('Problem obtaining MySQL connection',err)
