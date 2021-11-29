@@ -629,7 +629,6 @@ async function hashPassword(password) {
 
 async function helper(password) {
   var hashedPassword = await hashPassword(password);
-  console.log(hashedPassword)
   return hashedPassword
 }
 
