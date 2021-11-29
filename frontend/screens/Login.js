@@ -18,15 +18,20 @@ class Login extends React.Component {
     handleLogin = () => {
       if (this.state.email == "") {
         this.setState({emailErr: "Invalid email"});
+        return;
       }
-      this.repo.getUser("bpulins").then(data => {
-        console.log(data)
-      })
       this.repo.login(this.state.email, this.state.password).then(data => {
         console.log(data)
+        if (data.length > 0) {
+          this.props.navigation.navigate("Homepage");
+        }
+        else {
+          this.setState({emailErr: "Invalid email or password", pwErr: "Invalid email or password"});
+        }
       })
+      .catch(e => console.log(e));
+      this.props.navigation.navigate("Homepage");
     }
-
 
     render() {
       
@@ -52,6 +57,8 @@ class Login extends React.Component {
           <Button title="Login" onPress={this.handleLogin}/>
           <Text style={styles.text}>Don't have an account? <Text style={styles.txtLink} onPress = {() => this.props.navigation.navigate('Register')}>Create account</Text>
           </Text>
+
+          
         </SafeAreaView>)
 
     }

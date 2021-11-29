@@ -1,7 +1,8 @@
 import React from "react";
-import { StyleSheet, View } from 'react-native';
+import { KeyboardAvoidingView, StyleSheet, View } from 'react-native';
 import { Button, Text, Input, Icon, Avatar } from "react-native-elements";
 import { Card } from "react-native-elements/dist/card/Card";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 
@@ -19,9 +20,8 @@ class Profile extends React.Component {
 
     
     render() {
-        return (<SafeAreaView style={styles.container}>
+        return (<KeyboardAwareScrollView contentContainerStyle={styles.container}>
             
-
             <Avatar
                 size= "medium"
                 rounded
@@ -29,7 +29,10 @@ class Profile extends React.Component {
                 activeOpacity={0.7}
                 style = {styles.profilePicWrap}
             />
+<<<<<<< HEAD
             <Text>{"\n"}</Text>
+=======
+>>>>>>> a1c7fc3feac7004cd1e48f8483cabe2563f40ad4
             <Text h3>Profile</Text>
             <View style= {styles.flexbox}>
                 <Input  
@@ -41,6 +44,7 @@ class Profile extends React.Component {
                 placeholder="Last Name" 
                 onChangeText={text => this.setState({lastName: text})}/>
              </View>
+<<<<<<< HEAD
               <Text>{"\n"}{"\n"}</Text>
                 <Input  
                 style={styles.inputs}
@@ -50,11 +54,21 @@ class Profile extends React.Component {
                 style={styles.inputs}
                 placeholder="Gender" 
                 onChangeText={text => this.setState({gender: text})}/>
+=======
+              <Input  
+              style={styles.inputs}
+              placeholder="Pronouns" 
+              onChangeText={text => this.setState({pronoun: text})}/>
+              <Input  
+              style={styles.inputs}
+              placeholder="Gender" 
+              onChangeText={text => this.setState({gender: text})}/>
+>>>>>>> a1c7fc3feac7004cd1e48f8483cabe2563f40ad4
 
-                <Input  
-                style={styles.inputs}
-                placeholder="Age" 
-                onChangeText={text => this.setState({gender: text})}/>
+              <Input  
+              style={styles.inputs}
+              placeholder="Age" 
+              onChangeText={text => this.setState({gender: text})}/>
            
             <Input 
             style={styles.textin}
@@ -63,7 +77,7 @@ class Profile extends React.Component {
             placeholder="Bio" 
             onChangeText={text => this.setState({bio: text})}/>
             
-        </SafeAreaView>)
+        </KeyboardAwareScrollView>)
     }
 
     
@@ -104,7 +118,7 @@ const styles = StyleSheet.create({
     textbox: {
         marginTop: 10,
         borderColor: '#ffff',
-        borderWidth: '5'
+        borderWidth: 5
       },
     profilePicWrap: {
         height: 180,

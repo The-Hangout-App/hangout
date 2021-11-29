@@ -32,6 +32,46 @@ export class Repository {
         })
     }
 
+    createAccount(data) {
+        return new Promise((resolve, reject) => {
+            axios.post(`${this.url}/user/register`, data, this.config)
+            .then(resp => {
+                resolve(resp.data);
+            })
+            .catch(err => console.log(err));
+        })
+    }
+
+    getGroups(activityID) {
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/activities/${activityID}`, this.config)
+            .then(x => resolve(x.data))
+            .catch(e => {
+                alert(e);
+                reject();
+            });
+        })
+    }
+
+    getUsersInGroup(groupID) {
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/groups/${groupID}/`, this.config)
+            .then(x => resolve(x.data))
+            .catch(e => {
+                alert(e);
+                reject();
+            });
+        })
+    }
+
+    deleteUser(userID){
+        return new Promise((resolve, reject) => {
+        axios.delete(`${this.url}/DeleteUser/${userID}`)
+        .catch(e => {
+            reject();
+        });
+    })}
+
 
     //Example post route
     addAccount(state) {
@@ -57,7 +97,6 @@ export class Repository {
         });
     })}
     
-
     //Sample get route
     getAccountInfo(id) {
         return new Promise((resolve, reject) => {
