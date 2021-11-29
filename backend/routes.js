@@ -609,8 +609,6 @@ async function hashPassword(password) {
       resolve(hash)
     });
   })
-  console.log(password);
-  console.log(hashedPassword);
   return hashedPassword
 }
 
@@ -631,6 +629,7 @@ async function hashPassword(password) {
 
 async function helper(password) {
   var hashedPassword = await hashPassword(password);
+  console.log(hashedPassword)
   return hashedPassword
 }
 
@@ -645,9 +644,7 @@ app.post('/registerUser', (req, res) => {
           //var hash = bcrypt.hash(password, 10); //salt the password 10 times
           var hashedPassword = helper(password);
           //var hashedPassword = await hashPassword(password);
-          console.log('HELLO 1');
-          console.log(hashedPassword);
-          console.log('HELLO 2');
+          console.log(hashedPassword)
           connection.query("INSERT INTO users (username, password) VALUES (?,?)", [username, hashedPassword], function (err, result, fields) {
           connection.release();
           if (err) {
