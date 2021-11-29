@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import ActivityCard from '../components/ActivityCard'
 import TinderCard from 'react-tinder-card'
 import styled from "styled-components";
