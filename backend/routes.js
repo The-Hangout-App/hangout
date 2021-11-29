@@ -368,11 +368,8 @@ app.post('/user/register', (req, res) => {
 
           var username = req.body.username
           var password = req.body.password
-
-          salt = await bcrypt.genSalt(10); //generate a salt to hash password
-          password_hash = await bcrypt.hash(password, salt); //actually hash the password
           // if there is no issue obtaining a connection, execute query
-          connection.query('INSERT INTO users (username, password) VALUES(?, ?)',[username, password_hash], function (err, rows, fields) {
+          connection.query('INSERT INTO users (username, password) VALUES(?, ?)',[username, password], function (err, rows, fields) {
               if (err) { 
                   // if there is an error with the query, release the connection instance and log the error
                   connection.release()
@@ -548,7 +545,9 @@ app.post('/registerUser', (req, res) => {
   } else {
       var username = req.body.username
       var password = req.body.password
-      connection.query("INSERT INTO users (username, password) VALUES (?,?)", [username, password], function (err, result, fields) {
+      salt = await bcrypt.genSalt(10); //generate a salt to hash password
+      password_hash = await bcrypt.hash(password, salt); //actually hash the password
+      connection.query("INSERT INTO users (username, password) VALUES (?,?)", [username, password_hash], function (err, result, fields) {
       connection.release();
       if (err) {
         logger.error("Error while fetching values: \n", err);
