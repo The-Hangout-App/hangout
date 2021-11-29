@@ -497,11 +497,11 @@ app.post('/groups/:groupid/:userid', (req, res) => {
     logger.error('Problem obtaining MySQL connection',err)
     res.status(400).send('Problem obtaining MySQL connection'); 
   } else {
-       user_id = req.param('userID');
+       user_id = req.param('userid');
        group_id = req.param('groupid');
        console.log(user_id)
        console.log(group_id)
-       connection.query("UPDATE groups SET  numMembers = numMembers + 1 where group_id= ? ", [group_id], function (err, result, fields) {
+       connection.query("UPDATE groups SET numMembers = numMembers + 1 where group_id= ? ", [group_id], function (err, result, fields) {
       connection.query("INSERT INTO users_in_groups ( group_id, user_id) VALUES (?,?)", [user_id, group_id], function (err, result, fields) {
       connection.release();
       if (err) {
