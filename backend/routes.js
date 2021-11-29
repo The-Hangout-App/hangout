@@ -497,7 +497,6 @@ app.post('/groups/:groupid/:userid', (req, res) => {
        user_id = req.param('userID');
        group_id = req.param('groupid');
        connection.query("UPDATE groups SET  numMembers = numMembers + 1 where group_id= ? ", [group_id], function (err, result, fields) {
-        connection.release();});
       connection.query("INSERT INTO users_in_groups ( group_id, user_id) VALUES (?,?)", [user_id, group_id], function (err, result, fields) {
       connection.release();
       if (err) {
@@ -509,6 +508,7 @@ app.post('/groups/:groupid/:userid', (req, res) => {
       } else {
           res.end(JSON.stringify(result)); 
         }
+      });
       });
     }
   });
