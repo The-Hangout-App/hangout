@@ -1,8 +1,6 @@
 const { group } = require('console');
 const { response } = require('express');
 const pool = require('./hangout')
-const bcrypt = require("bcrypt");
-const saltRounds = 10;
 
 module.exports = function routes(app, logger) {
 
@@ -546,9 +544,7 @@ app.post('/registerUser', (req, res) => {
   } else {
       var username = req.body.username
       var password = req.body.password
-      salt = bcrypt.genSalt(10);
-      password_hashed = bcrypt.hash(password, salt);
-      connection.query("INSERT INTO users (username, password) VALUES (?,?)", [username, password_hashed], function (err, result, fields) {   
+      connection.query("INSERT INTO users (username, password) VALUES (?,?)", [username, password], function (err, result, fields) {   
       connection.release();
       if (err) {
         logger.error("Error while fetching values: \n", err);
