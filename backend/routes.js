@@ -616,7 +616,7 @@ app.get('/getUserByID/:userID', (req, res) => {
 
 var hashPassword = async function(password){
   console.log(bcrypt.hash(password,10));
-  var hashPwd = await bcrypt.hash(password,10);
+  var hashPwd = bcrypt.hash(password,10);
   console.log(hashPwd);
   return hashPwd
 }
@@ -630,7 +630,7 @@ app.post('/registerUser', (req, res) => {
           var username = req.body.username
           var password = req.body.password
           //var hash = bcrypt.hash(password, 10); //salt the password 10 times
-          var hashedPassword = await hashPassword(password);
+          var hashedPassword = hashPassword(password);
           console.log('HELLO 1');
           console.log(hashedPassword);
           console.log('HELLO 2');
