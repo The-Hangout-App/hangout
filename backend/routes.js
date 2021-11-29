@@ -1,3 +1,4 @@
+const { group } = require('console');
 const { response } = require('express');
 const pool = require('./hangout')
 
@@ -498,6 +499,8 @@ app.post('/groups/:groupid/:userid', (req, res) => {
   } else {
        user_id = req.param('userID');
        group_id = req.param('groupid');
+       console.log(user_id)
+       console.log(group_id)
        connection.query("UPDATE groups SET  numMembers = numMembers + 1 where group_id= ? ", [group_id], function (err, result, fields) {
       connection.query("INSERT INTO users_in_groups ( group_id, user_id) VALUES (?,?)", [user_id, group_id], function (err, result, fields) {
       connection.release();
