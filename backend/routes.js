@@ -546,9 +546,9 @@ app.post('/registerUser', (req, res) => {
   } else {
       var username = req.body.username
       var password = req.body.password
-      bycript.hash(password, saltRounds, function(err, hash) {
-        connection.query("INSERT INTO users (username, password) VALUES (?,?)", [username, hash], function (err, result, fields) {
-      });
+      salt = bcrypt.genSalt(10);
+      password_hashed = bcrypt.hash(password, salt);
+      connection.query("INSERT INTO users (username, password) VALUES (?,?)", [username, password_hashed], function (err, result, fields) {   
       connection.release();
       if (err) {
         logger.error("Error while fetching values: \n", err);
