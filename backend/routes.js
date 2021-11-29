@@ -601,8 +601,7 @@ app.get('/getUserByID/:userID', (req, res) => {
 //   });
 // });
 
-
-app.post('/registerUser', async (req, res) => {
+app.post('/registerUser', (req, res) => {
   pool.getConnection(function (err, connection){
     if(err){
       logger.error('Problem obtaining MySQL connection',err)
