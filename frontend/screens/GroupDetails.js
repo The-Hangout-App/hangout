@@ -23,11 +23,13 @@ class GroupDetails extends React.Component {
 
     componentDidMount() {
         this.repo.getUsersInGroup(this.props.route.params.group_id).then(users => {
-            console.log(users)
             this.setState({members: users});
         })
         this.repo.getGroupById(this.props.route.params.group_id).then(g => {
+            console.log(g)
             this.setState({group: g})
+            console.log("groupdetails")
+            console.log(this.state.group)
         })
     }
 
@@ -43,7 +45,7 @@ class GroupDetails extends React.Component {
                         <ListItem bottomDivider>
                             <Avatar rounded size="small" title="AB"/>
                             <ListItem.Content>
-                                <ListItem.Title>{"user.username"}</ListItem.Title>
+                                <ListItem.Title>{user.username}</ListItem.Title>
                             </ListItem.Content>
                             <Icon name="chevron-forward-outline" type="ionicon" onPress={() => ""}/>
                         </ListItem>
