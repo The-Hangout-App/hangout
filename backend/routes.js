@@ -564,29 +564,32 @@ app.get('/getUserByID/:userID', (req, res) => {
 // });
 
 app.post('/registerUser', async (req, res) => {
-  try{
+  pool.getConnection(function (err, connection){
     const {username, password} = req.body;
-    const hash = await bcrypt.hash(password, 10); //salt the password 10 times
-    pool.getConnection(function (err, connection){
+    const hash = bcrypt.hash(password, 10); //salt the password 10 times
       if(err){
         logger.error('Problem obtaining MySQL connection',err)
         res.status(400).send('Problem obtaining MySQL connection'); 
       } else {
           connection.query("INSERT INTO users (username, password) VALUES (?,?)", [username, hash], function (err, result, fields) {
           connection.release();
+          if (err) {
+            logger.error("Error while fetching values: \n", err);
+            res.status(400).json({
+            "data": [],
+            "error": "Error obtaining values"
+            })
+          } else {
+              res.end(JSON.stringify(result));
+            }
         });
       }
     if (err) {
       res.status(500).send('Something went wrong 1');
     }
   });
-  } catch(e){
-      console.log(e);
-      res.status(500).send('Something went wrong 2');
-  }
 });
   
-
 //wyatt
 //update user
 //tested
