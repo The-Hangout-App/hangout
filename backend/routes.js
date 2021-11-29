@@ -455,6 +455,9 @@ app.post('/groups/:groupid/:userid', (req, res) => {
 });
 
 //BRIGITTA - FROM HERE ON
+
+const bcrypt = require('bcryptjs');
+
 //given a username, return a user 
 app.get('/user/:username', (req, res) => {
   // obtain a connection from our pool of connections
@@ -536,15 +539,39 @@ app.get('/getUserByID/:userID', (req, res) => {
 //wyatt
 //register user
 //tested
-app.post('/registerUser', (req, res) => {
+// app.post('/registerUser', (req, res) => {
+//   pool.getConnection(function (err, connection){
+//   if(err){
+//     logger.error('Problem obtaining MySQL connection',err)
+//     res.status(400).send('Problem obtaining MySQL connection'); 
+//   } else {
+//       var username = req.body.username
+//       var password = req.body.password
+//       connection.query("INSERT INTO users (username, password) VALUES (?,?)", [username, password], function (err, result, fields) {   
+//       connection.release();
+//       if (err) {
+//         logger.error("Error while fetching values: \n", err);
+//         res.status(400).json({
+//         "data": [],
+//         "error": "Error obtaining values"
+//         })
+//       } else {
+//           res.end(JSON.stringify(result)); 
+//         }
+//       });
+//     }
+//   });
+// });
+
+app.post('/registerUser', async (req, res) => {
   pool.getConnection(function (err, connection){
   if(err){
     logger.error('Problem obtaining MySQL connection',err)
     res.status(400).send('Problem obtaining MySQL connection'); 
   } else {
-      var username = req.body.username
-      var password = req.body.password
-      connection.query("INSERT INTO users (username, password) VALUES (?,?)", [username, password], function (err, result, fields) {   
+      const {username, password} = req.body;
+      const hash = await bcrypt.hash(password, 10); //salt the password 10 times
+      connection.query("INSERT INTO users (username, password) VALUES (?,?)", [username, hash], function (err, result, fields) {   
       connection.release();
       if (err) {
         logger.error("Error while fetching values: \n", err);
