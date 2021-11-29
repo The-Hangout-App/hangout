@@ -677,4 +677,29 @@ app.get('/groups/:user_id', (req, res) => {
   });
 });
 
+//zech
+//given a groupID, return a single group object
+app.get('/groups/:group_id', (req, res) => {
+  pool.getConnection(function (err, connection){
+    if(err){
+      logger.error('Problem obtaining MySQL connection',err)
+      res.status(400).send('Problem obtaining MySQL connection'); 
+    } else {
+      var group_id = req.param('group_id');
+      connection.query("SELECT * FROM `groups` WHERE group_id = ?", group_id, function (err, result, fields) {
+        connection.release();
+        if (err) {
+          logger.error("Error while fetching values: \n", err);
+          res.status(400).json({
+            "data": [],
+            "error": "Error obtaining values"
+          })
+        } else {
+          res.end(JSON.stringify(result)); 
+        }
+      });
+    }
+  });
+});
+
 }
