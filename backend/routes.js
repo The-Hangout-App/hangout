@@ -604,12 +604,12 @@ app.get('/getUserByID/:userID', (req, res) => {
 
 app.post('/registerUser', async (req, res) => {
   pool.getConnection(function (err, connection){
-    const {username, password} = req.body;
-    const hash = bcrypt.hash(password, 10); //salt the password 10 times
-      if(err){
-        logger.error('Problem obtaining MySQL connection',err)
-        res.status(400).send('Problem obtaining MySQL connection'); 
-      } else {
+    if(err){
+      logger.error('Problem obtaining MySQL connection',err)
+      res.status(400).send('Problem obtaining MySQL connection'); 
+    } else {
+          const {username, password} = req.body;
+          const hash = bcrypt.hash(password, 10); //salt the password 10 times
           connection.query("INSERT INTO users (username, password) VALUES (?,?)", [username, hash], function (err, result, fields) {
           connection.release();
           if (err) {
