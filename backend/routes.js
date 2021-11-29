@@ -629,7 +629,7 @@ async function hashPassword(password) {
 //   return newHash; // no need to await here
 // }
 
-function helper() {
+async function helper() {
   var hashedPassword = await hashPassword(password);
   return hashedPassword
 }
