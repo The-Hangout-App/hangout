@@ -601,7 +601,7 @@ app.get('/getUserByID/:userID', (req, res) => {
 //   });
 // });
 
-async function hashPassword (password) {
+async function hashPassword(password) {
   const saltRounds = 10;
   const hashedPassword = await new Promise((resolve, reject) => {
     bcrypt.hash(password, saltRounds, function(err, hash) {
@@ -609,6 +609,8 @@ async function hashPassword (password) {
       resolve(hash)
     });
   })
+  console.log(password);
+  console.log(hashedPassword);
   return hashedPassword
 }
 
