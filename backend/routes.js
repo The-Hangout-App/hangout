@@ -546,7 +546,7 @@ app.get('/cards/:activity_category_id', (req, res) => {
 
 //zech 
 //tested
-//given a group_id, return an array of user_ids
+//given a group_id, return an array of users (not user_ids)
 app.get('/users_in_groups/:group_id', (req, res) => {
   pool.getConnection(function (err, connection){
     if(err){
@@ -554,7 +554,11 @@ app.get('/users_in_groups/:group_id', (req, res) => {
       res.status(400).send('Problem obtaining MySQL connection'); 
     } else {
       var group_id = req.param('group_id');
-      connection.query(`SELECT user_id FROM users_in_groups WHERE group_id = ?`, group_id, function (err, result, fields) {
+      connection.query(`SELECT u.user_id, u.username, u.password, u.first_name, u.last_name, u.pronoun, u.age, u.gender, u.bio
+                            FROM users u
+                            INNER JOIN users_in_groups g
+                            ON u.user_id = g.user_id
+                            WHERE g.group_id = 1; ?`, group_id, function (err, result, fields) {
         connection.release();
         if (err) {
           logger.error("Error while fetching values: \n", err);
