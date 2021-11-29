@@ -54,12 +54,12 @@ class Profile extends React.Component {
               placeholder="Age" 
               onChangeText={text => this.setState({gender: text})}/>
            
-            <Input 
-            style={styles.textin}
-            multiline
-            numberOfLines={4}
-            placeholder="Bio" 
-            onChangeText={text => this.setState({bio: text})}/>
+              <Input 
+              style={styles.textin}
+              multiline
+              numberOfLines={4}
+              placeholder="Bio" 
+              onChangeText={text => this.setState({bio: text})}/>
             
         </KeyboardAwareScrollView>)
     }
