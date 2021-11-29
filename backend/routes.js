@@ -601,6 +601,17 @@ app.get('/getUserByID/:userID', (req, res) => {
 //   });
 // });
 
+async function hashPassword (password) {
+  const saltRounds = 10;
+  const hashedPassword = await new Promise((resolve, reject) => {
+    bcrypt.hash(password, saltRounds, function(err, hash) {
+      if (err) reject(err)
+      resolve(hash)
+    });
+  })
+  return hashedPassword
+}
+
 app.post('/registerUser', (req, res) => {
   pool.getConnection(function (err, connection){
     if(err){
@@ -609,8 +620,9 @@ app.post('/registerUser', (req, res) => {
     } else {
           var username = req.body.username
           var password = req.body.password
-          var hash = bcrypt.hash(password, 10); //salt the password 10 times
-          connection.query("INSERT INTO users (username, password) VALUES (?,?)", [username, hash], function (err, result, fields) {
+          //var hash = bcrypt.hash(password, 10); //salt the password 10 times
+          var hashedPassword = hashPassword(password);
+          connection.query("INSERT INTO users (username, password) VALUES (?,?)", [username, hashedPassword], function (err, result, fields) {
           connection.release();
           if (err) {
             logger.error("Error while fetching values: \n", err);
