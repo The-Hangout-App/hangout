@@ -15,7 +15,6 @@ import Groups from './screens/Groups';
 import GroupDetails from './screens/GroupDetails';
 import CreateGroup from './screens/CreateGroup';
 
-
 const theme = {
 
   Input: {
@@ -44,7 +43,7 @@ const Tab = createBottomTabNavigator();
 export default function App() {
     return (<ThemeProvider theme={theme}>
               <NavigationContainer>
-                <Stack.Navigator initialRouteName="CreateGroup" screenOptions={{
+                <Stack.Navigator initialRouteName="Login" screenOptions={{
                   headerStyle: styles.header,
                   headerTitle: "Hangout",
                   //headerTitleAlign: "center",
@@ -64,3 +63,11 @@ export default function App() {
 }
 
 
+const styles = StyleSheet.create({
+  header: {
+    backgroundColor: "#71B6BF",
+  },
+  title: {
+    color: "white"
+  }
+})

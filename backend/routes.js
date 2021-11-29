@@ -92,7 +92,6 @@ app.post('/createUser', (req, res) =>  {
 });
 });
 
-
 app.post('/auth', function(req, res, next) {
   var username = req.body.username;
   var userPassword = req.body.password;
@@ -140,7 +139,6 @@ app.post('/groups', (req, res) => {
           res.status(400).send('Problem obtaining MySQL connection'); 
       } else {
           var card_id = req.body.card_id
-          var chat_id = req.body.chat_id
           var numMembers = 1 
           var maxMembers = req.body.maxMembers
           var date = req.body.password
@@ -634,7 +632,7 @@ app.get('/groups/:card_id', (req, res) => {
       res.status(400).send('Problem obtaining MySQL connection'); 
     } else {
       var card_id = req.param('card_id');
-      connection.query("SELECT group_id FROM `groups` WHERE card_id = ?", card_id, function (err, result, fields) {
+      connection.query("SELECT * FROM `groups` WHERE card_id = ?", card_id, function (err, result, fields) {
         connection.release();
         if (err) {
           logger.error("Error while fetching values: \n", err);
