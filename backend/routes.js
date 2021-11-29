@@ -610,7 +610,7 @@ app.get('/users_in_groups/:group_id', (req, res) => {
                             FROM users u
                             INNER JOIN users_in_groups g
                             ON u.user_id = g.user_id
-                            WHERE g.group_id = 1; ?`, group_id, function (err, result, fields) {
+                            WHERE g.group_id = ?`, group_id, function (err, result, fields) {
         connection.release();
         if (err) {
           logger.error("Error while fetching values: \n", err);
