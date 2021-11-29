@@ -39,8 +39,8 @@ class Groups extends React.Component {
 
     repo = new Repository();
 
-    toGroup = (groupId) => {
-        this.props.navigation.navigate("GroupDetails", {gid: groupId})
+    toGroup = (groupIndex) => { //groupIndex is used to get the group from the state array
+        this.props.navigation.navigate("GroupDetails", {group_id: this.state.groups[groupIndex].group_id})
     }
 
     toCreateGroup = () => {
@@ -66,13 +66,13 @@ class Groups extends React.Component {
                 <Text h3 style={styles.txtHeader}>{`${this.state.activity.activity_name} Groups:`}</Text>
             </View>
             {this.state.groups.map((group, index) => 
-                <TouchableOpacity key={index} onPress={this.toGroup}>
+                <TouchableOpacity key={index} onPress={() => this.toGroup(index)}>
                     <ListItem bottomDivider>
                         <ListItem.Content>
                             <ListItem.Title>{`Group ${index + 1}`}</ListItem.Title>
-                            <ListItem.Subtitle>{`${group.members} / ${group.maxMembers}`}</ListItem.Subtitle>
+                            <ListItem.Subtitle>{`${group.numMembers} / ${group.maxMembers}`}</ListItem.Subtitle>
                         </ListItem.Content>
-                        <Icon name="chevron-forward-outline" type="ionicon" onPress={this.toGroup}/>
+                        <Icon name="chevron-forward-outline" type="ionicon" onPress={() => this.toGroup(index)}/>
                     </ListItem>
                 </TouchableOpacity>
             )}
@@ -114,5 +114,7 @@ const styles = StyleSheet.create({
     },
     btnCreate: {
         marginTop: 15,
+        width: "90%",
+        alignSelf: "center"
     }
 })

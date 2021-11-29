@@ -10,6 +10,17 @@ export class Repository {
         }
     }
 
+    getGroupById(group_id) {
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/groups/${group_id}`, this.config)
+            .then(x => resolve(x.data))
+            .catch(e => {
+                alert(e);
+                reject();
+            });
+        })
+    }
+
     getCards() {
         return new Promise((resolve, reject) => {
             axios.get(`${this.url}/cards`, this.config)
@@ -75,9 +86,9 @@ export class Repository {
         })
     }
 
-    getUsersInGroup(groupID) {
+    getUsersInGroup(group_id) {
         return new Promise((resolve, reject) => {
-            axios.get(`${this.url}/groups/${groupID}/`, this.config)
+            axios.get(`${this.url}/users_in_groups/${group_id}`, this.config)
             .then(x => resolve(x.data))
             .catch(e => {
                 alert(e);
