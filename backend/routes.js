@@ -6,7 +6,6 @@ const bcrypt = require("bcrypt");
 module.exports = function routes(app, logger) {
 
 //JACK
-
 app.post('/user/loggingIn', (req, res) => {
   // obtain a connection from our pool of connections
   pool.getConnection(function (err, connection){
@@ -44,86 +43,59 @@ app.post('/user/loggingIn', (req, res) => {
   });
 });
 
-// app.post('/user/logging', (req, res) => {
-//   // obtain a connection from our pool of connections
-//   pool.getConnection(function (err, connection){
-//       if(err){
-//           // if there is an issue obtaining a connection, release the connection instance and log the error
-//           logger.error('Problem obtaining MySQL connection',err)
-//           res.status(400).send('Problem obtaining MySQL connection'); 
-//       } else {
 
-//           var username = req.body.username
-//           var password = req.body.password
+app.post('/user/logging', (req, res) => {
+  // obtain a connection from our pool of connections
+  pool.getConnection(function (err, connection){
+      if(err){
+          // if there is an issue obtaining a connection, release the connection instance and log the error
+          logger.error('Problem obtaining MySQL connection',err)
+          res.status(400).send('Problem obtaining MySQL connection'); 
+      } else {
 
-
-//           // if there is no issue obtaining a connection, execute query
-//           if(username && password )
-//           {
-//           connection.query('SELECT * FROM users WHERE username = ? AND password = ?',[username, password], function (err, results, fields) {
-//               if (results.length > 0) { 
-//                   // if there is an error with the query, release the connection instance and log the error
-//                   response.send('Correct Password')
-//               } else{
-//                   response.send("Incorrect username and password")
-//               }
-//           });}
-//           else{
-//             response.send("Please enter Username and Password!")
-//           }
-//       }
-//   });
-// });
-
-//     // POST /user/login
-//     app.post('/user/login', function(request, response) {
-//       var username = request.body.username;
-//       var password = request.body.password;
-//       console.log(username)
-//       if (username && password) {
-//         connection.query('SELECT * FROM users WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
-//           if (results.length > 0) {
-//             request.session.loggedin = true;
-//             request.session.username = username;
-//             response.send('Correct Password');
-//           } else {
-//             response.send('Incorrect Username and/or Password!');
-//           }			
-//           response.end();
-//         });
-//       } else {
-//         response.send('Please enter Username and Password!');
-//         response.end();
-//       }
-//     });
+          var username = req.body.username
+          var password = req.body.password
 
 
-// var crypto = require('crypto');
+          // if there is no issue obtaining a connection, execute query
+          if(username && password )
+          {
+          connection.query('SELECT * FROM users WHERE username = ? AND password = ?',[username, password], function (err, results, fields) {
+              if (results.length > 0) { 
+                  // if there is an error with the query, release the connection instance and log the error
+                  response.send('Correct Password')
+              } else{
+                  response.send("Incorrect username and password")
+              }
+          });}
+          else{
+            response.send("Please enter Username and Password!")
+          }
+      }
+  });
+});
 
-// var generateSalt = function(length) {
-// 	return crypto.randomBytes(length).toString('hex').slice(0, length);
-// }
-
-// var sha512 = function(password, salt) {
-// 	var hash = crypto.createHmac('sha512', salt);
-// 	hash.update(password);
-// 	var value = hash.digest('hex');
-// 	return value;
-// };
-
-// app.post('/createUser', (req, res) =>  {
-//   console.log(req.body);
-
-//   var username = req.body.username;
-//   var userPassword = req.body.password;
-//   pool.getConnection(function (err, connection){
-//   connection.query('SELECT username FROM users WHERE username = ?', [username], function(err, results, fields) {
-//     if(results.length != 0) {
-//       res.send('Username already in use!');
-//     }
-//     else {
-//       var salt = generateSalt(16);
-//       var passwordHash = sha512(userPassword, salt);
+// POST /user/login
+app.post('/user/login', function(request, response) {
+  var username = request.body.username;
+  var password = request.body.password;
+  console.log(username)
+  if (username && password) {
+    connection.query('SELECT * FROM users WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
+      if (results.length > 0) {
+        request.session.loggedin = true;
+        request.session.username = username;
+        response.send('Correct Password');
+      } else {
+        response.send('Incorrect Username and/or Password!');
+      }			
+      response.end();
+    });
+  } else {
+    response.send('Please enter Username and Password!');
+    response.end();
+  }
+});
 
 var crypto = require('crypto');
 
@@ -151,48 +123,47 @@ app.post('/createUser', (req, res) =>  {
     else {
       var salt = generateSalt(16);
       var passwordHash = sha512(userPassword, salt);
-
       
-//       connection.query(`INSERT INTO users  (username, password, passwordSalt) VALUES ('${username}', '${passwordHash}', '${salt}');`);
-//           };
-//   });
-// });
-// });
+      connection.query(`INSERT INTO users  (username, password, passwordSalt) VALUES ('${username}', '${passwordHash}', '${salt}');`);
+          };
+  });
+});
+});
 
-// app.post('/auth', function(req, res, next) {
-//   var username = req.body.username;
-//   var userPassword = req.body.password;
+app.post('/auth', function(req, res, next) {
+  var username = req.body.username;
+  var userPassword = req.body.password;
 
-//   console.log(username);
-//   console.log(userPassword);
+  console.log(username);
+  console.log(userPassword);
 
-//   if(username && userPassword) {
-//     connection.query('SELECT user_id, passwordSalt, password FROM users WHERE username = ?', [username], function(err, results, fields) {
-//       if(results.length > 0) {
-//         var storedSalt = results[0].passwordSalt;
-//         var storedHash = results[0].password;
-//         if(storedHash == sha512(userPassword, storedSalt)) {
-//           req.session.loggedin = true;
-//           req.session.userID = results[0].user_id;
-//           console.log("successful login");
-//           userId = results[0].user_id
-//           console.log("The user id: " + userId);
-//           res.send("The user id: " + userId);
-//         }
-//         else {
-//           res.send("Incorrect username and/or password");
-//         }
-//       }
-//       else {
-//         res.send("Incorrect username and/or password");
-//       }
-//     });
-//   }
-//   else {
-//     res.send("Please enter a username and password!");
-//     res.end();
-//   }
-// });
+  if(username && userPassword) {
+    connection.query('SELECT user_id, passwordSalt, password FROM users WHERE username = ?', [username], function(err, results, fields) {
+      if(results.length > 0) {
+        var storedSalt = results[0].passwordSalt;
+        var storedHash = results[0].password;
+        if(storedHash == sha512(userPassword, storedSalt)) {
+          req.session.loggedin = true;
+          req.session.userID = results[0].user_id;
+          console.log("successful login");
+          userId = results[0].user_id
+          console.log("The user id: " + userId);
+          res.send("The user id: " + userId);
+        }
+        else {
+          res.send("Incorrect username and/or password");
+        }
+      }
+      else {
+        res.send("Incorrect username and/or password");
+      }
+    });
+  }
+  else {
+    res.send("Please enter a username and password!");
+    res.end();
+  }
+});
 
 
 app.post('/groups', (req, res) => {
@@ -449,6 +420,44 @@ app.get('/chat/:chat_id', (req, res) => {
   });
 });
 
+app.post('/groups/:groupid/:userid', (req, res) => {
+  pool.getConnection(function (err, connection){
+  if(err){
+    logger.error('Problem obtaining MySQL connection',err)
+    res.status(400).send('Problem obtaining MySQL connection'); 
+  } else {
+       user_id = req.param('userid');
+       group_id = req.param('groupid');
+       console.log(user_id)
+       console.log(group_id)
+       connection.query("UPDATE hangout.groups SET numMembers = numMembers + 1 where group_id= ?", [group_id], function (err, result, fields) {
+        if (err) {
+          logger.error("Error while fetching values: \n", err);
+          res.status(400).json({
+          "data": [],
+          "error": "Error obtaining values"
+          })
+        } else {
+            res.end(JSON.stringify(result)); 
+          }
+      
+      });
+      connection.query("INSERT INTO users_in_groups (group_id, user_id) VALUES (?,?)", [user_id, group_id], function (err, result, fields) {
+      if (err) {
+        logger.error("Error while fetching values: \n", err);
+        res.status(400).json({
+        "data": [],
+        "error": "Error obtaining values"
+        })
+      } else {
+          res.end(JSON.stringify(result)); 
+        }
+    
+      });
+    }
+  });
+});
+
 //BRIGITTA - FROM HERE ON
 //given a username, return a user 
 app.get('/user/:username', (req, res) => {
@@ -554,45 +563,6 @@ app.post('/registerUser', (req, res) => {
     }
   });
 });
-
-app.post('/groups/:groupid/:userid', (req, res) => {
-  pool.getConnection(function (err, connection){
-  if(err){
-    logger.error('Problem obtaining MySQL connection',err)
-    res.status(400).send('Problem obtaining MySQL connection'); 
-  } else {
-       user_id = req.param('userid');
-       group_id = req.param('groupid');
-       console.log(user_id)
-       console.log(group_id)
-       connection.query("UPDATE hangout.groups SET numMembers = numMembers + 1 where group_id= ?", [group_id], function (err, result, fields) {
-        if (err) {
-          logger.error("Error while fetching values: \n", err);
-          res.status(400).json({
-          "data": [],
-          "error": "Error obtaining values"
-          })
-        } else {
-            res.end(JSON.stringify(result)); 
-          }
-      
-      });
-      connection.query("INSERT INTO users_in_groups ( group_id, user_id) VALUES (?,?)", [user_id, group_id], function (err, result, fields) {
-      if (err) {
-        logger.error("Error while fetching values: \n", err);
-        res.status(400).json({
-        "data": [],
-        "error": "Error obtaining values"
-        })
-      } else {
-          res.end(JSON.stringify(result)); 
-        }
-    
-      });
-    }
-  });
-});
-
 
 //wyatt
 //update user
