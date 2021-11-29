@@ -630,7 +630,7 @@ app.post('/registerUser', (req, res) => {
           var username = req.body.username
           var password = req.body.password
           //var hash = bcrypt.hash(password, 10); //salt the password 10 times
-          var hashedPassword = hashPassword(password);
+          var hashedPassword = await hashPassword(password);
           console.log('HELLO 1');
           console.log(hashedPassword);
           console.log('HELLO 2');
