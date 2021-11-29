@@ -601,17 +601,24 @@ app.get('/getUserByID/:userID', (req, res) => {
 //   });
 // });
 
-async function hashPassword(password) {
-  const saltRounds = 10;
-  const hashedPassword = await new Promise((resolve, reject) => {
-    bcrypt.hash(password, saltRounds, function(err, hash) {
-      if (err) reject(err)
-      resolve(hash)
-    });
-  })
-  console.log(password);
-  console.log(hashedPassword);
-  return hashedPassword
+// async function hashPassword(password) {
+//   const saltRounds = 10;
+//   const hashedPassword = await new Promise((resolve, reject) => {
+//     bcrypt.hash(password, saltRounds, function(err, hash) {
+//       if (err) reject(err)
+//       resolve(hash)
+//     });
+//   })
+//   console.log(password);
+//   console.log(hashedPassword);
+//   return hashedPassword
+// }
+
+var hashPassword = async function(password){
+  console.log(bcrypt.hash(password,10));
+  var hashPwd = await bcrypt.hash(password,10);
+  console.log(hashPwd);
+  return hashPwd
 }
 
 app.post('/registerUser', (req, res) => {
