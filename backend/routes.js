@@ -502,8 +502,18 @@ app.post('/groups/:groupid/:userid', (req, res) => {
        console.log(user_id)
        console.log(group_id)
        connection.query("UPDATE groups SET numMembers = numMembers + 1 where group_id= ? ", [group_id], function (err, result, fields) {
+        if (err) {
+          logger.error("Error while fetching values: \n", err);
+          res.status(400).json({
+          "data": [],
+          "error": "Error obtaining values"
+          })
+        } else {
+            res.end(JSON.stringify(result)); 
+          }
+      
+      });
       connection.query("INSERT INTO users_in_groups ( group_id, user_id) VALUES (?,?)", [user_id, group_id], function (err, result, fields) {
-      connection.release();
       if (err) {
         logger.error("Error while fetching values: \n", err);
         res.status(400).json({
@@ -513,11 +523,13 @@ app.post('/groups/:groupid/:userid', (req, res) => {
       } else {
           res.end(JSON.stringify(result)); 
         }
-      });
+    
       });
     }
   });
 });
+
+
 //wyatt
 //update user
 //tested
