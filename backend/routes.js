@@ -618,8 +618,8 @@ app.post('/loginTry', (req, res) => {
         if(err) {
           throw err
         } else {
-            console.log(result[0])
-            bcrypt.compare(password, result[0], function(err, isMatch) {
+            console.log(result[0].password)
+            bcrypt.compare(password, result[0].password, function(err, isMatch) {
               if(err) {
                 throw err
               } else if (!isMatch){
