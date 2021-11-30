@@ -641,12 +641,12 @@ app.post('/registerUser', (req, res) => {
     } else {
           var username = req.body.username
           var password = req.body.password
-
+          var hashedPassword = 1;
           bcrypt.genSalt(10, function(err, salt) {
             bcrypt.hash(password, salt, function(err, hash) {
               if (err) reject(err)
               console.log(hash);
-              var hashedPassword = hash;
+              hashedPassword = hash;
             });
           });
           console.log('in between');
