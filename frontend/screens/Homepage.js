@@ -65,7 +65,7 @@ const Buttons = styled.View`
     justifyContent: space-between;
 `
 
-const alreadyRemoved = [];
+let alreadyRemoved = [];
 
 export default function Homepage(props) {
 
@@ -79,6 +79,31 @@ export default function Homepage(props) {
   let actState = activities;
   //const childRefs = useMemo(() => Array(activities.length).fill(0).map(i => React.createRef()), [activities])
   //let childRefs = []
+
+  // https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array 
+  function shuffleArray(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+  }
+
+  const refresh = () => {
+    repo.getCards().then(cards => {
+      setActitivies(cards)
+      var copy = [...activities];
+      console.log(copy)
+      shuffleArray(copy);
+      setActitivies(copy);
+      actState = activities;
+      setCurrentActivity(activities[0]);
+      setChildRefs(Array(activities.length).fill(0).map(i => React.createRef()));
+
+      alreadyRemoved = [];
+    }).catch(e => console.log(e));
+  }
 
   const swiped = (direction, titleToDelete) => {
     console.log('removing: ' + titleToDelete + ' to the ' + direction)
@@ -148,6 +173,9 @@ export default function Homepage(props) {
             disabled={activities.length === 0}
         />
       </Buttons>
+      <View>
+        <Button title="Refresh" buttonStyle={styles.btnRefresh} onPress={refresh}/>
+      </View>
     </Container>
   )
 
@@ -187,4 +215,7 @@ const styles = StyleSheet.create({
         width: "100%",
         marginTop: 10
     },
+    btnRefresh: {
+      backgroundColor: "#33a5d6",
+    }
 });

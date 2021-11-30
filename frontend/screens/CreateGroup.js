@@ -22,8 +22,9 @@ export default function CreateGroup(props) {
         const currentDate = selectedDate || date;
         setShow(Platform.OS === 'ios');
         setDate(currentDate);
+        var extraZero = currentDate.getMinutes() < 10 ? "0" : "";
         setDateStr(`${currentDate.getMonth() + 1}-${currentDate.getDate()}-${currentDate.getFullYear()}`)
-        setTimeStr(`${currentDate.getHours()}:${currentDate.getMinutes()}`)
+        setTimeStr(`${currentDate.getHours()}:${extraZero}${currentDate.getMinutes()}`)
     };
 
     const showMode = (currentMode) => {
@@ -40,8 +41,9 @@ export default function CreateGroup(props) {
     };
 
     const onCreate = () => {
+        var extraZero = currentDate.getMinutes() < 10 ? "0" : "";
         setDateStr(`${date.getMonth()}-${date.getDate()}-${date.getFullYear()}`)
-        setTimeStr(`${date.getHours()}:${date.getMinutes()}`)
+        setTimeStr(`${date.getHours()}:${extraZero}${date.getMinutes()}`)
         const body = {card_id: props.route.params.card_id, maxMembers: maxMembers, date: dateStr, time: timeStr}
         console.log(body);
         
