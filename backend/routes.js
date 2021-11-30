@@ -641,15 +641,16 @@ app.post('/registerUser', (req, res) => {
     } else {
           var username = req.body.username
           var password = req.body.password
-          // console.log(username)
-          // console.log(password)
-          //var hashedPassword = hashPassword(password);
-          var hashedPassword = hashPassword(password);
-          // bcrypt.hash(password, 10, function(err, hash) {
-          //   if (err) reject(err)
-          //   var hashedPassword = hash;
-          // });
-          //console.log(hashedPassword)
+
+          bcrypt.genSalt(10, function(err, salt) {
+            bcrypt.hash(password, salt, function(err, hash) {
+              if (err) reject(err)
+              console.log(hash);
+              var hashedPassword = hash;
+            });
+          });
+          console.log('in between');
+          console.log(hashedPassword)
           connection.query("INSERT INTO users (username, password) VALUES (?,?)", [username, hashedPassword], function (err, result, fields) {
           connection.release();
           if (err) {
