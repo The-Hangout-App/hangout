@@ -39,7 +39,7 @@ class Login extends React.Component {
           <Text h1>Login</Text>
           <Input
             placeholder="Email"
-            onChange={(text) => this.setState({email: text})}
+            onChangeText={(text) => this.setState({email: text})}
             textContentType="emailAddress"
             leftIcon={<Icon name="email"/>}
             errorStyle={{ color: 'red' }}
@@ -48,7 +48,7 @@ class Login extends React.Component {
           <Input
             placeholder="Password"
             textContentType="password"
-            secureTextEntry={true} onChange={(text) => this.setState({password: text})}
+            secureTextEntry={true} onChangeText={(text) => this.setState({password: text})}
             leftIcon={<Icon name="lock"/>}
             errorStyle={{ color: 'red' }}
             errorMessage={this.state.pwErr}
