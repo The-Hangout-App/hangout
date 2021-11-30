@@ -2,6 +2,7 @@ import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import React, { useEffect, useState } from 'react'
 import { Avatar, Button, Icon, Input, ListItem, Text } from "react-native-elements";
 import DateTimePicker from '@react-native-community/datetimepicker'
+import { Repository } from "../api/repository";
 
 class MyGroups extends React.Component {
 
@@ -9,6 +10,8 @@ class MyGroups extends React.Component {
         groups: [],
     }
 
+
+    repo = new Repository();
     toGroup = (groupId) => {
         props.navigation.navigate("GroupDetails", {gid: groupId})
     }
@@ -16,6 +19,19 @@ class MyGroups extends React.Component {
     getActivityName = (actId) => {
         //GET request and filter out the activity name
         return "Sample activity name"
+    }
+
+
+    componentDidMount() {
+        this.repo.getActivity(this.props.route.params.card_id).then(act => {
+            this.setState({activity: act[0]})
+            console.log(this.state.activity)
+        }).catch(e => console.log(e));
+        this.repo.getGroups(this.props.route.params.card_id).then(groupsList => {
+            console.log(groupsList);
+            this.setState({groups: groupsList})
+            console.log(this.state.groups)
+        }).catch(e => console.log(e));
     }
 
     render() {

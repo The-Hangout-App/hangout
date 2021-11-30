@@ -5,6 +5,31 @@ const pool = require('./hangout')
 module.exports = function routes(app, logger) {
 
 //JACK
+
+
+app.get('/users/:user_id/groups', (req, res) => {
+  pool.getConnection(function (err, connection){
+    if(err){
+      logger.error('Problem obtaining MySQL connection',err)
+      res.status(400).send('Problem obtaining MySQL connection'); 
+    } else {
+      var user_id = req.param('user_id');
+      connection.query("Select cards.activity_name, hangout.groups.numMembers, hangout.groups.maxMembers from ((hangout.groups INNER JOIN cards on hangout.groups.card_id = cards.card_id) INNER JOIN users_in_groups ON users_in_groups.group_id = hangout.groups.group_id) where users_in_groups.user_id = ?;", user_id, function (err, result, fields) {
+        connection.release();
+        if (err) {
+          logger.error("Error while fetching values: \n", err);
+          res.status(400).json({
+            "data": [],
+            "error": "Error obtaining values"
+          })
+        } else {
+          res.end(JSON.stringify(result)); 
+        }
+      });
+    }
+  });
+});
+
 app.post('/groups/:groupid/:userid', (req, res) => {
   pool.getConnection(function (err, connection){
   if(err){
