@@ -241,10 +241,10 @@ app.post('/groups', (req, res) => {
           var numMembers = 1 
           var maxMembers = req.body.maxMembers
           var date = req.body.date
-          var time = req.body.first_name
+          var time = req.body.time
     
           // if there is no issue obtaining a connection, execute query
-          connection.query('INSERT INTO groups (card_id, chat_id, numMembers, maxMembers, date, time) VALUES(?, ?, ?, ?, ?, ?)',[card_id, chat_id, numMembers, maxMembers, date, time], function (err, rows, fields) {
+          connection.query('INSERT INTO groups (card_id, numMembers, maxMembers, date, time) VALUES(?, ?, ?, ?, ?)',[card_id, numMembers, maxMembers, date, time], function (err, rows, fields) {
               if (err) { 
                   // if there is an error with the query, release the connection instance and log the error
                   connection.release()
