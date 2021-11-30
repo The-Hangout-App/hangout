@@ -1,5 +1,5 @@
 import React from "react";
-import { KeyboardAvoidingView, StyleSheet, View } from 'react-native';
+import { KeyboardAvoidingView, ScrollView, StyleSheet, View } from 'react-native';
 import { Button, Text, Input, Icon, Avatar } from "react-native-elements";
 import { Card } from "react-native-elements/dist/card/Card";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -20,15 +20,7 @@ class Profile extends React.Component {
       age: 0,
       gender: "",
       pronoun: "",
-      edit: true
     }
-
-    renderSaveButton(isValid){
-      if(isValid){
-       return(
-        <Button title="Save" onPress={this.handleSave}/>
-       );
-      }}
     
       handleSave = () =>{
         this.forceUpdate();
@@ -52,8 +44,8 @@ class Profile extends React.Component {
 
     
     render() {
-        return (<KeyboardAwareScrollView contentContainerStyle={styles.container}>
-            
+        return (<KeyboardAwareScrollView>
+            <View style={styles.container}>
             <Avatar
                 size= "medium"
                 rounded
@@ -66,13 +58,13 @@ class Profile extends React.Component {
             <View style= {styles.flexbox}>
                 <Input  
                 style={styles.text}
-                disabled = {!this.props.route.params.edit}
+                disabled = {false}
                 value = {this.state.firstName}
                 placeholder="First Name" 
                 onChangeText={text => this.setState({firstName: text})}/>
                 <Input  
                 style={styles.text}
-                disabled = {!this.props.route.params.edit}
+                disabled = {false}
                 value = {this.state.lastName}
                 placeholder="Last Name" 
                 onChangeText={text => this.setState({lastName: text})}/>
@@ -80,35 +72,36 @@ class Profile extends React.Component {
               <Text>{"\n"}{"\n"}</Text>
                 <Input 
                 style={styles.inputs}
-                disabled = {!this.props.route.params.edit}
+                disabled = {false}
                 value = {this.state.pronoun}
                 placeholder="Pronouns" 
                 onChangeText={text => this.setState({pronoun: text})}/>
                 
                 <Input  
                 style={styles.inputs}
-                disabled = {!this.props.route.params.edit}
+                disabled = {false}
                 value = {this.state.gender}
                 placeholder="Gender" 
                 onChangeText={text => this.setState({gender: text})}/>
 
               <Input  
               style={styles.inputs}
-              disabled = {!this.props.route.params.edit}
+              disabled = {false}
               value = {this.state.age}
               placeholder="Age" 
               onChangeText={text => this.setState({age: text})}/>
            
             <Input 
             style={styles.textin}
-            disabled = {!this.props.route.params.edit}
+            disabled = {false}
             multiline
             numberOfLines={4}
             value = {this.state.bio}
             placeholder="Bio" 
             onChangeText={text => this.setState({bio: text})}/>
-          {this.renderSaveButton(this.props.route.params.edit)}
-            
+
+          <Button title="Save" onPress={this.handleSave} style={styles.btn}/>
+          </View>
         </KeyboardAwareScrollView>)
     }
 
@@ -181,6 +174,9 @@ const styles = StyleSheet.create({
         borderRadius: 100,
         borderColor: '#fff',
         borderWidth: 4
+    },
+    btn: {
+      marginBottom: 10
     }
   });
   

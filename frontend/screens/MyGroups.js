@@ -10,10 +10,10 @@ class MyGroups extends React.Component {
         groups: []
     }
 
-
     repo = new Repository();
+    
     toGroup = (groupId) => {
-        props.navigation.navigate("GroupDetails", {gid: groupId})
+        props.navigation.navigate("GroupDetails", {group_id: groupId, joinEnabled: false})
     }
 
     getActivityName = (actId) => {
@@ -21,11 +21,10 @@ class MyGroups extends React.Component {
         return "Sample activity name"
     }
 
-
     componentDidMount() {
         //need to add proper route
-        
-        this.repo.getUsersGroups(3).then(act => {
+        console.log(`this is the uid passed from app: ${this.props.getUid()}`)
+        this.repo.getUsersGroups(this.props.getUid()).then(act => {
             this.setState({groups: act})
             console.log(this.state.groups)
         }).catch(e => console.log(e));
@@ -38,15 +37,15 @@ class MyGroups extends React.Component {
                     <Text h3 style={styles.txtHeader}>My groups</Text>
                 </View>
                 {this.state.groups.map((group, index) => 
-                    // <TouchableOpacity key={group.gid} onPress={() => toGroup()}>
+                     <TouchableOpacity key={index} onPress={() => this.toGroup(group_id)}>
                         <ListItem bottomDivider>
                             <ListItem.Content>
                                 <ListItem.Title>{group.activity_name}</ListItem.Title>
                                 <ListItem.Subtitle>{`${group.numMembers} / ${group.maxMembers}`}</ListItem.Subtitle>
                             </ListItem.Content>
-                            <Icon name="chevron-forward-outline" type="ionicon" onPress={() => toGroup()}/>
+                            <Icon name="chevron-forward-outline" type="ionicon" onPress={() => this.toGroup(group.group_id)}/>
                         </ListItem>
-                    // </TouchableOpacity>
+                     </TouchableOpacity>
                 )}
             </ScrollView>
         );

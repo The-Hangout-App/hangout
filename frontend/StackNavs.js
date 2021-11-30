@@ -9,38 +9,63 @@ import MyGroups from './screens/MyGroups';
 import Login from './screens/Login';
 import Register from './screens/Register';
 import { StyleSheet } from 'react-native';
+import ProfileReadOnly from './screens/ProfileReadOnly';
 
 const Stack = createNativeStackNavigator();
 
 const ProfileNav = () => {
     return (
-        <Stack.Navigator initialRouteName="Profile" screenOptions={{headerShown: false}}>
+        <Stack.Navigator initialRouteName="Profile" screenOptions={{
+            headerStyle: styles.header,
+            headerTitle: "Hangout",
+            headerTitleStyle: styles.title
+        }}>
             <Stack.Screen name="Profile" component={Profile}/>
         </Stack.Navigator>
     )
 }
 export {ProfileNav}
 
-const HomeNav = () => {
+const HomeNav = (props) => {
     return (
-        <Stack.Navigator initialRouteName="Homepage" screenOptions={{headerShown: false}}>
+        <Stack.Navigator initialRouteName="Homepage" screenOptions={{
+            headerStyle: styles.header,
+            headerTitle: "Hangout",
+            headerTitleStyle: styles.title
+        }}>
 
             <Stack.Screen name="Homepage" component={Homepage}/>
-            <Stack.Screen name="Groups" component={Groups}/>
-            <Stack.Screen name="GroupDetails" component={GroupDetails}/>
-            <Stack.Screen name="CreateGroup" component={CreateGroup}/>
+            <Stack.Screen name="Groups">
+                {(props2) => <MyGroups {...props2} getUid={props.getUid}/>}
+            </Stack.Screen>
+            <Stack.Screen name="GroupDetails">
+                {(props2) => <GroupDetails {...props2} getUid={props.getUid}/>}
+            </Stack.Screen>
+            <Stack.Screen name="CreateGroup">
+                {(props2) => <CreateGroup {...props2} getUid={props.getUid}/>}
+            </Stack.Screen>
+            <Stack.Screen name="ProfileReadOnly" component={ProfileReadOnly}/>
 
         </Stack.Navigator>
     );
 }
 export {HomeNav}
 
-const GroupsNav = () => {
+const GroupsNav = (props) => {
     return (
-        <Stack.Navigator initialRouteName="MyGroups" screenOptions={{headerShown: false}}>
+        <Stack.Navigator initialRouteName="MyGroups" screenOptions={{
+            headerStyle: styles.header,
+            headerTitle: "Hangout",
+            headerTitleStyle: styles.title
+        }}>
 
-            <Stack.Screen name="MyGroups" component={MyGroups}/>
-            <Stack.Screen name="GroupDetails" component={GroupDetails}/>
+            <Stack.Screen name="MyGroups">
+                {(props2) => <MyGroups {...props2} getUid={props.getUid}/>}
+            </Stack.Screen>
+            <Stack.Screen name="GroupDetails">
+                {(props2) => <GroupDetails {...props2} getUid={props.getUid}/>}
+            </Stack.Screen>
+            <Stack.Screen name="ProfileReadOnly" component={ProfileReadOnly}/>
 
         </Stack.Navigator>
     );

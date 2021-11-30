@@ -52,12 +52,10 @@ class GroupDetails extends React.Component {
                         </ListItem>
                     </TouchableOpacity>
                 )}
-                <Button title="Join group" buttonStyle={styles.btnCreate}/>
+                {this.props.route.params.joinEnabled && <Button title="Join group" buttonStyle={styles.btnCreate}/>} 
             </ScrollView>
         )
     }
-
-
 }
 
 export default GroupDetails;
