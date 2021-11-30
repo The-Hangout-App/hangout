@@ -641,31 +641,29 @@ app.post('/registerUser', (req, res) => {
     } else {
           var username = req.body.username
           var password = req.body.password
-          var hashedPassword = 1;
-          bcrypt.genSalt(10, function(err, salt) {
-            bcrypt.hash(password, salt, function(err, hash) {
+          //var hashedPassword = 1;
+            bcrypt.hash(password, 1, function(err, hash) {
               if (err) reject(err)
               //console.log(hash);
               //console.log('inside hash function');
               connection.query("INSERT INTO users (username, password) VALUES (?,?)", [username, hash], function (err, result, fields) {
               connection.release();
+              if (err) {
+                logger.error("Error while fetching values: \n", err);
+                res.status(400).json({
+                "data": [],
+                "error": "Error obtaining values"
+                })
+              } else {
+                  res.end(JSON.stringify(result));
+                }
               //  hashedPassword = hash;
             });
           });
-          console.log('in between');
-          console.log(hashedPassword)
+          //console.log('in between');
+          //console.log(hashedPassword)
           // connection.query("INSERT INTO users (username, password) VALUES (?,?)", [username, hashedPassword], function (err, result, fields) {
           // connection.release();
-          if (err) {
-            logger.error("Error while fetching values: \n", err);
-            res.status(400).json({
-            "data": [],
-            "error": "Error obtaining values"
-            })
-          } else {
-              res.end(JSON.stringify(result));
-            }
-        });
       }
     if (err) {
       res.status(500).send('Something went wrong 1');
