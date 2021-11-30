@@ -6,6 +6,99 @@ module.exports = function routes(app, logger) {
 
 //JACK
 
+
+app.post('/updateUser/:user_id', (req, res) => {
+  pool.getConnection(function (err, connection){
+  if(err){
+    logger.error('Problem obtaining MySQL connection',err)
+    res.status(400).send('Problem obtaining MySQL connection'); 
+  } else {
+      var user_id  = req.param('user_id');
+      var first_name = req.body.first_name
+      var last_name = req.body.last_name
+      var pronoun = req.body.pronoun
+      var age = req.body.age
+      var gender = req.body.gender
+      var bio = req.body.bio
+      connection.query("UPDATE users SET first_name = ?, last_name = ?, pronoun = ?, age =  ? , gender = ?, bio = ? WHERE user_id = ?;", [first_name, last_name, pronoun,  age, gender, bio, user_id], function (err, result, fields) {   
+      connection.release();
+      if (err) {
+        logger.error("Error while fetching values: \n", err);
+        res.status(400).json({
+        "data": [],
+        "error": "Error obtaining values"
+        })
+      } else {
+          res.end(JSON.stringify(result)); 
+        }
+      });
+    }
+  });
+});
+
+
+
+app.get('/users/:user_id/groups', (req, res) => {
+  pool.getConnection(function (err, connection){
+    if(err){
+      logger.error('Problem obtaining MySQL connection',err)
+      res.status(400).send('Problem obtaining MySQL connection'); 
+    } else {
+      var user_id = req.param('user_id');
+      connection.query("Select cards.activity_name, hangout.groups.numMembers, hangout.groups.maxMembers from ((hangout.groups INNER JOIN cards on hangout.groups.card_id = cards.card_id) INNER JOIN users_in_groups ON users_in_groups.group_id = hangout.groups.group_id) where users_in_groups.user_id = ?;", user_id, function (err, result, fields) {
+        connection.release();
+        if (err) {
+          logger.error("Error while fetching values: \n", err);
+          res.status(400).json({
+            "data": [],
+            "error": "Error obtaining values"
+          })
+        } else {
+          res.end(JSON.stringify(result)); 
+        }
+      });
+    }
+  });
+});
+
+app.post('/groups/:groupid/:userid', (req, res) => {
+  pool.getConnection(function (err, connection){
+  if(err){
+    logger.error('Problem obtaining MySQL connection',err)
+    res.status(400).send('Problem obtaining MySQL connection'); 
+  } else {
+       user_id = req.param('userid');
+       group_id = req.param('groupid');
+       console.log(user_id)
+       console.log(group_id)
+       connection.query("UPDATE hangout.groups SET numMembers = numMembers + 1 where group_id= ?", [group_id], function (err, result, fields) {
+        if (err) {
+          logger.error("Error while fetching values: \n", err);
+          res.status(400).json({
+          "data": [],
+          "error": "Error obtaining values"
+          })
+        } else {
+            res.end(JSON.stringify(result)); 
+          }
+      
+      });
+      connection.query("INSERT INTO users_in_groups ( group_id, user_id) VALUES (?,?)", [user_id, group_id], function (err, result, fields) {
+      if (err) {
+        logger.error("Error while fetching values: \n", err);
+        res.status(400).json({
+        "data": [],
+        "error": "Error obtaining values"
+        })
+      } else {
+          res.end(JSON.stringify(result)); 
+        }
+    
+      });
+    }
+  });
+});
+
 app.post('/user/loggingIn', (req, res) => {
   // obtain a connection from our pool of connections
   pool.getConnection(function (err, connection){
@@ -44,58 +137,58 @@ app.post('/user/loggingIn', (req, res) => {
 });
 
 
-// app.post('/user/logging', (req, res) => {
-//   // obtain a connection from our pool of connections
-//   pool.getConnection(function (err, connection){
-//       if(err){
-//           // if there is an issue obtaining a connection, release the connection instance and log the error
-//           logger.error('Problem obtaining MySQL connection',err)
-//           res.status(400).send('Problem obtaining MySQL connection'); 
-//       } else {
+app.post('/user/logging', (req, res) => {
+  // obtain a connection from our pool of connections
+  pool.getConnection(function (err, connection){
+      if(err){
+          // if there is an issue obtaining a connection, release the connection instance and log the error
+          logger.error('Problem obtaining MySQL connection',err)
+          res.status(400).send('Problem obtaining MySQL connection'); 
+      } else {
 
-//           var username = req.body.username
-//           var password = req.body.password
+          var username = req.body.username
+          var password = req.body.password
 
 
-//           // if there is no issue obtaining a connection, execute query
-//           if(username && password )
-//           {
-//           connection.query('SELECT * FROM users WHERE username = ? AND password = ?',[username, password], function (err, results, fields) {
-//               if (results.length > 0) { 
-//                   // if there is an error with the query, release the connection instance and log the error
-//                   response.send('Correct Password')
-//               } else{
-//                   response.send("Incorrect username and password")
-//               }
-//           });}
-//           else{
-//             response.send("Please enter Username and Password!")
-//           }
-//       }
-//   });
-// });
+          // if there is no issue obtaining a connection, execute query
+          if(username && password )
+          {
+          connection.query('SELECT * FROM users WHERE username = ? AND password = ?',[username, password], function (err, results, fields) {
+              if (results.length > 0) { 
+                  // if there is an error with the query, release the connection instance and log the error
+                  response.send('Correct Password')
+              } else{
+                  response.send("Incorrect username and password")
+              }
+          });}
+          else{
+            response.send("Please enter Username and Password!")
+          }
+      }
+  });
+});
 
-//     // POST /user/login
-//     app.post('/user/login', function(request, response) {
-//       var username = request.body.username;
-//       var password = request.body.password;
-//       console.log(username)
-//       if (username && password) {
-//         connection.query('SELECT * FROM users WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
-//           if (results.length > 0) {
-//             request.session.loggedin = true;
-//             request.session.username = username;
-//             response.send('Correct Password');
-//           } else {
-//             response.send('Incorrect Username and/or Password!');
-//           }			
-//           response.end();
-//         });
-//       } else {
-//         response.send('Please enter Username and Password!');
-//         response.end();
-//       }
-//     });
+// POST /user/login
+app.post('/user/login', function(request, response) {
+  var username = request.body.username;
+  var password = request.body.password;
+  console.log(username)
+  if (username && password) {
+    connection.query('SELECT * FROM users WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
+      if (results.length > 0) {
+        request.session.loggedin = true;
+        request.session.username = username;
+        response.send('Correct Password');
+      } else {
+        response.send('Incorrect Username and/or Password!');
+      }			
+      response.end();
+    });
+  } else {
+    response.send('Please enter Username and Password!');
+    response.end();
+  }
+});
 
 var crypto = require('crypto');
 
@@ -166,7 +259,6 @@ app.post('/auth', function(req, res, next) {
 });
 
 
-
 app.post('/groups', (req, res) => {
 
   // obtain a connection from our pool of connections
@@ -211,8 +303,8 @@ app.get('/user/:userID/profile', (req, res) => {
       res.status(400).send('Problem obtaining MySQL connection'); 
     } else {
       // if there is no issue obtaining a connection, execute query and release connection
-      var activity_id = req.param('activityID');
-      connection.query("SELECT * FROM cards WHERE card_id = ?", activity_id, function (err, result, fields) {
+      var userID = req.param('userID');
+      connection.query("SELECT * FROM users WHERE user_id = ?", userID, function (err, result, fields) {
         connection.release();
         if (err) {
           logger.error("Error while fetching values: \n", err);
@@ -369,8 +461,6 @@ app.post('/user/register', (req, res) => {
 
           var username = req.body.username
           var password = req.body.password
-
-
           // if there is no issue obtaining a connection, execute query
           connection.query('INSERT INTO users (username, password) VALUES(?, ?)',[username, password], function (err, rows, fields) {
               if (err) { 
@@ -421,6 +511,9 @@ app.get('/chat/:chat_id', (req, res) => {
 });
 
 //BRIGITTA - FROM HERE ON
+
+const bcrypt = require('bcryptjs');
+
 //given a username, return a user 
 app.get('/user/:username', (req, res) => {
   // obtain a connection from our pool of connections
@@ -502,68 +595,99 @@ app.get('/getUserByID/:userID', (req, res) => {
 //wyatt
 //register user
 //tested
+// app.post('/registerUser', (req, res) => {
+//   pool.getConnection(function (err, connection){
+//   if(err){
+//     logger.error('Problem obtaining MySQL connection',err)
+//     res.status(400).send('Problem obtaining MySQL connection'); 
+//   } else {
+//       var username = req.body.username
+//       var password = req.body.password
+//       connection.query("INSERT INTO users (username, password) VALUES (?,?)", [username, password], function (err, result, fields) {   
+//       connection.release();
+//       if (err) {
+//         logger.error("Error while fetching values: \n", err);
+//         res.status(400).json({
+//         "data": [],
+//         "error": "Error obtaining values"
+//         })
+//       } else {
+//           res.end(JSON.stringify(result)); 
+//         }
+//       });
+//     }
+//   });
+// });
+
+// var hashPassword = function(password){
+//   console.log(bcrypt.hash(password,10));
+//   var hashPwd = bcrypt.hash(password,10);
+//   console.log(hashPwd);
+//   return hashPwd
+// }
+
+// const saltPassword = async (password) => {
+//   const newHash = await bcrypt.hash(password, 10, (err, hash) => {
+//     if (err) return err;
+//     return hash;
+//   });
+//   return newHash; // no need to await here
+// }
+
+// async function helper(password) {
+//   var hashedPassword = await hashPassword(password);
+//   console.log(hashedPassword)
+//   return hashedPassword
+// }
+
+function hashPassword(password) {
+  const saltRounds = 10;
+  const hashedPassword = new Promise((resolve, reject) => {
+    bcrypt.hash(password, saltRounds, function(err, hash) {
+      if (err) reject(err)
+      resolve(hash)
+    });
+  })
+  return hashedPassword
+}
+
 app.post('/registerUser', (req, res) => {
   pool.getConnection(function (err, connection){
-  if(err){
-    logger.error('Problem obtaining MySQL connection',err)
-    res.status(400).send('Problem obtaining MySQL connection'); 
-  } else {
-      var username = req.body.username
-      var password = req.body.password
-      connection.query("INSERT INTO users (username, password) VALUES (?,?)", [username, password], function (err, result, fields) {
-      connection.release();
-      if (err) {
-        logger.error("Error while fetching values: \n", err);
-        res.status(400).json({
-        "data": [],
-        "error": "Error obtaining values"
-        })
-      } else {
-          res.end(JSON.stringify(result)); 
-        }
-      });
+    if(err){
+      logger.error('Problem obtaining MySQL connection',err)
+      res.status(400).send('Problem obtaining MySQL connection'); 
+    } else {
+          var username = req.body.username
+          var password = req.body.password
+          //var hashedPassword = 1;
+            bcrypt.hash(password, 1, function(err, hash) {
+              if (err) reject(err)
+              //console.log(hash);
+              //console.log('inside hash function');
+              connection.query("INSERT INTO users (username, password) VALUES (?,?)", [username, hash], function (err, result, fields) {
+              connection.release();
+              if (err) {
+                logger.error("Error while fetching values: \n", err);
+                res.status(400).json({
+                "data": [],
+                "error": "Error obtaining values"
+                })
+              } else {
+                  res.end(JSON.stringify(result));
+                }
+              //  hashedPassword = hash;
+            });
+          });
+          //console.log('in between');
+          //console.log(hashedPassword)
+          // connection.query("INSERT INTO users (username, password) VALUES (?,?)", [username, hashedPassword], function (err, result, fields) {
+          // connection.release();
+      }
+    if (err) {
+      res.status(500).send('Something went wrong 1');
     }
   });
 });
-
-app.post('/groups/:groupid/:userid', (req, res) => {
-  pool.getConnection(function (err, connection){
-  if(err){
-    logger.error('Problem obtaining MySQL connection',err)
-    res.status(400).send('Problem obtaining MySQL connection'); 
-  } else {
-       user_id = req.param('userid');
-       group_id = req.param('groupid');
-       console.log(user_id)
-       console.log(group_id)
-       connection.query("UPDATE hangout.groups SET numMembers = numMembers + 1 where group_id= ?", [group_id], function (err, result, fields) {
-        if (err) {
-          logger.error("Error while fetching values: \n", err);
-          res.status(400).json({
-          "data": [],
-          "error": "Error obtaining values"
-          })
-        } else {
-            res.end(JSON.stringify(result)); 
-          }
-      
-      });
-      connection.query("INSERT INTO users_in_groups ( group_id, user_id) VALUES (?,?)", [user_id, group_id], function (err, result, fields) {
-      if (err) {
-        logger.error("Error while fetching values: \n", err);
-        res.status(400).json({
-        "data": [],
-        "error": "Error obtaining values"
-        })
-      } else {
-          res.end(JSON.stringify(result)); 
-        }
-    
-      });
-    }
-  });
-});
-
 
 //wyatt
 //update user
@@ -756,14 +880,14 @@ app.get('/groups/:user_id', (req, res) => {
 
 //zech
 //given a groupID, return a single group object
-app.get('/groups/:group_id', (req, res) => {
+app.get('/groups/groupid/:group_id', (req, res) => {
   pool.getConnection(function (err, connection){
     if(err){
       logger.error('Problem obtaining MySQL connection',err)
       res.status(400).send('Problem obtaining MySQL connection'); 
     } else {
       var group_id = req.param('group_id');
-      connection.query("SELECT * FROM `groups` WHERE group_id = ?", group_id, function (err, result, fields) {
+      connection.query("SELECT * FROM hangout.groups WHERE group_id = ?", group_id, function (err, result, fields) {
         connection.release();
         if (err) {
           logger.error("Error while fetching values: \n", err);
