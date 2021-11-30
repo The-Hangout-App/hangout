@@ -666,15 +666,15 @@ app.post('/registerUser', (req, res) => {
     } else {
           var username = req.body.username
           var password = req.body.password
-          console.log(username)
-          console.log(password)
+          // console.log(username)
+          // console.log(password)
           //var hashedPassword = hashPassword(password);
-          var hashedPassword;
-          bcrypt.hash(password, 10, function(err, hash) {
-            if (err) reject(err)
-            hashedPassword = hash;
-          });
-          console.log(hashedPassword)
+          var hashedPassword = bcrypt.hash(password, 10);
+          // bcrypt.hash(password, 10, function(err, hash) {
+          //   if (err) reject(err)
+          //   var hashedPassword = hash;
+          // });
+          //console.log(hashedPassword)
           connection.query("INSERT INTO users (username, password) VALUES (?,?)", [username, hashedPassword], function (err, result, fields) {
           connection.release();
           if (err) {
