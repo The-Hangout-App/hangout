@@ -776,7 +776,7 @@ app.get('/users_in_groups/:group_id', (req, res) => {
       res.status(400).send('Problem obtaining MySQL connection'); 
     } else {
       var group_id = req.param('group_id');
-      connection.query(`SELECT u.user_id, u.username, u.first_name, u.last_name, u.pronoun, u.age, u.gender, u.bio
+      connection.query(`SELECT u.user_id, u.username, g.group_id, u.first_name, u.last_name, u.pronoun, u.age, u.gender, u.bio
                             FROM users u
                             INNER JOIN users_in_groups g
                             ON u.user_id = g.user_id
