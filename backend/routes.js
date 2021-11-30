@@ -379,7 +379,7 @@ app.get('/newestGroup', (req, res) => {
       logger.error('Problem obtaining MySQL connection',err)
       res.status(400).send('Problem obtaining MySQL connection'); 
     } else {
-      connection.query("Select Max(group_id) from hangout.groups", function (err, result, fields) {
+      connection.query("Select Max(group_id) as gid from hangout.groups", function (err, result, fields) {
         connection.release();
         if (err) {
           logger.error("Error while fetching values: \n", err);
