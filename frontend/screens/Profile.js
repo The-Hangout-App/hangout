@@ -4,19 +4,51 @@ import { Button, Text, Input, Icon, Avatar } from "react-native-elements";
 import { Card } from "react-native-elements/dist/card/Card";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { SafeAreaView } from "react-native-safe-area-context";
-
+import { Repository } from "../api/repository";
 
 
 class Profile extends React.Component {
 
+  repo = new Repository();
+
     state = {
+      username: "",
+      password: "",
       firstName: "",
       lastName: "",
       bio: "",
       age: 0,
       gender: "",
-      pronoun: ""
+      pronoun: "",
+      edit: true
     }
+
+    renderSaveButton(isValid){
+      if(isValid){
+       return(
+        <Button title="Save" onPress={this.handleSave}/>
+       );
+      }}
+    
+      handleSave = () =>{
+        this.forceUpdate();
+
+        let body = {
+          username: this.state.username,
+          password: this.state.password,
+          first_name: this.state.firstName,
+          last_name: this.state.lastName,
+          pronoun: this.state.pronoun,
+          gender: this.state.gender,
+          age: this.state.age,
+          bio:this.state.bio 
+        }
+        //console.log(body);
+        this.repo.updateUser(1,body);
+      }
+
+      
+    
 
     
     render() {
@@ -29,44 +61,75 @@ class Profile extends React.Component {
                 activeOpacity={0.7}
                 style = {styles.profilePicWrap}
             />
+            <Text>{"\n"}</Text>
             <Text h3>Profile</Text>
             <View style= {styles.flexbox}>
                 <Input  
                 style={styles.text}
+                disabled = {!this.props.route.params.edit}
+                value = {this.state.firstName}
                 placeholder="First Name" 
                 onChangeText={text => this.setState({firstName: text})}/>
                 <Input  
                 style={styles.text}
+                disabled = {!this.props.route.params.edit}
+                value = {this.state.lastName}
                 placeholder="Last Name" 
                 onChangeText={text => this.setState({lastName: text})}/>
              </View>
-              <Input  
-              style={styles.inputs}
-              placeholder="Pronouns" 
-              onChangeText={text => this.setState({pronoun: text})}/>
-              <Input  
-              style={styles.inputs}
-              placeholder="Gender" 
-              onChangeText={text => this.setState({gender: text})}/>
+              <Text>{"\n"}{"\n"}</Text>
+                <Input 
+                style={styles.inputs}
+                disabled = {!this.props.route.params.edit}
+                value = {this.state.pronoun}
+                placeholder="Pronouns" 
+                onChangeText={text => this.setState({pronoun: text})}/>
+                
+                <Input  
+                style={styles.inputs}
+                disabled = {!this.props.route.params.edit}
+                value = {this.state.gender}
+                placeholder="Gender" 
+                onChangeText={text => this.setState({gender: text})}/>
 
               <Input  
               style={styles.inputs}
+              disabled = {!this.props.route.params.edit}
+              value = {this.state.age}
               placeholder="Age" 
-              onChangeText={text => this.setState({gender: text})}/>
+              onChangeText={text => this.setState({age: text})}/>
            
-              <Input 
-              style={styles.textin}
-              multiline
-              numberOfLines={4}
-              placeholder="Bio" 
-              onChangeText={text => this.setState({bio: text})}/>
+            <Input 
+            style={styles.textin}
+            disabled = {!this.props.route.params.edit}
+            multiline
+            numberOfLines={4}
+            value = {this.state.bio}
+            placeholder="Bio" 
+            onChangeText={text => this.setState({bio: text})}/>
+          {this.renderSaveButton(this.props.route.params.edit)}
             
         </KeyboardAwareScrollView>)
     }
 
+    componentDidMount() {
+      this.repo.getUserByID(1)
+      .then(data => this.setState({
+        username: data[0].username,
+        password: data[0].password,
+        firstName: data[0].first_name,
+        lastName: data[0].last_name,
+        bio: data[0].bio,
+        age: data[0].age,
+        gender: data[0].gender,
+        pronoun: data[0].pronoun,
+      })
+      );}
+
     
 
 }
+
 
 const styles = StyleSheet.create({
     container: {
