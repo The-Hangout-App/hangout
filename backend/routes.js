@@ -155,19 +155,6 @@ app.post('/groups', (req, res) => {
                   });
               }
           });
-
-          connection.query("INSERT INTO users_in_groups ( group_id, user_id) VALUES (?,?)", [user_id, group_id], function (err, result, fields) {
-            if (err) {
-              logger.error("Error while fetching values: \n", err);
-              res.status(400).json({
-              "data": [],
-              "error": "Error obtaining values"
-              })
-            } else {
-                res.end(JSON.stringify(result)); 
-              }
-          
-            });
       }
   });
 });
@@ -232,42 +219,42 @@ app.get('/activities/:activityID', (req, res) => {
 });
 
 
-app.post('/user/create', (req, res) => {
-  console.log(req.body.user_id , req.body.username,req.body.password,req.body.first_name,req.body.last_name,req.body.pronoun,req.body.age,req.body.gender,req.body.bio);
-  // obtain a connection from our pool of connections
-  pool.getConnection(function (err, connection){
-      if(err){
-          // if there is an issue obtaining a connection, release the connection instance and log the error
-          logger.error('Problem obtaining MySQL connection',err)
-          res.status(400).send('Problem obtaining MySQL connection'); 
-      } else {
-          var username = req.body.username
-          var password = req.body.password
-          var first_name = ""
-          var last_name = ""
-          var pronoun = ""
-          var age = ""
-          var gender = ""
-          var bio = ""
-          // if there is no issue obtaining a connection, execute query
-          connection.query('INSERT INTO hangout.users (user_id, username, password, first_name, last_name, pronoun, age, gender, bio) VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, ?)',[username, password, first_name, last_name, pronoun, age, gender, bio], function (err, rows, fields) {
-              if (err) { 
-                  // if there is an error with the query, release the connection instance and log the error
-                  connection.release()
-                  logger.error("Error while creating user: \n", err); 
-                  res.status(400).json({
-                      "data": [],
-                      "error": "MySQL error"
-                  })
-              } else{
-                  res.status(200).json({
-                      "data": rows
-                  });
-              }
-          });
-      }
-  });
-});
+// app.post('/user/create', (req, res) => {
+//   console.log(req.body.user_id , req.body.username,req.body.password,req.body.first_name,req.body.last_name,req.body.pronoun,req.body.age,req.body.gender,req.body.bio);
+//   // obtain a connection from our pool of connections
+//   pool.getConnection(function (err, connection){
+//       if(err){
+//           // if there is an issue obtaining a connection, release the connection instance and log the error
+//           logger.error('Problem obtaining MySQL connection',err)
+//           res.status(400).send('Problem obtaining MySQL connection'); 
+//       } else {
+//           var username = req.body.username
+//           var password = req.body.password
+//           var first_name = ""
+//           var last_name = ""
+//           var pronoun = ""
+//           var age = ""
+//           var gender = ""
+//           var bio = ""
+//           // if there is no issue obtaining a connection, execute query
+//           connection.query('INSERT INTO hangout.users (user_id, username, password, first_name, last_name, pronoun, age, gender, bio) VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, ?)',[username, password, first_name, last_name, pronoun, age, gender, bio], function (err, rows, fields) {
+//               if (err) { 
+//                   // if there is an error with the query, release the connection instance and log the error
+//                   connection.release()
+//                   logger.error("Error while creating user: \n", err); 
+//                   res.status(400).json({
+//                       "data": [],
+//                       "error": "MySQL error"
+//                   })
+//               } else{
+//                   res.status(200).json({
+//                       "data": rows
+//                   });
+//               }
+//           });
+//       }
+//   });
+// });
 
 app.get('/chatmembers/:chat_id', (req, res) => {
   // obtain a connection from our pool of connections
@@ -327,36 +314,36 @@ app.get('/messages/:chat_id', (req, res) => {
   });
 });
 
-app.post('/user/register', (req, res) => {
-  // obtain a connection from our pool of connections
-  pool.getConnection(function (err, connection){
-      if(err){
-          // if there is an issue obtaining a connection, release the connection instance and log the error
-          logger.error('Problem obtaining MySQL connection',err)
-          res.status(400).send('Problem obtaining MySQL connection'); 
-      } else {
+// app.post('/user/register', (req, res) => {
+//   // obtain a connection from our pool of connections
+//   pool.getConnection(function (err, connection){
+//       if(err){
+//           // if there is an issue obtaining a connection, release the connection instance and log the error
+//           logger.error('Problem obtaining MySQL connection',err)
+//           res.status(400).send('Problem obtaining MySQL connection'); 
+//       } else {
 
-          var username = req.body.username
-          var password = req.body.password
-          // if there is no issue obtaining a connection, execute query
-          connection.query('INSERT INTO users (username, password) VALUES(?, ?)',[username, password], function (err, rows, fields) {
-              if (err) { 
-                  // if there is an error with the query, release the connection instance and log the error
-                  connection.release()
-                  logger.error("Error while creating user: \n", err); 
-                  res.status(400).json({
-                      "data": [],
-                      "error": "MySQL error"
-                  })
-              } else{
-                  res.status(200).json({
-                      "data": rows
-                  });
-              }
-          });
-      }
-  });
-});
+//           var username = req.body.username
+//           var password = req.body.password
+//           // if there is no issue obtaining a connection, execute query
+//           connection.query('INSERT INTO users (username, password) VALUES(?, ?)',[username, password], function (err, rows, fields) {
+//               if (err) { 
+//                   // if there is an error with the query, release the connection instance and log the error
+//                   connection.release()
+//                   logger.error("Error while creating user: \n", err); 
+//                   res.status(400).json({
+//                       "data": [],
+//                       "error": "MySQL error"
+//                   })
+//               } else{
+//                   res.status(200).json({
+//                       "data": rows
+//                   });
+//               }
+//           });
+//       }
+//   });
+// });
 
 app.get('/chat/:chat_id', (req, res) => {
   // obtain a connection from our pool of connections
@@ -512,35 +499,34 @@ app.post('/registerUser', (req, res) => {
 });
 
 //login route 
-app.get('/login', (req, res) => {
+app.post('/login', (req, res) => {
   pool.getConnection(function (err, connection){
     if(err){
       logger.error('Problem obtaining MySQL connection',err)
       res.status(400).send('Problem obtaining MySQL connection'); 
     } else {
-        var username = req.body.username
-        var password = req.body.password
-        connection.query("SELECT password, user_id FROM users WHERE username = ?", username, function (err, result, fields) {
-        connection.release();
-        if(err) {
-          throw err
-        } else {
-          console.log(result)
-          console.log(result[0])
-            bcrypt.compare(password, result[0].password, function(err, isMatch) {
-              if(err) {
-                throw err
-              } else if (!isMatch){
-                  console.log("Password doesn't match!") 
-                  emptyArray = []
-                  res.end(JSON.stringify(emptyArray)); //if password doesn't match return empty array
-              } else {
-                  console.log("Password matches!")
-                  res.end(JSON.stringify([result[0].user_id])); //if password matches return userID
-              }
-            });
-        }
-        });
+          var username = req.body.username
+          var password = req.body.password
+          var hash;
+          connection.query("SELECT password FROM users WHERE userName = ?", username, function (err, result, fields) {
+            connection.release();
+            if(err) {
+              throw err
+            } else {
+                hash = result;
+                console.log(result)
+                console.log(hash)
+            }
+          });
+          bcrypt.compare(password, hash, function(err, isMatch) {
+            if(err) {
+              throw err
+            } else if (!isMatch){
+                console.log("Password doesn't match!")
+            } else {
+              console.log("Password matches!")
+            }
+          });
       }
   });
 });
