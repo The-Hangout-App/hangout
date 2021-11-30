@@ -630,6 +630,7 @@ app.get('/login', (req, res) => {
           throw err
         } else {
           console.log(result)
+          console.log(result[0])
             bcrypt.compare(password, result[0].password, function(err, isMatch) {
               if(err) {
                 throw err
@@ -639,7 +640,7 @@ app.get('/login', (req, res) => {
                   res.end(JSON.stringify(emptyArray)); //if password doesn't match return empty array
               } else {
                   console.log("Password matches!")
-                  res.end(JSON.stringify([result[1].userID])); //if password matches return userID
+                  res.end(JSON.stringify([result[0].userID])); //if password matches return userID
               }
             });
         }
