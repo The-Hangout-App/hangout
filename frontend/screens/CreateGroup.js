@@ -2,17 +2,24 @@ import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import React, { useEffect, useState } from 'react'
 import { Avatar, Button, Input, ListItem, Text } from "react-native-elements";
 import DateTimePicker from '@react-native-community/datetimepicker'
+import { Repository } from "../api/repository";
 
 //Date time picker code adapted from here:
 // https://www.npmjs.com/package/@react-native-community/datetimepicker
 
 export default function CreateGroup(props) {
 
+
+    const repo = new Repository();
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState("");
     const [show, setShow] = useState(false);
     const [dateStr, setDateStr] = useState("");
     const [timeStr, setTimeStr] = useState("");  //str values are posted to the DB
+
+    const state = {
+        maxMembers: 0
+    }
 
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
@@ -35,11 +42,22 @@ export default function CreateGroup(props) {
         showMode('time');
     };
 
-    const onCreate = () => {
-        setDateStr(`${date.getMonth()}-${date.getDate()}-${date.getFullYear()}`)
-        setTimeStr(`${date.getHours()}:${date.getMinutes()}`)
-        //API post
+    const setState= (i) =>{
+        state.maxMembers = i;
     }
+
+    const onCreate = () => {
+        let x = setDateStr(`${date.getMonth()}-${date.getDate()}-${date.getFullYear()}`)
+        let y = setTimeStr(`${date.getHours()}:${date.getMinutes()}`)
+        //API post
+        let body = {
+            "card_id": 1 ,//props.route.params.cardId,
+            "maxMembers": state.maxMembers,
+            "date": x,
+            "time": y
+        }
+        repo.createGroup(body);
+    };
 
     const dateDisplay = () => {
         if (mode == "") {
@@ -53,13 +71,13 @@ export default function CreateGroup(props) {
     return (
         <View style={styles.container}>
             <Text h3 style={styles.txt}>Create a group</Text>
-            <Input placeholder="Max group members" keyboardType="number-pad"/>
+            <Input placeholder="Max group members" keyboardType="number-pad" onChange={(text) => setState({maxMembers: text})}/>
             <Button title="Choose date" buttonStyle={styles.btn} onPress={showDatepicker}/>
             <Button title="Choose time" buttonStyle={styles.btn} onPress={showTimepicker}/>
 
             <Text>{`Chosen date: ${dateDisplay()}`}</Text>
 
-            <Button title="Create group" buttonStyle={{marginVertical: 20}}/>
+            <Button title="Create group" buttonStyle={{marginVertical: 20}} onPress = {onCreate}/>
             
             {show && <DateTimePicker
                 testID="dateTimePicker"

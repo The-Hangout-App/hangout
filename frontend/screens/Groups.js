@@ -44,7 +44,7 @@ class Groups extends React.Component {
     }
 
     toCreateGroup = () => {
-        this.props.navigation.navigate("CreateGroup");
+        this.props.navigation.navigate("CreateGroup", {cardId :this.props.route.params.card_id});
     }
 
     componentDidMount() {

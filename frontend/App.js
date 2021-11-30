@@ -10,6 +10,7 @@ import TopHeader from './components/TopHeader';
 import Homepage from './screens/Homepage';
 import Login from './screens/Login';
 import Register from './screens/Register';
+import ProfileReadOnly from './screens/ProfileReadOnly';
 import Profile from './screens/Profile';
 import Groups from './screens/Groups';
 import GroupDetails from './screens/GroupDetails';
@@ -57,7 +58,7 @@ export default function App() {
       <NavigationContainer>
         
         {!loggedIn ?
-        <Stack.Navigator initialRouteName="Login" screenOptions={{
+        <Stack.Navigator initialRouteName="CreateGroups" screenOptions={{
           headerStyle: styles.header,
           headerTitle: "Hangout",
           headerTitleStyle: styles.title
@@ -66,6 +67,7 @@ export default function App() {
             {(props) => <Login {...props} onLogin={login}/>}
           </Stack.Screen>
           <Stack.Screen name="Register" component={Register}/>
+          <Stack.Screen name="CreateGroups" component={CreateGroup}/>
         </Stack.Navigator>
 
         :

@@ -48,7 +48,7 @@ class GroupDetails extends React.Component {
                             <ListItem.Content>
                                 <ListItem.Title>{user.username}</ListItem.Title>
                             </ListItem.Content>
-                            <Icon name="chevron-forward-outline" type="ionicon" onPress={() => ""}/>
+                            <Icon name="chevron-forward-outline" type="ionicon" onPress={() => this.props.navigation.navigate("ProfileReadOnly",{profileID: this.state.members[index].id})}/>
                         </ListItem>
                     </TouchableOpacity>
                 )}

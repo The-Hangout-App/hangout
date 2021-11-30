@@ -121,8 +121,15 @@ export class Repository {
 
     createGroup(body) {
         return new Promise((resolve, reject) => {
-            axios.post(`${this.url}/groups`, body, this.config)
+            axios.post(`${this.url}/groups`, {
+                "card_id" : body.card_id,
+                "numMembers": 1,
+                "maxMember": body.maxMembers,
+                "date": body.date,
+                "time" : body.time
+            }, this.config)
             .then(resp => {
+                console.log("done");
                 resolve(resp.data);
             })
             .catch(err => console.log(err));
