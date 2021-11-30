@@ -13,14 +13,16 @@ import ProfileReadOnly from './screens/ProfileReadOnly';
 
 const Stack = createNativeStackNavigator();
 
-const ProfileNav = () => {
+const ProfileNav = (props) => {
     return (
         <Stack.Navigator initialRouteName="Profile" screenOptions={{
             headerStyle: styles.header,
             headerTitle: "Hangout",
             headerTitleStyle: styles.title
         }}>
-            <Stack.Screen name="Profile" component={Profile}/>
+            <Stack.Screen name="Profile">
+                {(props2) => <Profile {...props2} getUid={props.getUid}/>}
+            </Stack.Screen>
         </Stack.Navigator>
     )
 }
@@ -36,7 +38,7 @@ const HomeNav = (props) => {
 
             <Stack.Screen name="Homepage" component={Homepage}/>
             <Stack.Screen name="Groups">
-                {(props2) => <MyGroups {...props2} getUid={props.getUid}/>}
+                {(props2) => <Groups {...props2} getUid={props.getUid}/>}
             </Stack.Screen>
             <Stack.Screen name="GroupDetails">
                 {(props2) => <GroupDetails {...props2} getUid={props.getUid}/>}

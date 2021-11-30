@@ -13,7 +13,8 @@ class MyGroups extends React.Component {
     repo = new Repository();
     
     toGroup = (groupId) => {
-        props.navigation.navigate("GroupDetails", {group_id: groupId, joinEnabled: false})
+        console.log(`sending to group with id: ${groupId}`)
+        this.props.navigation.navigate("GroupDetails", {group_id: groupId, joinEnabled: false})
     }
 
     getActivityName = (actId) => {
@@ -23,9 +24,11 @@ class MyGroups extends React.Component {
 
     componentDidMount() {
         //need to add proper route
-        console.log(`this is the uid passed from app: ${this.props.getUid()}`)
         this.repo.getUsersGroups(this.props.getUid()).then(act => {
+            console.log("users groups")
+            console.log(act)
             this.setState({groups: act})
+            console.log("check for id")
             console.log(this.state.groups)
         }).catch(e => console.log(e));
     }
@@ -37,7 +40,7 @@ class MyGroups extends React.Component {
                     <Text h3 style={styles.txtHeader}>My groups</Text>
                 </View>
                 {this.state.groups.map((group, index) => 
-                     <TouchableOpacity key={index} onPress={() => this.toGroup(group_id)}>
+                     <TouchableOpacity key={index} onPress={() => this.toGroup(group.group_id)}>
                         <ListItem bottomDivider>
                             <ListItem.Content>
                                 <ListItem.Title>{group.activity_name}</ListItem.Title>

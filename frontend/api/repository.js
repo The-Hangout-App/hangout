@@ -12,7 +12,7 @@ export class Repository {
 
     getGroupById(group_id) {
         return new Promise((resolve, reject) => {
-            axios.get(`${this.url}/groups/${group_id}`, this.config)
+            axios.get(`${this.url}/groups/groupid/${group_id}`, this.config)
             .then(x => resolve(x.data))
             .catch(e => {
                 alert(e);

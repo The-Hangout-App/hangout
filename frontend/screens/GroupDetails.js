@@ -7,7 +7,15 @@ class GroupDetails extends React.Component {
 
     state = {
         members: [],
-        group: {}
+        group: {
+            card_id: -1,
+            chat_id: -1,
+            date: "",
+            group_id: -1,
+            maxMembers: 0,
+            numMembers: 0,
+            time: ""
+        }
     }
 
     repo = new Repository();
@@ -21,16 +29,20 @@ class GroupDetails extends React.Component {
         }
     }
 
+    toProfile = (uid) => {
+        this.props.navigation.navigate("ProfileReadOnly", {user_id: uid})
+    }
+
 
     componentDidMount() {
         this.repo.getUsersInGroup(this.props.route.params.group_id).then(users => {
             this.setState({members: users});
+            console.log(this.state.members)
         })
         this.repo.getGroupById(this.props.route.params.group_id).then(g => {
-            console.log(g)
-            this.setState({group: g})
+            this.setState({group: g[0]})
             console.log("groupdetails")
-            console.log(this.state.group)
+            console.log(this.state.group);
         })
     }
 
@@ -42,13 +54,13 @@ class GroupDetails extends React.Component {
                     <Text style={styles.txtHeader}>{`Meeting time: ${this.state.group.time} on ${this.state.group.date}`}</Text>
                 </View>
                 {this.state.members.map((user, index) => 
-                    <TouchableOpacity key={index} onPress={() => ""}>
+                    <TouchableOpacity key={index} onPress={() => this.toProfile(user.user_id)}>
                         <ListItem bottomDivider>
                             <Avatar rounded size="small" title="AB"/>
                             <ListItem.Content>
                                 <ListItem.Title>{user.username}</ListItem.Title>
                             </ListItem.Content>
-                            <Icon name="chevron-forward-outline" type="ionicon" onPress={() => ""}/>
+                            <Icon name="chevron-forward-outline" type="ionicon" onPress={() => this.toProfile(user.user_id)}/>
                         </ListItem>
                     </TouchableOpacity>
                 )}
