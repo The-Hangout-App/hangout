@@ -574,54 +574,6 @@ app.get('/getUserByID/:userID', (req, res) => {
   });
 });
 
-//wyatt
-//register user
-//tested
-// app.post('/registerUser', (req, res) => {
-//   pool.getConnection(function (err, connection){
-//   if(err){
-//     logger.error('Problem obtaining MySQL connection',err)
-//     res.status(400).send('Problem obtaining MySQL connection'); 
-//   } else {
-//       var username = req.body.username
-//       var password = req.body.password
-//       connection.query("INSERT INTO users (username, password) VALUES (?,?)", [username, password], function (err, result, fields) {   
-//       connection.release();
-//       if (err) {
-//         logger.error("Error while fetching values: \n", err);
-//         res.status(400).json({
-//         "data": [],
-//         "error": "Error obtaining values"
-//         })
-//       } else {
-//           res.end(JSON.stringify(result)); 
-//         }
-//       });
-//     }
-//   });
-// });
-
-// var hashPassword = function(password){
-//   console.log(bcrypt.hash(password,10));
-//   var hashPwd = bcrypt.hash(password,10);
-//   console.log(hashPwd);
-//   return hashPwd
-// }
-
-// const saltPassword = async (password) => {
-//   const newHash = await bcrypt.hash(password, 10, (err, hash) => {
-//     if (err) return err;
-//     return hash;
-//   });
-//   return newHash; // no need to await here
-// }
-
-// async function helper(password) {
-//   var hashedPassword = await hashPassword(password);
-//   console.log(hashedPassword)
-//   return hashedPassword
-// }
-
 function hashPassword(password) {
   const saltRounds = 10;
   const hashedPassword = new Promise((resolve, reject) => {
@@ -633,6 +585,7 @@ function hashPassword(password) {
   return hashedPassword
 }
 
+//register route
 app.post('/registerUser', (req, res) => {
   pool.getConnection(function (err, connection){
     if(err){
@@ -641,11 +594,8 @@ app.post('/registerUser', (req, res) => {
     } else {
           var username = req.body.username
           var password = req.body.password
-          //var hashedPassword = 1;
             bcrypt.hash(password, 1, function(err, hash) {
               if (err) reject(err)
-              //console.log(hash);
-              //console.log('inside hash function');
               connection.query("INSERT INTO users (username, password) VALUES (?,?)", [username, hash], function (err, result, fields) {
               connection.release();
               if (err) {
@@ -657,17 +607,45 @@ app.post('/registerUser', (req, res) => {
               } else {
                   res.end(JSON.stringify(result));
                 }
-              //  hashedPassword = hash;
             });
           });
-          //console.log('in between');
-          //console.log(hashedPassword)
-          // connection.query("INSERT INTO users (username, password) VALUES (?,?)", [username, hashedPassword], function (err, result, fields) {
-          // connection.release();
       }
     if (err) {
-      res.status(500).send('Something went wrong 1');
+      res.status(500).send('Something went wrong');
     }
+  });
+});
+
+//login route 
+app.post('/login', (req, res) => {
+  pool.getConnection(function (err, connection){
+    if(err){
+      logger.error('Problem obtaining MySQL connection',err)
+      res.status(400).send('Problem obtaining MySQL connection'); 
+    } else {
+          var username = req.body.username
+          var password = req.body.password
+          var hash;
+          connection.query("SELECT password FROM users WHERE userName = ?", username, function (err, result, fields) {
+            connection.release();
+            if(err) {
+              throw err
+            } else {
+                hash = result;
+                console.log(result)
+                console.log(hash)
+            }
+          });
+          bycript.compare(password, hash, function(err, isMatch) {
+            if(err) {
+              throw err
+            } else if (!isMatch){
+                console.log("Password doesn't match!")
+            } else {
+              console.log("Password matches!")
+            }
+          });
+      }
   });
 });
 
