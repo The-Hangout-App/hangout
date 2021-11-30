@@ -603,7 +603,7 @@ app.post('/registerUser', (req, res) => {
 });
 
 //login route 
-app.get('/login', (req, res) => {
+app.post('/login', (req, res) => {
   pool.getConnection(function (err, connection){
     if(err){
       logger.error('Problem obtaining MySQL connection',err)
