@@ -42,9 +42,14 @@ const Tab = createBottomTabNavigator();
 export default function App() {
 
   const [loggedIn, setLoggedIn] = useState(false);
+  const [uid, setUid] = useState(6);
 
   function login() {
     setLoggedIn(true);
+  }
+
+  function getUid() {
+    return uid;
   }
 
   return (
@@ -64,8 +69,9 @@ export default function App() {
         </Stack.Navigator>
 
         :
-        
+
         <Tab.Navigator
+          initialRouteName={"Home"}
           tabBarOptions={{
             activeTintColor: 'red',
             inactiveTintColor: 'black'
@@ -95,16 +101,15 @@ export default function App() {
         >
           <Tab.Screen
             name="Profile"
-            component={ProfileNav}
-          />
-          <Tab.Screen
-            name="Home"
-            component={HomeNav}
-          />
-          <Tab.Screen
-            name="My Groups"
-            component={GroupsNav}
-          />
+          >
+            {(props) => <ProfileNav {...props} getUid={getUid}/>}
+          </Tab.Screen>
+          <Tab.Screen name="Home">
+            {(props) => <HomeNav {...props} getUid={getUid}/>}
+          </Tab.Screen>
+          <Tab.Screen name="My Groups">
+            {(props) => <GroupsNav {...props} getUid={getUid}/>}
+          </Tab.Screen>
         </Tab.Navigator>
         }
 
