@@ -649,7 +649,7 @@ app.get('/getUserByID/:userID', (req, res) => {
 
 function hashPassword(password) {
   const saltRounds = 10;
-  const hashedPassword = await new Promise((resolve, reject) => {
+  const hashedPassword = new Promise((resolve, reject) => {
     bcrypt.hash(password, saltRounds, function(err, hash) {
       if (err) reject(err)
       resolve(hash)
