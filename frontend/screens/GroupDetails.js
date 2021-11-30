@@ -26,9 +26,9 @@ export default function GroupDetails(props) {
                     <ListItem bottomDivider>
                         {getUserIcon(user)}
                         <ListItem.Content>
-                            <ListItem.Title>{user.name}</ListItem.Title>
+                            <ListItem.Title >{user.name}</ListItem.Title>
                         </ListItem.Content>
-                        <Icon name="chevron-forward-outline" type="ionicon" onPress={() => ""}/>
+                        <Icon name="chevron-forward-outline" type="ionicon" onPress={() => this.props.navigation.navigate("Profile", {edit: false})}/>
                     </ListItem>
                 </TouchableOpacity>
             )}

@@ -44,12 +44,7 @@ const Tab = createBottomTabNavigator();
 export default function App() {
     return (<ThemeProvider theme={theme}>
               <NavigationContainer>
-                <Stack.Navigator initialRouteName="CreateGroup" screenOptions={{
-                  headerStyle: styles.header,
-                  headerTitle: "Hangout",
-                  //headerTitleAlign: "center",
-                  headerTitleStyle: styles.title
-                }}>
+                <Stack.Navigator initialRouteName="Login">
                   <Stack.Screen name="Login" component={Login}/>
                   <Stack.Screen name="Register" component={Register}/>
                   <Stack.Screen name="Homepage" component={Homepage} options={{headerBackVisible: false}}/>

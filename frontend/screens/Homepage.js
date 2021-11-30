@@ -2,7 +2,8 @@ import React, { useState, useMemo } from "react";
 import { StyleSheet, View } from 'react-native';
 import ActivityCard from '../components/ActivityCard'
 import TinderCard from 'react-tinder-card'
-import styled from "styled-components";
+import styled from "styled-components/native";
+
 import { Button } from "react-native-elements";
 
 //Swiping functionality code is adapted from here: 

@@ -110,4 +110,66 @@ export class Repository {
         })
     }
 
+    getUserByID(id){
+        return new Promise((resolve, reject) => {
+            //axios.get(`${this.url}/account/${id}`)
+            axios.get(`${this.url}/getUserByID/${id}`, this.config)
+            .then(x => resolve(x.data))
+            .catch(e => {
+                alert(e);
+                reject();
+            });
+        })
+    }
+
+    updateUser(id,body){
+        return new Promise((resolve, reject) => {
+            //axios.get(`${this.url}/account/${id}`)
+            axios.put(`${this.url}/updateUser/${id}`, {
+                "username": body.username,
+                "password": body.password,
+                "first_name": body.first_name,
+                "last_name": body.last_name,
+                "pronoun": body.pronoun,
+                "gender": body.gender,
+                "age": body.age,
+                "bio": body.bio
+            }, this.config)
+            .then(x => resolve(x.data))
+            .catch(e => {
+                alert(e);
+                reject();
+            });
+        })
+    }
+
+    deleteUser(id){
+        return new Promise((resolve, reject) => {
+            //axios.get(`${this.url}/account/${id}`)
+            axios.delete(`${this.url}/DeleteUser/${id}`, this.config)
+            .then(x => resolve(x.data))
+            .catch(e => {
+                alert(e);
+                reject();
+            });
+        })
+    }
+
+    registerUser(passedState){
+        return new Promise((resolve, reject) => {
+            //axios.get(`${this.url}/account/${id}`)
+            axios.post(`${this.url}/registerUser`,{
+                "username": passedState.username,
+                "password": passedState.password
+            }, this.config)
+            .then(x => resolve(x.data))
+            .catch(e => {
+                alert(e);
+                reject();
+            });
+        })
+    }
+
+
 };
+

@@ -16,13 +16,16 @@ class Register extends React.Component {
     }
 
     handleRegister = () => {
-     // if (this.state.password != this.state.confPassword) {
-       // this.setState({errTxt: "Passwords do not match"});
-       // return;
-      //}
+     //if (this.state.password != this.state.confPassword) {
+        //this.setState({errTxt: "Passwords do not match"});
+        //return;
+    //  }
       //const body = {username: this.state.email, password: this.state.password};
-      //this.repo.createAccount(body);
-      this.props.navigation.navigate("Profile");
+      //this.repo.registerUser(body).then(data => {
+        //alert("worked");
+        this.props.navigation.navigate("Profile", {edit: true});
+        //;});
+      
     }
 
     render() {
@@ -56,12 +59,7 @@ class Register extends React.Component {
             inputStyle={styles.inputs}
           />
 
-<<<<<<< HEAD
-          <Button title = "Register" onPress = {() => this.props.navigation.navigate('Profile')}></Button>
-=======
         <Button title="Register" onPress={this.handleRegister}/>
-
->>>>>>> a1c7fc3feac7004cd1e48f8483cabe2563f40ad4
          
         </SafeAreaView>)
     }

@@ -483,7 +483,7 @@ app.post('/registerUser', (req, res) => {
         "error": "Error obtaining values"
         })
       } else {
-          res.end(JSON.stringify(result)); 
+            res.status(200).send(rows[0].result.toString());
         }
       });
     }
