@@ -671,12 +671,14 @@ app.post('/registerUser', (req, res) => {
             bcrypt.hash(password, salt, function(err, hash) {
               if (err) reject(err)
               console.log(hash);
+              console.log('inside hash function');
+              connection.query("INSERT INTO users (username, password) VALUES (?,?)", [username, hashedPassword], function (err, result, fields) {
               hashedPassword = hash;
             });
           });
           console.log('in between');
           console.log(hashedPassword)
-          connection.query("INSERT INTO users (username, password) VALUES (?,?)", [username, hashedPassword], function (err, result, fields) {
+          // connection.query("INSERT INTO users (username, password) VALUES (?,?)", [username, hashedPassword], function (err, result, fields) {
           connection.release();
           if (err) {
             logger.error("Error while fetching values: \n", err);
