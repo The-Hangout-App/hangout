@@ -16,15 +16,15 @@ class Register extends React.Component {
     }
 
     handleRegister = () => {
-      
+      /*
       if (this.state.password != this.state.confPassword) {
         this.setState({errTxt: "Passwords do not match"});
         return;
-      }
-      const body = {username: this.state.email, password: this.state.password};
-      this.repo.registerUser(body).then(data => {
+      }*/
+      //const body = {username: this.state.email, password: this.state.password};
+      this.repo.createAccount({username: this.state.email, password: this.state.password}).then(data => {
         this.props.navigation.navigate("Login");
-      })
+      }).catch(e => console.log(e));
       
     }
 
@@ -35,7 +35,7 @@ class Register extends React.Component {
           <Input  
             style={styles.text}
             placeholder="Email" 
-            onChangeText={text => this.setState({email: text})}
+            onChangeTextText={text => this.setState({email: text})}
             leftIcon={<Icon name="email"/>}
           />
 
@@ -43,7 +43,7 @@ class Register extends React.Component {
             placeholder="Password"
             textContentType="password"
             secureTextEntry={true}
-            onChange={(text) => this.setState({password: text})}
+            onChangeText={(text) => this.setState({password: text})}
             leftIcon={<Icon name="lock"/>}
             inputStyle={styles.inputs}
             errorStyle={{ color: 'red' }}
@@ -54,7 +54,7 @@ class Register extends React.Component {
             placeholder="Confirm Password"
             textContentType="password"
             secureTextEntry={true}
-            onChange={(text) => this.setState({confPassword: text})}
+            onChangeText={(text) => this.setState({confPassword: text})}
             leftIcon={<Icon name="lock"/>}
             inputStyle={styles.inputs}
           />
