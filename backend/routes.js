@@ -624,7 +624,7 @@ app.post('/login', (req, res) => {
       res.status(400).send('Problem obtaining MySQL connection'); 
     } else {
           var username = req.body.username
-          var password = req.body.password
+          console.log(username)
           var hash;
           connection.query("SELECT password FROM users WHERE userName = ?", username, function (err, result, fields) {
             connection.release();
@@ -636,6 +636,7 @@ app.post('/login', (req, res) => {
                 console.log(hash)
             }
           });
+          var password = req.body.password
           bcrypt.compare(password, hash, function(err, isMatch) {
             if(err) {
               throw err
