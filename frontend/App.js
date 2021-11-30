@@ -49,6 +49,10 @@ export default function App() {
     setUid(userId);
   }
 
+  function logout() {
+    setLoggedIn(false);
+  }
+
   function getUid() {
     return uid;
   }
@@ -101,7 +105,7 @@ export default function App() {
           })}
         >
           <Tab.Screen name="My Profile">
-            {(props) => <ProfileNav {...props} getUid={getUid}/>}
+            {(props) => <ProfileNav {...props} getUid={getUid} onLogout={logout}/>}
           </Tab.Screen>
           <Tab.Screen name="Home">
             {(props) => <HomeNav {...props} getUid={getUid}/>}

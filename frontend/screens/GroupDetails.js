@@ -30,7 +30,12 @@ class GroupDetails extends React.Component {
     }
 
     toProfile = (uid) => {
-        this.props.navigation.navigate("ProfileReadOnly", {user_id: uid})
+        this.props.navigation.navigate("ProfileReadOnly", {user_id: uid});
+    }
+
+    handleJoin = (gid) => {
+        this.repo.joinGroup(gid, this.props.getUid())
+        this.props.navigation.navigate("Homepage");
     }
 
 
@@ -64,7 +69,8 @@ class GroupDetails extends React.Component {
                         </ListItem>
                     </TouchableOpacity>
                 )}
-                {this.props.route.params.joinEnabled && <Button title="Join group" buttonStyle={styles.btnCreate}/>} 
+                {this.props.route.params.joinEnabled && 
+                <Button title="Join group" buttonStyle={styles.btnCreate} onPress={() => this.handleJoin(this.props.route.params.group_id)}/>} 
             </ScrollView>
         )
     }
