@@ -38,6 +38,10 @@ class Profile extends React.Component {
         this.repo.updateUser(this.props.getUid(), body);
       }
 
+      handleLogout = () => {
+        this.props.onLogout();
+      }
+
       
     
 
@@ -100,6 +104,7 @@ class Profile extends React.Component {
             onChangeText={text => this.setState({bio: text})}/>
 
           <Button title="Save" onPress={this.handleSave} style={styles.btn}/>
+          <Button title="Logout" onPress={this.handleLogout} buttonStyle={{backgroundColor: "red", marginTop: 15}}/>
           </View>
         </KeyboardAwareScrollView>)
     }

@@ -21,7 +21,7 @@ const ProfileNav = (props) => {
             headerTitleStyle: styles.title
         }}>
             <Stack.Screen name="Profile">
-                {(props2) => <Profile {...props2} getUid={props.getUid}/>}
+                {(props2) => <Profile {...props2} getUid={props.getUid} onLogout={props.onLogout}/>}
             </Stack.Screen>
         </Stack.Navigator>
     )

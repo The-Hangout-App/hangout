@@ -47,8 +47,8 @@ export default function CreateGroup(props) {
         
         repo.createGroup(body).then(result => {
             repo.getNewGid().then(id => {
-                console.log(`the group id is ${id[0]}`)
-                repo.joinGroup(id[0], props.getUid())
+                console.log(`the group id is ${id[0].gid}`)
+                repo.joinGroup(id[0].gid, props.getUid())
             })
             props.navigation.navigate("Homepage");
         })
