@@ -11,7 +11,7 @@ class Register extends React.Component {
     state = {
       password: "",
       confPassword: "",
-      email: "",
+      username: "",
       errTxt: ""
     }
 
@@ -21,8 +21,8 @@ class Register extends React.Component {
         this.setState({errTxt: "Passwords do not match"});
         return;
       }*/
-      //const body = {username: this.state.email, password: this.state.password};
-      this.repo.createAccount({username: this.state.email, password: this.state.password}).then(data => {
+      //const body = {username: this.state.username, password: this.state.password};
+      this.repo.createAccount({username: this.state.username, password: this.state.password}).then(data => {
         this.props.navigation.navigate("Login");
       }).catch(e => console.log(e));
       
@@ -34,9 +34,10 @@ class Register extends React.Component {
 
           <Input  
             style={styles.text}
-            placeholder="Email" 
-            onChangeTextText={text => this.setState({email: text})}
-            leftIcon={<Icon name="email"/>}
+            placeholder="Username" 
+            onChangeText={text => this.setState({username: text})}
+            leftIcon={<Icon name="person"/>}
+            autoCapitalize="none"
           />
 
           <Input

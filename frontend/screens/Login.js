@@ -9,28 +9,29 @@ class Login extends React.Component {
     repo = new Repository();
 
     state = {
-      email: "",
+      username: "",
       password: "",
-      emailErr: "", //error messages for invalid inputs
+      usernameErr: "", //error messages for invalid inputs
       pwErr: ""
     }
 
     handleLogin = () => {
-      if (this.state.email == "") {
-        this.setState({emailErr: "Invalid email"});
+      if (this.state.username == "") {
+        this.setState({usernameErr: "Invalid username"});
         return;
       }
-      this.repo.login(this.state.email, this.state.password).then(data => {
+      const body = {username: this.state.username, password: this.state.password}
+      console.log(body)
+      this.repo.login(body).then(data => {
         console.log(data)
         if (data.length > 0) {
-          this.props.navigation.navigate("Homepage");
+          this.props.onLogin(data[0]);
         }
         else {
-          this.setState({emailErr: "Invalid email or password", pwErr: "Invalid email or password"});
+          this.setState({usernameErr: "Invalid username or password", pwErr: "Invalid username or password"});
         }
       })
       .catch(e => console.log(e));
-      this.props.onLogin();
     }
 
     render() {
@@ -38,12 +39,12 @@ class Login extends React.Component {
         return (<SafeAreaView style={styles.container}>
           <Text h1>Login</Text>
           <Input
-            placeholder="Email"
-            onChangeText={(text) => this.setState({email: text})}
-            textContentType="emailAddress"
-            leftIcon={<Icon name="email"/>}
+            placeholder="Username"
+            onChangeText={(text) => this.setState({username: text})}
+            leftIcon={<Icon name="person"/>}
             errorStyle={{ color: 'red' }}
-            errorMessage={this.state.emailErr}
+            errorMessage={this.state.usernameErr}
+            autoCapitalize="none"
           />
           <Input
             placeholder="Password"

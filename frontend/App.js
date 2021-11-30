@@ -44,8 +44,9 @@ export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [uid, setUid] = useState(6);
 
-  function login() {
+  function login(userId) {
     setLoggedIn(true);
+    setUid(userId);
   }
 
   function getUid() {

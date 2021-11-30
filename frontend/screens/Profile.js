@@ -35,8 +35,7 @@ class Profile extends React.Component {
           age: this.state.age,
           bio:this.state.bio 
         }
-        //console.log(body);
-        this.repo.updateUser(1,body);
+        this.repo.updateUser(this.props.getUid(), body);
       }
 
       
