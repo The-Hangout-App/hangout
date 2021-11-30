@@ -16,15 +16,15 @@ class Register extends React.Component {
     }
 
     handleRegister = () => {
-     //if (this.state.password != this.state.confPassword) {
-        //this.setState({errTxt: "Passwords do not match"});
-        //return;
-    //  }
-      //const body = {username: this.state.email, password: this.state.password};
-      //this.repo.registerUser(body).then(data => {
-        //alert("worked");
-        this.props.navigation.navigate("Profile", {edit: true});
-        //;});
+      
+      if (this.state.password != this.state.confPassword) {
+        this.setState({errTxt: "Passwords do not match"});
+        return;
+      }
+      const body = {username: this.state.email, password: this.state.password};
+      this.repo.registerUser(body).then(data => {
+        this.props.navigation.navigate("Login");
+      })
       
     }
 
