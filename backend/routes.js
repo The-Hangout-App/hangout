@@ -636,7 +636,7 @@ app.post('/login', (req, res) => {
                 console.log(hash)
             }
           });
-          bycript.compare(password, hash, function(err, isMatch) {
+          bcrypt.compare(password, hash, function(err, isMatch) {
             if(err) {
               throw err
             } else if (!isMatch){
