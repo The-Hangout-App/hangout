@@ -10,6 +10,50 @@ export class Repository {
         }
     }
 
+    getGroupById(group_id) {
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/groups/${group_id}`, this.config)
+            .then(x => resolve(x.data))
+            .catch(e => {
+                alert(e);
+                reject();
+            });
+        })
+    }
+
+    getCards() {
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/cards`, this.config)
+            .then(x => resolve(x.data))
+            .catch(e => {
+                alert(e);
+                reject();
+            });
+        })
+    }
+
+    getActivity(cardId) {
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/activities/${cardId}`, this.config)
+            .then(x => resolve(x.data))
+            .catch(e => {
+                alert(e);
+                reject();
+            });
+        })
+    }
+
+    getUsersGroups(userId) {
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/users/${userId}/groups`, this.config)
+            .then(x => resolve(x.data))
+            .catch(e => {
+                alert(e);
+                reject();
+            });
+        }) 
+    }
+
     getUser(username) {
         return new Promise((resolve, reject) => {
             axios.get(`${this.url}/user/${username}`, this.config)
@@ -42,9 +86,9 @@ export class Repository {
         })
     }
 
-    getGroups(activityID) {
+    getGroups(card_id) {
         return new Promise((resolve, reject) => {
-            axios.get(`${this.url}/activities/${activityID}`, this.config)
+            axios.get(`${this.url}/groups/${card_id}`, this.config)
             .then(x => resolve(x.data))
             .catch(e => {
                 alert(e);
@@ -53,14 +97,35 @@ export class Repository {
         })
     }
 
-    getUsersInGroup(groupID) {
+    getUserGroups(user_id){
         return new Promise((resolve, reject) => {
-            axios.get(`${this.url}/groups/${groupID}/`, this.config)
+            axios.get(`${this.url}/groups/${user_id}`, this.config)
             .then(x => resolve(x.data))
             .catch(e => {
                 alert(e);
                 reject();
             });
+        })
+    }
+
+    getUsersInGroup(group_id) {
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/users_in_groups/${group_id}`, this.config)
+            .then(x => resolve(x.data))
+            .catch(e => {
+                alert(e);
+                reject();
+            });
+        })
+    }
+
+    createGroup(body) {
+        return new Promise((resolve, reject) => {
+            axios.post(`${this.url}/groups`, body, this.config)
+            .then(resp => {
+                resolve(resp.data);
+            })
+            .catch(err => console.log(err));
         })
     }
 
@@ -71,44 +136,6 @@ export class Repository {
             reject();
         });
     })}
-
-
-    //Example post route
-    addAccount(state) {
-        return new Promise((resolve, reject) => {
-            axios.post(`${this.url}/account`, state, this.config).then(resp => {
-                if(resp.data == "L")
-                {
-                    return alert("Email already in use");
-                }
-                else {
-                    resolve(resp.data);
-                }
-            }).catch(err => alert(err));
-        });
-    }
-
-    //Example delete route
-    deleteAccount(){
-        return new Promise((resolve, reject) => {
-        axios.delete(`${this.url}/account`)
-        .catch(e => {
-            reject();
-        });
-    })}
-    
-    //Sample get route
-    getAccountInfo(id) {
-        return new Promise((resolve, reject) => {
-            //axios.get(`${this.url}/account/${id}`)
-            axios.get(`${this.url}/account/${id}`, this.config)
-            .then(x => resolve(x.data))
-            .catch(e => {
-                alert(e);
-                reject();
-            });
-        })
-    }
 
     getUserByID(id){
         return new Promise((resolve, reject) => {

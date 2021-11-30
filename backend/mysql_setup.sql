@@ -198,3 +198,6 @@ VALUES (1, 1, 3), -- user 3 is in group 1
 (2, 1, 4), -- user 4 is also in group 1
 (3, 1, 5), -- user 5 is also in group 1
 (4, 2, 6); -- user 6 is in group 2
+
+ALTER TABLE `users` 
+MODIFY COLUMN password VARCHAR(100);

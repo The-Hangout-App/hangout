@@ -1,12 +1,18 @@
 import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import React, { useEffect, useState } from 'react'
 import { Avatar, Button, Icon, ListItem, Text } from "react-native-elements";
+import { Repository } from "../api/repository";
 
-export default function GroupDetails(props) {
+class GroupDetails extends React.Component {
 
-    const [members, setMembers] = useState([{uid: 1, name: "Bob", imgUrl: ""}]);
+    state = {
+        members: [],
+        group: {}
+    }
+
+    repo = new Repository();
     
-    const getUserIcon = (user) => {
+    getUserIcon = (user) => {
         if (user.imgUrl == "") {
             return <Avatar icon={{name: "person-outline", type: "ionicon"}} rounded/>
         }
@@ -15,28 +21,46 @@ export default function GroupDetails(props) {
         }
     }
 
-    return (
-        <ScrollView>
-            <View style={styles.container}>
-                <Text h3 style={styles.txtHeader}>{`${props.route.params}`}</Text>
-                <Text>{`Meeting time: ${"time"}`}</Text>
-            </View>
-            {members.map((user, index) => 
-                <TouchableOpacity key={index} onPress={() => ""}>
-                    <ListItem bottomDivider>
-                        {getUserIcon(user)}
-                        <ListItem.Content>
-                            <ListItem.Title >{user.name}</ListItem.Title>
-                        </ListItem.Content>
-                        <Icon name="chevron-forward-outline" type="ionicon" onPress={() => this.props.navigation.navigate("Profile", {edit: false})}/>
-                    </ListItem>
-                </TouchableOpacity>
-            )}
-            <Button title="Join group" buttonStyle={styles.btnCreate}/>
-        </ScrollView>
-    )
+
+    componentDidMount() {
+        this.repo.getUsersInGroup(this.props.route.params.group_id).then(users => {
+            this.setState({members: users});
+        })
+        this.repo.getGroupById(this.props.route.params.group_id).then(g => {
+            console.log(g)
+            this.setState({group: g})
+            console.log("groupdetails")
+            console.log(this.state.group)
+        })
+    }
+
+    render() {
+        return (
+            <ScrollView>
+                <View style={styles.container}>
+                    <Text h3 style={styles.txtHeader}>Group members</Text>
+                    <Text style={styles.txtHeader}>{`Meeting time: ${this.state.group.time} on ${this.state.group.date}`}</Text>
+                </View>
+                {this.state.members.map((user, index) => 
+                    <TouchableOpacity key={index} onPress={() => ""}>
+                        <ListItem bottomDivider>
+                            <Avatar rounded size="small" title="AB"/>
+                            <ListItem.Content>
+                                <ListItem.Title>{user.username}</ListItem.Title>
+                            </ListItem.Content>
+                            <Icon name="chevron-forward-outline" type="ionicon" onPress={() => ""}/>
+                        </ListItem>
+                    </TouchableOpacity>
+                )}
+                <Button title="Join group" buttonStyle={styles.btnCreate}/>
+            </ScrollView>
+        )
+    }
+
 
 }
+
+export default GroupDetails;
 
 const styles = StyleSheet.create({
     btnJoin: {
@@ -50,10 +74,12 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     txtHeader: {
-        margin: 15,
+        marginVertical: 15,
         textAlign: "center"
     },
     btnCreate: {
         marginTop: 15,
+        width: "90%",
+        alignSelf: "center"
     }
 })

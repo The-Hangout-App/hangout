@@ -1,10 +1,11 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect, Children } from "react";
 import { StyleSheet, View } from 'react-native';
 import ActivityCard from '../components/ActivityCard'
 import TinderCard from 'react-tinder-card'
 import styled from "styled-components/native";
 
 import { Button } from "react-native-elements";
+import { Repository } from "../api/repository";
 
 //Swiping functionality code is adapted from here: 
 //https://www.npmjs.com/package/react-tinder-card
@@ -68,13 +69,16 @@ const alreadyRemoved = [];
 
 export default function Homepage(props) {
 
-  const [activities, setActitivies] = useState([{title: "In n Out Burger", imgSource: "https://www.usmagazine.com/wp-content/uploads/2018/08/in-n-out-burger-Republican-Party.jpg"}, {title: "In n Out Burger 2", imgSource: "https://www.usmagazine.com/wp-content/uploads/2018/08/in-n-out-burger-Republican-Party.jpg"}]);
+  const repo = new Repository();
+
+  const [activities, setActitivies] = useState([]);
   const [lastDirection, setLastDirection] = useState();
   const [currentActivity, setCurrentActivity] = useState(activities[0]);
+  const [childRefs, setChildRefs] = useState([]);
 
   let actState = activities;
-
-  const childRefs = useMemo(() => Array(activities.length).fill(0).map(i => React.createRef()), [])
+  //const childRefs = useMemo(() => Array(activities.length).fill(0).map(i => React.createRef()), [activities])
+  //let childRefs = []
 
   const swiped = (direction, titleToDelete) => {
     console.log('removing: ' + titleToDelete + ' to the ' + direction)
@@ -84,16 +88,16 @@ export default function Homepage(props) {
 
   const outOfFrame = (title) => {
     console.log(title + ' left the screen!')
-    actState = actState.filter(act => act.title !== title)
+    actState = actState.filter(act => act.activity_name !== title)
     setActitivies(actState)
     setCurrentActivity(activities[0])
   }
 
   const swipe = (dir) => {
-    const cardsLeft = activities.filter(activity => !alreadyRemoved.includes(activity.title))
+    const cardsLeft = activities.filter(activity => !alreadyRemoved.includes(activity.activity_name))
     if (cardsLeft.length) {
-      const toBeRemoved = cardsLeft[cardsLeft.length - 1].title // Find the card object to be removed
-      const index = activities.map(activity => activity.title).indexOf(toBeRemoved) // Find the index of which to make the reference to
+      const toBeRemoved = cardsLeft[cardsLeft.length - 1].activity_name // Find the card object to be removed
+      const index = activities.map(activity => activity.activity_name).indexOf(toBeRemoved) // Find the index of which to make the reference to
       alreadyRemoved.push(toBeRemoved) // Make sure the next card gets removed next time if this card do not have time to exit the screen
       childRefs[index].current.swipe(dir) // Swipe the card!
 
@@ -102,21 +106,29 @@ export default function Homepage(props) {
 
   const handleSwipe = (dir) => {
     swipe(dir);
-    act = activities[activities.length - 1]
+    const act = activities[activities.length - 1];
 
     if (dir === "right") {
-      props.navigation.navigate("Groups", {activity: act});
+      props.navigation.navigate("Groups", {card_id: act.card_id});
     }
   }
+
+  useEffect(() => {
+    repo.getCards().then(cards => {
+      setActitivies(cards)
+      setChildRefs(Array(cards.length).fill(0).map(i => React.createRef()));
+      actState = activities;
+    }).catch(e => console.log(e));
+  }, []);
 
   return (
     <Container>
       <CardContainer>
         {activities.map((character, index) =>
-          <TinderCard ref={childRefs[index]} key={character.title} onSwipe={(dir) => swiped(dir, character.title)} onCardLeftScreen={() => outOfFrame(character.title)}>
+          <TinderCard ref={childRefs[index]} key={character.activity_name} onSwipe={(dir) => swiped(dir, character.activity_name)} onCardLeftScreen={() => outOfFrame(character.activity_name)}>
             <Card>
-              <CardImage source={{uri: character.imgSource}}>
-                <CardTitle>{character.title}</CardTitle>
+              <CardImage source={{uri: character.photo_url}}>
+                <CardTitle>{character.activity_name}</CardTitle>
               </CardImage>
             </Card>
           </TinderCard>
@@ -140,18 +152,6 @@ export default function Homepage(props) {
   )
 
 }
-
-/*return (<View>
-    {activities.map((act, index) =>
-      <TinderCard ref={childRefs[index]} key={act.title}
-        onSwipe={(dir) => swiped(dir, act.title)}
-        onCardLeftScreen={() => outOfFrame(act.title)}
-        preventSwipe={["up", "down"]}>
-
-        <ActivityCard activity={act}/>
-
-      </TinderCard>
-    )}*/
 
 const styles = StyleSheet.create({
     container: {

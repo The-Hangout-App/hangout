@@ -30,7 +30,7 @@ class Login extends React.Component {
         }
       })
       .catch(e => console.log(e));
-      this.props.navigation.navigate("Homepage");
+      this.props.onLogin();
     }
 
     render() {
