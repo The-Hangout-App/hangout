@@ -626,20 +626,9 @@ app.get('/getUserByID/:userID', (req, res) => {
 //   });
 // });
 
-async function hashPassword(password) {
-  const saltRounds = 10;
-  const hashedPassword = await new Promise((resolve, reject) => {
-    bcrypt.hash(password, saltRounds, function(err, hash) {
-      if (err) reject(err)
-      resolve(hash)
-    });
-  })
-  return hashedPassword
-}
-
-// var hashPassword = async function(password){
+// var hashPassword = function(password){
 //   console.log(bcrypt.hash(password,10));
-//   var hashPwd = await bcrypt.hash(password,10);
+//   var hashPwd = bcrypt.hash(password,10);
 //   console.log(hashPwd);
 //   return hashPwd
 // }
@@ -652,8 +641,20 @@ async function hashPassword(password) {
 //   return newHash; // no need to await here
 // }
 
-async function helper(password) {
-  var hashedPassword = await hashPassword(password);
+// async function helper(password) {
+//   var hashedPassword = await hashPassword(password);
+//   console.log(hashedPassword)
+//   return hashedPassword
+// }
+
+function hashPassword(password) {
+  const saltRounds = 10;
+  const hashedPassword = await new Promise((resolve, reject) => {
+    bcrypt.hash(password, saltRounds, function(err, hash) {
+      if (err) reject(err)
+      resolve(hash)
+    });
+  })
   return hashedPassword
 }
 
@@ -666,8 +667,8 @@ app.post('/registerUser', (req, res) => {
           var username = req.body.username
           var password = req.body.password
           //var hash = bcrypt.hash(password, 10); //salt the password 10 times
-          var hashedPassword = helper(password);
-          //var hashedPassword = await hashPassword(password);
+          //var hashedPassword = helper(password);
+          var hashedPassword = hashPassword(password);
           console.log(hashedPassword)
           connection.query("INSERT INTO users (username, password) VALUES (?,?)", [username, hashedPassword], function (err, result, fields) {
           connection.release();
