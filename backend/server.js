@@ -6,7 +6,7 @@ const cors = require('cors');
 const { log, ExpressAPILogMiddleware } = require('@rama41222/node-logger');
 // const mysqlConnect = require('./db');
 const routes = require('./routes');
-const { default: Groups } = require('../frontend/screens/Groups');
+// const { default: Groups } = require('../frontend/screens/Groups');
 
 // set up some configs for express.
 const config = {
