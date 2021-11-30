@@ -65,7 +65,7 @@ const Buttons = styled.View`
     justifyContent: space-between;
 `
 
-let alreadyRemoved = [];
+var alreadyRemoved = [];
 
 export default function Homepage(props) {
 
