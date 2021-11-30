@@ -603,7 +603,7 @@ app.post('/registerUser', (req, res) => {
 });
 
 //login route 
-app.post('/login', (req, res) => {
+app.post('/loginTry', (req, res) => {
   pool.getConnection(function (err, connection){
     if(err){
       logger.error('Problem obtaining MySQL connection',err)
@@ -613,17 +613,17 @@ app.post('/login', (req, res) => {
         console.log(username)
         connection.query("SELECT password FROM users WHERE userName = ?", username, function (err, result, fields) {
         connection.release();
-        var hash = 'temp'
+        //var hash = 'temp'
         if(err) {
           throw err
         } else {
-            hash = result;
+            //hash = result;
             console.log(result)
-            console.log(hash)
+            //console.log(hash)
         }
         });
         var password = req.body.password
-        bcrypt.compare(password, hash, function(err, isMatch) {
+        bcrypt.compare(password, result, function(err, isMatch) {
         if(err) {
           throw err
         } else if (!isMatch){
