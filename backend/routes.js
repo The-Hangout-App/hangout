@@ -611,7 +611,6 @@ app.post('/login', (req, res) => {
     } else {
           var username = req.body.username
           console.log(username)
-          var hash;
           connection.query("SELECT password FROM users WHERE userName = ?", username, function (err, result, fields) {
             connection.release();
             if(err) {
