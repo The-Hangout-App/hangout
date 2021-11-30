@@ -259,6 +259,19 @@ app.post('/groups', (req, res) => {
                   });
               }
           });
+
+          connection.query("INSERT INTO users_in_groups ( group_id, user_id) VALUES (?,?)", [user_id, group_id], function (err, result, fields) {
+            if (err) {
+              logger.error("Error while fetching values: \n", err);
+              res.status(400).json({
+              "data": [],
+              "error": "Error obtaining values"
+              })
+            } else {
+                res.end(JSON.stringify(result)); 
+              }
+          
+            });
       }
   });
 });
@@ -798,6 +811,30 @@ app.get('/groups/:card_id', (req, res) => {
     }
   });
 });
+
+
+app.get('/newestGroup', (req, res) => {
+  pool.getConnection(function (err, connection){
+    if(err){
+      logger.error('Problem obtaining MySQL connection',err)
+      res.status(400).send('Problem obtaining MySQL connection'); 
+    } else {
+      connection.query("Select Max(group_id) from hangout.groups", function (err, result, fields) {
+        connection.release();
+        if (err) {
+          logger.error("Error while fetching values: \n", err);
+          res.status(400).json({
+            "data": [],
+            "error": "Error obtaining values"
+          })
+        } else {
+          res.end(JSON.stringify(result)); 
+        }
+      });
+    }
+  });
+});
+
 
 //zech
 //given a userID, return an array of groups that a user has joined
