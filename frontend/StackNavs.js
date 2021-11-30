@@ -14,7 +14,11 @@ const Stack = createNativeStackNavigator();
 
 const ProfileNav = () => {
     return (
-        <Stack.Navigator initialRouteName="Profile" screenOptions={{headerShown: false}}>
+        <Stack.Navigator initialRouteName="Profile" screenOptions={{
+            headerStyle: styles.header,
+            headerTitle: "Hangout",
+            headerTitleStyle: styles.title
+        }}>
             <Stack.Screen name="Profile" component={Profile}/>
         </Stack.Navigator>
     )
@@ -23,7 +27,11 @@ export {ProfileNav}
 
 const HomeNav = () => {
     return (
-        <Stack.Navigator initialRouteName="Homepage" screenOptions={{headerShown: false}}>
+        <Stack.Navigator initialRouteName="Homepage" screenOptions={{
+            headerStyle: styles.header,
+            headerTitle: "Hangout",
+            headerTitleStyle: styles.title
+        }}>
 
             <Stack.Screen name="Homepage" component={Homepage}/>
             <Stack.Screen name="Groups" component={Groups}/>
@@ -37,7 +45,11 @@ export {HomeNav}
 
 const GroupsNav = () => {
     return (
-        <Stack.Navigator initialRouteName="MyGroups" screenOptions={{headerShown: false}}>
+        <Stack.Navigator initialRouteName="MyGroups" screenOptions={{
+            headerStyle: styles.header,
+            headerTitle: "Hangout",
+            headerTitleStyle: styles.title
+        }}>
 
             <Stack.Screen name="MyGroups" component={MyGroups}/>
             <Stack.Screen name="GroupDetails" component={GroupDetails}/>

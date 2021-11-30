@@ -58,20 +58,20 @@ export default function App() {
           headerTitleStyle: styles.title
         }}>
           <Stack.Screen name="Login">
-            {() => <Login onLogin={login}/>}
+            {(props) => <Login {...props} onLogin={login}/>}
           </Stack.Screen>
           <Stack.Screen name="Register" component={Register}/>
         </Stack.Navigator>
+
         :
+        
         <Tab.Navigator
           tabBarOptions={{
             activeTintColor: 'red',
             inactiveTintColor: 'black'
           }}
           screenOptions={({ route }) => ({
-            headerStyle: styles.header,
-            headerTitle: "Hangout",
-            headerTitleStyle: styles.title,
+            headerShown: false,
             tabBarIcon: ({ focused, color, size }) => {
               let iconName;
   
