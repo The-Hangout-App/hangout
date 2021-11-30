@@ -7,7 +7,7 @@ import { Repository } from "../api/repository";
 class MyGroups extends React.Component {
 
     state = {
-        groups: [],
+        groups: []
     }
 
 
@@ -23,13 +23,10 @@ class MyGroups extends React.Component {
 
 
     componentDidMount() {
-        this.repo.getActivity(this.props.route.params.card_id).then(act => {
-            this.setState({activity: act[0]})
-            console.log(this.state.activity)
-        }).catch(e => console.log(e));
-        this.repo.getGroups(this.props.route.params.card_id).then(groupsList => {
-            console.log(groupsList);
-            this.setState({groups: groupsList})
+        //need to add proper route
+        
+        this.repo.getUsersGroups(3).then(act => {
+            this.setState({groups: act})
             console.log(this.state.groups)
         }).catch(e => console.log(e));
     }
@@ -40,21 +37,23 @@ class MyGroups extends React.Component {
                 <View style={styles.container}>
                     <Text h3 style={styles.txtHeader}>My groups</Text>
                 </View>
-                {groups.map((group, index) => 
-                    <TouchableOpacity key={group.gid} onPress={() => toGroup()}>
+                {this.state.groups.map((group, index) => 
+                    // <TouchableOpacity key={group.gid} onPress={() => toGroup()}>
                         <ListItem bottomDivider>
                             <ListItem.Content>
-                                <ListItem.Title>{getActivityName(group.actId)}</ListItem.Title>
-                                <ListItem.Subtitle>{`${group.members} / ${group.maxMembers}`}</ListItem.Subtitle>
+                                <ListItem.Title>{group.activity_name}</ListItem.Title>
+                                <ListItem.Subtitle>{`${group.numMembers} / ${group.maxMembers}`}</ListItem.Subtitle>
                             </ListItem.Content>
                             <Icon name="chevron-forward-outline" type="ionicon" onPress={() => toGroup()}/>
                         </ListItem>
-                    </TouchableOpacity>
+                    // </TouchableOpacity>
                 )}
             </ScrollView>
         );
     }
 }
+
+export default MyGroups;
 
 const styles = StyleSheet.create({
     btnJoin: {

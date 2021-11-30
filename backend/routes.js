@@ -7,6 +7,37 @@ module.exports = function routes(app, logger) {
 //JACK
 
 
+app.post('/updateUser/:user_id', (req, res) => {
+  pool.getConnection(function (err, connection){
+  if(err){
+    logger.error('Problem obtaining MySQL connection',err)
+    res.status(400).send('Problem obtaining MySQL connection'); 
+  } else {
+      var user_id  = req.param('user_id');
+      var first_name = req.body.first_name
+      var last_name = req.body.last_name
+      var pronoun = req.body.pronoun
+      var age = req.body.age
+      var gender = req.body.gender
+      var bio = req.body.bio
+      connection.query("UPDATE users SET first_name = ?, last_name = ?, pronoun = ?, age =  ? , gender = ?, bio = ? WHERE user_id = ?;", [first_name, last_name, pronoun,  age, gender, bio, user_id], function (err, result, fields) {   
+      connection.release();
+      if (err) {
+        logger.error("Error while fetching values: \n", err);
+        res.status(400).json({
+        "data": [],
+        "error": "Error obtaining values"
+        })
+      } else {
+          res.end(JSON.stringify(result)); 
+        }
+      });
+    }
+  });
+});
+
+
+
 app.get('/users/:user_id/groups', (req, res) => {
   pool.getConnection(function (err, connection){
     if(err){
@@ -474,44 +505,6 @@ app.get('/chat/:chat_id', (req, res) => {
           //   "data": rows
           // });
         }
-      });
-    }
-  });
-});
-
-app.post('/groups/:groupid/:userid', (req, res) => {
-  pool.getConnection(function (err, connection){
-  if(err){
-    logger.error('Problem obtaining MySQL connection',err)
-    res.status(400).send('Problem obtaining MySQL connection'); 
-  } else {
-       user_id = req.param('userid');
-       group_id = req.param('groupid');
-       console.log(user_id)
-       console.log(group_id)
-       connection.query("UPDATE hangout.groups SET numMembers = numMembers + 1 where group_id= ?", [group_id], function (err, result, fields) {
-        if (err) {
-          logger.error("Error while fetching values: \n", err);
-          res.status(400).json({
-          "data": [],
-          "error": "Error obtaining values"
-          })
-        } else {
-            res.end(JSON.stringify(result)); 
-          }
-      
-      });
-      connection.query("INSERT INTO users_in_groups (group_id, user_id) VALUES (?,?)", [user_id, group_id], function (err, result, fields) {
-      if (err) {
-        logger.error("Error while fetching values: \n", err);
-        res.status(400).json({
-        "data": [],
-        "error": "Error obtaining values"
-        })
-      } else {
-          res.end(JSON.stringify(result)); 
-        }
-    
       });
     }
   });
