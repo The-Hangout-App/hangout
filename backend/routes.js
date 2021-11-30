@@ -240,7 +240,7 @@ app.post('/groups', (req, res) => {
           var card_id = req.body.card_id
           var numMembers = 1 
           var maxMembers = req.body.maxMembers
-          var date = req.body.password
+          var date = req.body.date
           var time = req.body.first_name
     
           // if there is no issue obtaining a connection, execute query
