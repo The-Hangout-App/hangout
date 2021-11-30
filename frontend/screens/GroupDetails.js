@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+import { RefreshControl, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import React, { useEffect, useState } from 'react'
 import { Avatar, Button, Icon, ListItem, Text } from "react-native-elements";
 import { Repository } from "../api/repository";
@@ -15,7 +15,8 @@ class GroupDetails extends React.Component {
             maxMembers: 0,
             numMembers: 0,
             time: ""
-        }
+        },
+        refreshing: false
     }
 
     repo = new Repository();
@@ -51,9 +52,25 @@ class GroupDetails extends React.Component {
         })
     }
 
+    _onRefresh = () => {
+        this.setState({refreshing: true});
+        this.repo.getUsersInGroup(this.props.route.params.group_id).then(users => {
+            this.setState({members: users});
+            console.log(this.state.members)
+        })
+        this.repo.getGroupById(this.props.route.params.group_id).then(g => {
+            this.setState({group: g[0]})
+            console.log("groupdetails")
+            console.log(this.state.group);
+            this.setState({refreshing: false})
+        })
+      }
+
     render() {
         return (
-            <ScrollView>
+            <ScrollView
+                refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh}/>}
+            >
                 <View style={styles.container}>
                     <Text h3 style={styles.txtHeader}>Group members</Text>
                     <Text style={styles.txtHeader}>{`Meeting time: ${this.state.group.time} on ${this.state.group.date}`}</Text>
@@ -61,7 +78,7 @@ class GroupDetails extends React.Component {
                 {this.state.members.map((user, index) => 
                     <TouchableOpacity key={index} onPress={() => this.toProfile(user.user_id)}>
                         <ListItem bottomDivider>
-                            <Avatar rounded size="small" title="AB"/>
+                            <Icon name="person" type="ionicon"/>
                             <ListItem.Content>
                                 <ListItem.Title>{user.username}</ListItem.Title>
                             </ListItem.Content>
@@ -70,7 +87,8 @@ class GroupDetails extends React.Component {
                     </TouchableOpacity>
                 )}
                 {this.props.route.params.joinEnabled && 
-                <Button title="Join group" buttonStyle={styles.btnCreate} onPress={() => this.handleJoin(this.props.route.params.group_id)}/>} 
+                <Button title="Join group" buttonStyle={styles.btnCreate} onPress={() => this.handleJoin(this.props.route.params.group_id)}
+                    disabled={this.state.group.numMembers == this.state.group.maxMembers}/>}
             </ScrollView>
         )
     }

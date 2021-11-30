@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+import { RefreshControl, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import React, { useEffect, useState } from 'react'
 import { Avatar, Button, Icon, Input, ListItem, Text } from "react-native-elements";
 import DateTimePicker from '@react-native-community/datetimepicker'
@@ -7,7 +7,8 @@ import { Repository } from "../api/repository";
 class MyGroups extends React.Component {
 
     state = {
-        groups: []
+        groups: [],
+        refreshing: false
     }
 
     repo = new Repository();
@@ -33,9 +34,23 @@ class MyGroups extends React.Component {
         }).catch(e => console.log(e));
     }
 
+    _onRefresh = () => {
+        this.setState({refreshing: true});
+        this.repo.getUsersGroups(this.props.getUid()).then(act => {
+            console.log("users groups")
+            console.log(act)
+            this.setState({groups: act})
+            console.log("check for id")
+            console.log(this.state.groups)
+            this.setState({refreshing: false})
+        }).catch(e => console.log(e));
+      }
+
     render() {
         return (
-            <ScrollView>
+            <ScrollView
+                refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh}/>}
+            >
                 <View style={styles.container}>
                     <Text h3 style={styles.txtHeader}>My groups</Text>
                 </View>

@@ -16,12 +16,12 @@ class Register extends React.Component {
     }
 
     handleRegister = () => {
-      /*
+      
       if (this.state.password != this.state.confPassword) {
         this.setState({errTxt: "Passwords do not match"});
         return;
-      }*/
-      //const body = {username: this.state.username, password: this.state.password};
+      }
+      const body = {username: this.state.username, password: this.state.password};
       this.repo.createAccount({username: this.state.username, password: this.state.password}).then(data => {
         this.props.navigation.navigate("Login");
       }).catch(e => console.log(e));

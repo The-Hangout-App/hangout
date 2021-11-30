@@ -44,8 +44,6 @@ class Profile extends React.Component {
 
       
     
-
-    
     render() {
         return (<KeyboardAwareScrollView>
             <View style={styles.container}>
@@ -55,6 +53,7 @@ class Profile extends React.Component {
                 icon={{name: 'user', type: 'font-awesome'}}
                 activeOpacity={0.7}
                 style = {styles.profilePicWrap}
+                title={this.state.username.substr(0,1)}
             />
             <Text>{"\n"}</Text>
             <Text h3>Profile</Text>
