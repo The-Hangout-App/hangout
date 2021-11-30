@@ -12,7 +12,7 @@ app.get('/users/:user_id/groups', (req, res) => {
       res.status(400).send('Problem obtaining MySQL connection'); 
     } else {
       var user_id = req.param('user_id');
-      connection.query("Select cards.activity_name, hangout.groups.group_id, hangout.groups.numMembers, hangout.groups.maxMembers from ((hangout.groups INNER JOIN cards on hangout.groups.card_id = cards.card_id) INNER JOIN users_in_groups ON users_in_groups.group_id = hangout.groups.group_id) where users_in_groups.user_id = ?;", user_id, function (err, result, fields) {
+      connection.query("Select cards.activity_name, hangout.groups.group_id, hangout.groups.numMembers, hangout.groups.maxMembers from ((hangout.groups INNER JOIN cards on hangout.groups.card_id = cards.card_id) INNER JOIN users_in_groups ON users_in_groups.group_id = hangout.groups.group_id) where users_in_groups.user_id = ?", user_id, function (err, result, fields) {
         connection.release();
         if (err) {
           logger.error("Error while fetching values: \n", err);
@@ -50,7 +50,7 @@ app.put('/groups/:groupid/:userid', (req, res) => {
           }
       
       });
-      connection.query("INSERT INTO users_in_groups ( group_id, user_id) VALUES (?,?)", [user_id, group_id], function (err, result, fields) {
+      connection.query("INSERT INTO users_in_groups ( group_id, user_id) VALUES (?,?)", [group_id, user_id], function (err, result, fields) {
       if (err) {
         logger.error("Error while fetching values: \n", err);
         res.status(400).json({
