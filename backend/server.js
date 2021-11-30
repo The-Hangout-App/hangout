@@ -28,13 +28,11 @@ app.use(cors({
 }));
 app.use(ExpressAPILogMiddleware(logger, { request: true }));
 
-const user = require('./routes/user')
-const groups = require('./routes/groups')
 
 //include routes
-user(app, logger);
-groups(app, logger);
-// routes(app, logger);
+// user(app, logger);
+// groups(app, logger);
+routes(app, logger);
 
 // connecting the express object to listen on a particular port as defined in the config object.
 app.listen(config.port, config.host, (e) => {
