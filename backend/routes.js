@@ -14,7 +14,7 @@ app.get('/users/:user_id/groups', (req, res) => {
       res.status(400).send('Problem obtaining MySQL connection'); 
     } else {
       var user_id = req.param('user_id');
-      connection.query("Select cards.activity_name, hangout.groups.numMembers, hangout.groups.maxMembers from ((hangout.groups INNER JOIN cards on hangout.groups.card_id = cards.card_id) INNER JOIN users_in_groups ON users_in_groups.group_id = hangout.groups.group_id) where users_in_groups.user_id = ?;", user_id, function (err, result, fields) {
+      connection.query("Select cards.activity_name, hangout.groups.group_id, hangout.groups.numMembers, hangout.groups.maxMembers from ((hangout.groups INNER JOIN cards on hangout.groups.card_id = cards.card_id) INNER JOIN users_in_groups ON users_in_groups.group_id = hangout.groups.group_id) where users_in_groups.user_id = ?;", user_id, function (err, result, fields) {
         connection.release();
         if (err) {
           logger.error("Error while fetching values: \n", err);
@@ -824,7 +824,7 @@ app.get('/groups/:card_id', (req, res) => {
 
 //zech
 //given a userID, return an array of groups that a user has joined
-app.get('/groups/:user_id', (req, res) => {
+app.get('/users/groups/:user_id', (req, res) => {
   pool.getConnection(function (err, connection){
     if(err){
       logger.error('Problem obtaining MySQL connection',err)

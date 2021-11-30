@@ -85,7 +85,7 @@ export default function App() {
                 iconName = focused
                   ? 'home'
                   : 'home-outline';
-              } else if (route.name === 'Profile') {
+              } else if (route.name === 'My Profile') {
                 iconName = focused ? 'person' : 'person-outline';
               }
               else if (route.name === 'My Groups') {
@@ -99,9 +99,7 @@ export default function App() {
             tabBarInactiveTintColor: 'gray',
           })}
         >
-          <Tab.Screen
-            name="Profile"
-          >
+          <Tab.Screen name="My Profile">
             {(props) => <ProfileNav {...props} getUid={getUid}/>}
           </Tab.Screen>
           <Tab.Screen name="Home">

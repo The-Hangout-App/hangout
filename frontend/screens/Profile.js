@@ -106,7 +106,7 @@ class Profile extends React.Component {
     }
 
     componentDidMount() {
-      this.repo.getUserByID(1)
+      this.repo.getUserByID(this.props.getUid())
       .then(data => this.setState({
         username: data[0].username,
         password: data[0].password,

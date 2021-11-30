@@ -83,8 +83,11 @@ class ProfileReadOnly extends React.Component {
     }
 
     componentDidMount() {
-      this.repo.getUserByID(1)
-      .then(data => this.setState({
+      this.repo.getUserByID(this.props.route.params.user_id)
+      .then(data => {
+          console.log("this is profile screen")
+          console.log(data);
+          this.setState({
         username: data[0].username,
         password: data[0].password,
         firstName: data[0].first_name,
@@ -94,6 +97,7 @@ class ProfileReadOnly extends React.Component {
         gender: data[0].gender,
         pronoun: data[0].pronoun,
       })
+    }
       );}
 
 }

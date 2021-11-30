@@ -39,8 +39,8 @@ class Groups extends React.Component {
 
     repo = new Repository();
 
-    toGroup = (groupIndex) => { //groupIndex is used to get the group from the state array
-        this.props.navigation.navigate("GroupDetails", {group_id: this.state.groups[groupIndex].group_id})
+    toGroup = (gid) => { //groupIndex is used to get the group from the state array
+        this.props.navigation.navigate("GroupDetails", {group_id: gid, joinEnabled: true})
     }
 
     toCreateGroup = () => {
@@ -66,13 +66,13 @@ class Groups extends React.Component {
                 <Text h3 style={styles.txtHeader}>{`${this.state.activity.activity_name} Groups:`}</Text>
             </View>
             {this.state.groups.map((group, index) => 
-                <TouchableOpacity key={index} onPress={() => this.toGroup(index)}>
+                <TouchableOpacity key={index} onPress={() => this.toGroup(group.group_id)}>
                     <ListItem bottomDivider>
                         <ListItem.Content>
                             <ListItem.Title>{`Group ${index + 1}`}</ListItem.Title>
                             <ListItem.Subtitle>{`${group.numMembers} / ${group.maxMembers}`}</ListItem.Subtitle>
                         </ListItem.Content>
-                        <Icon name="chevron-forward-outline" type="ionicon" onPress={() => this.toGroup(index)}/>
+                        <Icon name="chevron-forward-outline" type="ionicon" onPress={() => this.toGroup(group.group_id)}/>
                     </ListItem>
                 </TouchableOpacity>
             )}
