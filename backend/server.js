@@ -6,6 +6,7 @@ const cors = require('cors');
 const { log, ExpressAPILogMiddleware } = require('@rama41222/node-logger');
 // const mysqlConnect = require('./db');
 const routes = require('./routes');
+const { default: Groups } = require('../frontend/screens/Groups');
 
 // set up some configs for express.
 const config = {
@@ -27,8 +28,13 @@ app.use(cors({
 }));
 app.use(ExpressAPILogMiddleware(logger, { request: true }));
 
+const user = require('./routes/user')
+const groups = require('./routes/groups')
+
 //include routes
-routes(app, logger);
+user(app, logger);
+groups(app, logger);
+// routes(app, logger);
 
 // connecting the express object to listen on a particular port as defined in the config object.
 app.listen(config.port, config.host, (e) => {
