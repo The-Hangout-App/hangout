@@ -5,7 +5,6 @@ const pool = require('./hangout')
 module.exports = function routes(app, logger) {
 
 //JACK
-
 app.get('/users/:user_id/groups', (req, res) => {
   pool.getConnection(function (err, connection){
     if(err){
@@ -386,6 +385,30 @@ app.get('/chat/:chat_id', (req, res) => {
   });
 });
 
+
+app.get('/newestGroup', (req, res) => {
+  pool.getConnection(function (err, connection){
+    if(err){
+      logger.error('Problem obtaining MySQL connection',err)
+      res.status(400).send('Problem obtaining MySQL connection'); 
+    } else {
+      connection.query("Select Max(group_id) from hangout.groups", function (err, result, fields) {
+        connection.release();
+        if (err) {
+          logger.error("Error while fetching values: \n", err);
+          res.status(400).json({
+            "data": [],
+            "error": "Error obtaining values"
+          })
+        } else {
+          res.end(JSON.stringify(result)); 
+        }
+      });
+    }
+  });
+});
+
+
 //BRIGITTA - FROM HERE ON
 
 const bcrypt = require('bcryptjs');
@@ -708,30 +731,6 @@ app.get('/groups/:card_id', (req, res) => {
     }
   });
 });
-
-
-app.get('/newestGroup', (req, res) => {
-  pool.getConnection(function (err, connection){
-    if(err){
-      logger.error('Problem obtaining MySQL connection',err)
-      res.status(400).send('Problem obtaining MySQL connection'); 
-    } else {
-      connection.query("Select Max(group_id) from hangout.groups", function (err, result, fields) {
-        connection.release();
-        if (err) {
-          logger.error("Error while fetching values: \n", err);
-          res.status(400).json({
-            "data": [],
-            "error": "Error obtaining values"
-          })
-        } else {
-          res.end(JSON.stringify(result)); 
-        }
-      });
-    }
-  });
-});
-
 
 //zech
 //given a userID, return an array of groups that a user has joined
