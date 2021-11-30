@@ -153,19 +153,6 @@ app.post('/groups', (req, res) => {
                   });
               }
           });
-
-          connection.query("INSERT INTO users_in_groups ( group_id, user_id) VALUES (?,?)", [user_id, group_id], function (err, result, fields) {
-            if (err) {
-              logger.error("Error while fetching values: \n", err);
-              res.status(400).json({
-              "data": [],
-              "error": "Error obtaining values"
-              })
-            } else {
-                res.end(JSON.stringify(result)); 
-              }
-          
-            });
       }
   });
 });
