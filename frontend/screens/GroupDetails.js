@@ -21,6 +21,7 @@ class GroupDetails extends React.Component {
         }
     }
 
+
     componentDidMount() {
         this.repo.getUsersInGroup(this.props.route.params.group_id).then(users => {
             this.setState({members: users});
@@ -55,6 +56,7 @@ class GroupDetails extends React.Component {
             </ScrollView>
         )
     }
+
 
 }
 
