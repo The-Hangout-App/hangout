@@ -6,7 +6,6 @@ module.exports = function routes(app, logger) {
 
 //JACK
 
-
 app.get('/users/:user_id/groups', (req, res) => {
   pool.getConnection(function (err, connection){
     if(err){
@@ -480,7 +479,7 @@ function hashPassword(password) {
   return hashedPassword
 }
 
-//register route
+//register route that takes a username and password and stores the hashed password in the DB not the plaintext password
 app.post('/registerUser', (req, res) => {
   pool.getConnection(function (err, connection){
     if(err){
@@ -511,8 +510,9 @@ app.post('/registerUser', (req, res) => {
   });
 });
 
-//login route 
-app.get('/login', (req, res) => {
+//login route that returns user_id or empty array, given the username and pasword stored in the DB (hashed password)
+//returns user_id if hashed password matches password and an empty array if they do not match
+app.post('/login', (req, res) => {
   pool.getConnection(function (err, connection){
     if(err){
       logger.error('Problem obtaining MySQL connection',err)
@@ -520,7 +520,7 @@ app.get('/login', (req, res) => {
     } else {
         var username = req.body.username
         var password = req.body.password
-        connection.query("SELECT password, user_id FROM users WHERE userName = ?", username, function (err, result, fields) {
+        connection.query("SELECT password, user_id FROM users WHERE username = ?", username, function (err, result, fields) {
         connection.release();
         if(err) {
           throw err
