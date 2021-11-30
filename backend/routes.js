@@ -609,28 +609,29 @@ app.post('/login', (req, res) => {
       logger.error('Problem obtaining MySQL connection',err)
       res.status(400).send('Problem obtaining MySQL connection'); 
     } else {
-          var username = req.body.username
-          console.log(username)
-          connection.query("SELECT password FROM users WHERE userName = ?", username, function (err, result, fields) {
-            connection.release();
-            if(err) {
-              throw err
-            } else {
-                hash = result;
-                console.log(result)
-                console.log(hash)
-            }
-          });
-          var password = req.body.password
-          bcrypt.compare(password, hash, function(err, isMatch) {
-            if(err) {
-              throw err
-            } else if (!isMatch){
-                console.log("Password doesn't match!")
-            } else {
-              console.log("Password matches!")
-            }
-          });
+        var username = req.body.username
+        console.log(username)
+        connection.query("SELECT password FROM users WHERE userName = ?", username, function (err, result, fields) {
+        connection.release();
+        var hash = 'temp'
+        if(err) {
+          throw err
+        } else {
+            hash = result;
+            console.log(result)
+            console.log(hash)
+        }
+        });
+        var password = req.body.password
+        bcrypt.compare(password, hash, function(err, isMatch) {
+        if(err) {
+          throw err
+        } else if (!isMatch){
+            console.log("Password doesn't match!")
+        } else {
+            console.log("Password matches!")
+        }
+        });
       }
   });
 });
