@@ -30,7 +30,7 @@ app.get('/users/:user_id/groups', (req, res) => {
   });
 });
 
-app.post('/groups/:groupid/:userid', (req, res) => {
+app.put('/groups/:groupid/:userid', (req, res) => {
   pool.getConnection(function (err, connection){
   if(err){
     logger.error('Problem obtaining MySQL connection',err)
@@ -238,13 +238,13 @@ app.post('/groups', (req, res) => {
           res.status(400).send('Problem obtaining MySQL connection'); 
       } else {
           var card_id = req.body.card_id
-          var numMembers = 1 
+          var numMembers = 0 
           var maxMembers = req.body.maxMembers
           var date = req.body.date
           var time = req.body.time
     
           // if there is no issue obtaining a connection, execute query
-          connection.query('INSERT INTO groups (card_id, numMembers, maxMembers, date, time) VALUES(?, ?, ?, ?, ?)',[card_id, numMembers, maxMembers, date, time], function (err, rows, fields) {
+          connection.query('INSERT INTO hangout.groups (card_id, numMembers, maxMembers, date, time) VALUES(?, ?, ?, ?, ?)',[card_id, numMembers, maxMembers, date, time], function (err, rows, fields) {
               if (err) { 
                   // if there is an error with the query, release the connection instance and log the error
                   connection.release()
