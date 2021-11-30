@@ -41,7 +41,7 @@ export default function CreateGroup(props) {
     };
 
     const onCreate = () => {
-        var extraZero = currentDate.getMinutes() < 10 ? "0" : "";
+        var extraZero = date.getMinutes() < 10 ? "0" : "";
         setDateStr(`${date.getMonth()}-${date.getDate()}-${date.getFullYear()}`)
         setTimeStr(`${date.getHours()}:${extraZero}${date.getMinutes()}`)
         const body = {card_id: props.route.params.card_id, maxMembers: maxMembers, date: dateStr, time: timeStr}

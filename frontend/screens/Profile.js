@@ -40,6 +40,7 @@ class Profile extends React.Component {
 
       handleLogout = () => {
         this.props.onLogout();
+        this.forceUpdate();
       }
 
       
