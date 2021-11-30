@@ -624,7 +624,7 @@ app.get('/login', (req, res) => {
     } else {
         var username = req.body.username
         var password = req.body.password
-        connection.query("SELECT password FROM users WHERE userName = ?", username, function (err, result, fields) {
+        connection.query("SELECT password, userID FROM users WHERE userName = ?", username, function (err, result, fields) {
         connection.release();
         if(err) {
           throw err
@@ -633,12 +633,14 @@ app.get('/login', (req, res) => {
               if(err) {
                 throw err
               } else if (!isMatch){
-                  console.log("Password doesn't match!")
+                  console.log("Password doesn't match!") 
+                  emptyArray = []
+                  res.end(JSON.stringify(emptyArray)); //if password doesn't match return empty array
               } else {
                   console.log("Password matches!")
+                  res.end(JSON.stringify([result[0].userID])); //if password matches return userID
               }
             });
-            res.end(JSON.stringify(result)); 
         }
         });
       }
