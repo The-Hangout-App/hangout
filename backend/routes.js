@@ -611,7 +611,7 @@ app.get('/login', (req, res) => {
     } else {
         var username = req.body.username
         var password = req.body.password
-        connection.query("SELECT password, user_id FROM users WHERE userName = ?", username, function (err, result, fields) {
+        connection.query("SELECT password, user_id FROM users WHERE username = ?", username, function (err, result, fields) {
         connection.release();
         if(err) {
           throw err
