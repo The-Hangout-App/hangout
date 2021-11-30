@@ -68,21 +68,6 @@ app.put('/groups/:groupid/:userid', (req, res) => {
   });
 });
 
-
-
-var crypto = require('crypto');
-
-var generateSalt = function(length) {
-	return crypto.randomBytes(length).toString('hex').slice(0, length);
-}
-
-var sha512 = function(password, salt) {
-	var hash = crypto.createHmac('sha512', salt);
-	hash.update(password);
-	var value = hash.digest('hex');
-	return value;
-};
-
 app.post('/createUser', (req, res) =>  {
   console.log(req.body);
 
@@ -527,34 +512,35 @@ app.post('/registerUser', (req, res) => {
 });
 
 //login route 
-app.post('/login', (req, res) => {
+app.get('/login', (req, res) => {
   pool.getConnection(function (err, connection){
     if(err){
       logger.error('Problem obtaining MySQL connection',err)
       res.status(400).send('Problem obtaining MySQL connection'); 
     } else {
-          var username = req.body.username
-          var password = req.body.password
-          var hash;
-          connection.query("SELECT password FROM users WHERE userName = ?", username, function (err, result, fields) {
-            connection.release();
-            if(err) {
-              throw err
-            } else {
-                hash = result;
-                console.log(result)
-                console.log(hash)
-            }
-          });
-          bcrypt.compare(password, hash, function(err, isMatch) {
-            if(err) {
-              throw err
-            } else if (!isMatch){
-                console.log("Password doesn't match!")
-            } else {
-              console.log("Password matches!")
-            }
-          });
+        var username = req.body.username
+        var password = req.body.password
+        connection.query("SELECT password, user_id FROM users WHERE userName = ?", username, function (err, result, fields) {
+        connection.release();
+        if(err) {
+          throw err
+        } else {
+          console.log(result)
+          console.log(result[0])
+            bcrypt.compare(password, result[0].password, function(err, isMatch) {
+              if(err) {
+                throw err
+              } else if (!isMatch){
+                  console.log("Password doesn't match!") 
+                  emptyArray = []
+                  res.end(JSON.stringify(emptyArray)); //if password doesn't match return empty array
+              } else {
+                  console.log("Password matches!")
+                  res.end(JSON.stringify([result[0].userID])); //if password matches return userID
+              }
+            });
+        }
+        });
       }
   });
 });
