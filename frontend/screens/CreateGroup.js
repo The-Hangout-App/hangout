@@ -2,6 +2,7 @@ import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import React, { useEffect, useState } from 'react'
 import { Avatar, Button, Input, ListItem, Text } from "react-native-elements";
 import DateTimePicker from '@react-native-community/datetimepicker'
+import { Repository } from "../api/repository";
 
 //Date time picker code adapted from here:
 // https://www.npmjs.com/package/@react-native-community/datetimepicker
@@ -13,6 +14,9 @@ export default function CreateGroup(props) {
     const [show, setShow] = useState(false);
     const [dateStr, setDateStr] = useState("");
     const [timeStr, setTimeStr] = useState("");  //str values are posted to the DB
+    const [maxMembers, setMaxMembers] = useState(0);
+
+    const repo = new Repository();
 
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
@@ -38,7 +42,13 @@ export default function CreateGroup(props) {
     const onCreate = () => {
         setDateStr(`${date.getMonth()}-${date.getDate()}-${date.getFullYear()}`)
         setTimeStr(`${date.getHours()}:${date.getMinutes()}`)
-        //API post
+        const body = {card_id: props.route.params.card_id, maxMembers: maxMembers, date: dateStr, time: timeStr}
+        repo.createGroup(body).then(result => {
+            repo.getNewGid().then(id => {
+                repo.joinGroup(id[0], props.getUid())
+            })
+            props.navigation.navigate("Homepage");
+        })
     }
 
     const dateDisplay = () => {
@@ -53,7 +63,7 @@ export default function CreateGroup(props) {
     return (
         <View style={styles.container}>
             <Text h3 style={styles.txt}>Create a group</Text>
-            <Input placeholder="Max group members" keyboardType="number-pad"/>
+            <Input placeholder="Max group members" keyboardType="number-pad" onChangeText={text => setMaxMembers(text)}/>
             <Button title="Choose date" buttonStyle={styles.btn} onPress={showDatepicker}/>
             <Button title="Choose time" buttonStyle={styles.btn} onPress={showTimepicker}/>
 

@@ -10,6 +10,27 @@ export class Repository {
         }
     }
 
+    getNewGid() {
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/newestGroup`, this.config)
+            .then(x => resolve(x.data))
+            .catch(e => {
+                alert(e);
+                reject();
+            });
+        })
+    }
+
+    joinGroup(gid, uid) {
+        return new Promise((resolve, reject) => {
+            axios.put(`${this.url}/groups/${gid}/${uid}`, {}, this.config)
+            .then(resp => {
+                resolve(resp.data);
+            })
+            .catch(err => console.log(err));
+        })
+    }
+
     getGroupById(group_id) {
         return new Promise((resolve, reject) => {
             axios.get(`${this.url}/groups/groupid/${group_id}`, this.config)
