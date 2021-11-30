@@ -611,13 +611,11 @@ app.get('/login', (req, res) => {
     } else {
         var username = req.body.username
         var password = req.body.password
-        console.log(username)
         connection.query("SELECT password FROM users WHERE userName = ?", username, function (err, result, fields) {
         connection.release();
         if(err) {
           throw err
         } else {
-            console.log(result[0].password)
             bcrypt.compare(password, result[0].password, function(err, isMatch) {
               if(err) {
                 throw err
@@ -626,7 +624,8 @@ app.get('/login', (req, res) => {
               } else {
                   console.log("Password matches!")
               }
-              });
+            });
+            res.end(JSON.stringify(result)); 
         }
         });
       }
