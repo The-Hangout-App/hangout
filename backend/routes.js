@@ -641,11 +641,14 @@ app.post('/registerUser', (req, res) => {
     } else {
           var username = req.body.username
           var password = req.body.password
-          //var hash = bcrypt.hash(password, 10); //salt the password 10 times
-          //var hashedPassword = helper(password);
           console.log(username)
           console.log(password)
-          var hashedPassword = hashPassword(password);
+          //var hashedPassword = hashPassword(password);
+          var hashedPassword;
+          bcrypt.hash(password, 10, function(err, hash) {
+            if (err) reject(err)
+            hashedPassword = hash;
+          });
           console.log(hashedPassword)
           connection.query("INSERT INTO users (username, password) VALUES (?,?)", [username, hashedPassword], function (err, result, fields) {
           connection.release();
