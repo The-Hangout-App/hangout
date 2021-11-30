@@ -43,6 +43,17 @@ export class Repository {
         })
     }
 
+    getUsersGroups(userId) {
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/users/${userId}/groups`, this.config)
+            .then(x => resolve(x.data))
+            .catch(e => {
+                alert(e);
+                reject();
+            });
+        }) 
+    }
+
     getUser(username) {
         return new Promise((resolve, reject) => {
             axios.get(`${this.url}/user/${username}`, this.config)
