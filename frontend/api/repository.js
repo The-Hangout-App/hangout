@@ -76,9 +76,9 @@ export class Repository {
         })
     }
 
-    createAccount(data) {
+    createAccount(body) {
         return new Promise((resolve, reject) => {
-            axios.post(`${this.url}/user/register`, data, this.config)
+            axios.post(`${this.url}/user/create`, body, this.config)
             .then(resp => {
                 resolve(resp.data);
             })
@@ -89,17 +89,6 @@ export class Repository {
     getGroups(card_id) {
         return new Promise((resolve, reject) => {
             axios.get(`${this.url}/groups/${card_id}`, this.config)
-            .then(x => resolve(x.data))
-            .catch(e => {
-                alert(e);
-                reject();
-            });
-        })
-    }
-
-    getUserGroups(user_id){
-        return new Promise((resolve, reject) => {
-            axios.get(`${this.url}/groups/${user_id}`, this.config)
             .then(x => resolve(x.data))
             .catch(e => {
                 alert(e);

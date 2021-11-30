@@ -332,17 +332,16 @@ app.post('/user/create', (req, res) => {
           logger.error('Problem obtaining MySQL connection',err)
           res.status(400).send('Problem obtaining MySQL connection'); 
       } else {
-          var user_id = req.body.user_id 
           var username = req.body.username
           var password = req.body.password
-          var first_name = req.body.first_name
-          var last_name = req.body.last_name
-          var pronoun = req.body.pronoun
-          var age = req.body.age
-          var gender = req.body.gender
-          var bio = req.body.bio
+          var first_name = ""
+          var last_name = ""
+          var pronoun = ""
+          var age = ""
+          var gender = ""
+          var bio = ""
           // if there is no issue obtaining a connection, execute query
-          connection.query('INSERT INTO users (user_id, username, password, first_name, last_name, pronoun, age, gender, bio) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)',[user_id, username, password, first_name, last_name, pronoun, age, gender, bio], function (err, rows, fields) {
+          connection.query('INSERT INTO users (username, password, first_name, last_name, pronoun, age, gender, bio) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)',[username, password, first_name, last_name, pronoun, age, gender, bio], function (err, rows, fields) {
               if (err) { 
                   // if there is an error with the query, release the connection instance and log the error
                   connection.release()
