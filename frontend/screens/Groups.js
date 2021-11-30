@@ -43,8 +43,8 @@ class Groups extends React.Component {
         this.props.navigation.navigate("GroupDetails", {group_id: gid, joinEnabled: true})
     }
 
-    toCreateGroup = () => {
-        this.props.navigation.navigate("CreateGroup");
+    toCreateGroup = (cid) => {
+        this.props.navigation.navigate("CreateGroup", {card_id: cid});
     }
 
     componentDidMount() {
@@ -76,7 +76,7 @@ class Groups extends React.Component {
                     </ListItem>
                 </TouchableOpacity>
             )}
-            <Button title="Create New Group" buttonStyle={styles.btnCreate} onPress={this.toCreateGroup}/>
+            <Button title="Create New Group" buttonStyle={styles.btnCreate} onPress={() => this.toCreateGroup(this.props.route.params.card_id)}/>
         </ScrollView>
         );
     }
