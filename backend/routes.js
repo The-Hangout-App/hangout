@@ -7,37 +7,6 @@ module.exports = function routes(app, logger) {
 //JACK
 
 
-app.post('/updateUser/:user_id', (req, res) => {
-  pool.getConnection(function (err, connection){
-  if(err){
-    logger.error('Problem obtaining MySQL connection',err)
-    res.status(400).send('Problem obtaining MySQL connection'); 
-  } else {
-      var user_id  = req.param('user_id');
-      var first_name = req.body.first_name
-      var last_name = req.body.last_name
-      var pronoun = req.body.pronoun
-      var age = req.body.age
-      var gender = req.body.gender
-      var bio = req.body.bio
-      connection.query("UPDATE users SET first_name = ?, last_name = ?, pronoun = ?, age =  ? , gender = ?, bio = ? WHERE user_id = ?;", [first_name, last_name, pronoun,  age, gender, bio, user_id], function (err, result, fields) {   
-      connection.release();
-      if (err) {
-        logger.error("Error while fetching values: \n", err);
-        res.status(400).json({
-        "data": [],
-        "error": "Error obtaining values"
-        })
-      } else {
-          res.end(JSON.stringify(result)); 
-        }
-      });
-    }
-  });
-});
-
-
-
 app.get('/users/:user_id/groups', (req, res) => {
   pool.getConnection(function (err, connection){
     if(err){
@@ -271,7 +240,7 @@ app.post('/groups', (req, res) => {
           var card_id = req.body.card_id
           var numMembers = 1 
           var maxMembers = req.body.maxMembers
-          var date = req.body.password
+          var date = req.body.date
           var time = req.body.first_name
     
           // if there is no issue obtaining a connection, execute query
