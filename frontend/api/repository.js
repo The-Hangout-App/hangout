@@ -86,9 +86,9 @@ export class Repository {
         })
     }
 
-    login(username, password) {
+    login(body) {
         return new Promise((resolve, reject) => {
-            axios.get(`${this.url}/user/${username}/${password}`, this.config)
+            axios.post(`${this.url}/login`, body, this.config)
             .then(x => resolve(x.data))
             .catch(e => {
                 alert(e);
@@ -99,7 +99,7 @@ export class Repository {
 
     createAccount(body) {
         return new Promise((resolve, reject) => {
-            axios.post(`${this.url}/user/create`, body, this.config)
+            axios.post(`${this.url}/registerUser`, body, this.config)
             .then(resp => {
                 resolve(resp.data);
             })
@@ -159,19 +159,10 @@ export class Repository {
         })
     }
 
-    updateUser(id,body){
+    updateUser(id, body){
         return new Promise((resolve, reject) => {
             //axios.get(`${this.url}/account/${id}`)
-            axios.put(`${this.url}/updateUser/${id}`, {
-                "username": body.username,
-                "password": body.password,
-                "first_name": body.first_name,
-                "last_name": body.last_name,
-                "pronoun": body.pronoun,
-                "gender": body.gender,
-                "age": body.age,
-                "bio": body.bio
-            }, this.config)
+            axios.put(`${this.url}/updateUser/${id}`, body, this.config)
             .then(x => resolve(x.data))
             .catch(e => {
                 alert(e);

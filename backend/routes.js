@@ -719,6 +719,30 @@ app.get('/groups/:card_id', (req, res) => {
   });
 });
 
+
+app.get('/newestGroup', (req, res) => {
+  pool.getConnection(function (err, connection){
+    if(err){
+      logger.error('Problem obtaining MySQL connection',err)
+      res.status(400).send('Problem obtaining MySQL connection'); 
+    } else {
+      connection.query("Select Max(group_id) as gid from hangout.groups", function (err, result, fields) {
+        connection.release();
+        if (err) {
+          logger.error("Error while fetching values: \n", err);
+          res.status(400).json({
+            "data": [],
+            "error": "Error obtaining values"
+          })
+        } else {
+          res.end(JSON.stringify(result)); 
+        }
+      });
+    }
+  });
+});
+
+
 //zech
 //given a userID, return an array of groups that a user has joined
 app.get('/users/groups/:user_id', (req, res) => {

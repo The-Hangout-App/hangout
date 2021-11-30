@@ -43,8 +43,11 @@ export default function CreateGroup(props) {
         setDateStr(`${date.getMonth()}-${date.getDate()}-${date.getFullYear()}`)
         setTimeStr(`${date.getHours()}:${date.getMinutes()}`)
         const body = {card_id: props.route.params.card_id, maxMembers: maxMembers, date: dateStr, time: timeStr}
+        console.log(body);
+        
         repo.createGroup(body).then(result => {
             repo.getNewGid().then(id => {
+                console.log(`the group id is ${id[0]}`)
                 repo.joinGroup(id[0], props.getUid())
             })
             props.navigation.navigate("Homepage");
@@ -69,7 +72,7 @@ export default function CreateGroup(props) {
 
             <Text>{`Chosen date: ${dateDisplay()}`}</Text>
 
-            <Button title="Create group" buttonStyle={{marginVertical: 20}}/>
+            <Button title="Create group" buttonStyle={{marginVertical: 20}} onPress={onCreate}/>
             
             {show && <DateTimePicker
                 testID="dateTimePicker"
