@@ -622,9 +622,9 @@ app.get('/getUserByID/:userID', (req, res) => {
 //   return hashedPassword
 // }
 
-function hashPassword(password) {
+async function hashPassword(password) {
   const saltRounds = 10;
-  const hashedPassword = new Promise((resolve, reject) => {
+  const hashedPassword = await new Promise((resolve, reject) => {
     bcrypt.hash(password, saltRounds, function(err, hash) {
       if (err) reject(err)
       resolve(hash)
@@ -643,6 +643,8 @@ app.post('/registerUser', (req, res) => {
           var password = req.body.password
           //var hash = bcrypt.hash(password, 10); //salt the password 10 times
           //var hashedPassword = helper(password);
+          console.log(username)
+          console.log(password)
           var hashedPassword = hashPassword(password);
           console.log(hashedPassword)
           connection.query("INSERT INTO users (username, password) VALUES (?,?)", [username, hashedPassword], function (err, result, fields) {
