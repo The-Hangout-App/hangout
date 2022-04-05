@@ -1,3 +1,6 @@
+
+-- adding for test 
+
 -- create database hangout
 CREATE DATABASE hangout;
 
