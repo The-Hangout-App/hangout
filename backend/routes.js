@@ -1,6 +1,8 @@
 const { group } = require('console');
 const { response } = require('express');
-const pool = require('./hangout')
+const createUnixSocketPool = require('./hangout')
+
+const pool = createUnixSocketPool();
 
 module.exports = function routes(app, logger) {
 
