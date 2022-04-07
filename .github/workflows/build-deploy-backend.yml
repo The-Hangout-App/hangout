@@ -34,7 +34,8 @@ jobs:
     - name: 'Submit to cloud build'
       run: |
         cd backend
-        gcloud builds submit --tag gcr.io/hangout/backend
+        gcloud builds submit --tag us.gcr.io/hangout-344918/hangout-api:latest
+
     - name: 'Deploy to Cloud Run'
-      run: gcloud run deploy backend --image=gcr.io/hangout/backend:latest --region=us-central1 --allow-unauthenticated
+      run: gcloud run deploy backend --image=us.gcr.io/hangout-344918/hangout-api:latest --region=us-central1 --allow-unauthenticated
       
