@@ -2,7 +2,7 @@ const { group } = require('console');
 const { response } = require('express');
 const createPool = require('./hangout')
 
-const pool = await createPool();
+const pool = createPool();
 
 module.exports = function routes(app, logger) {
 
