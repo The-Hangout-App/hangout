@@ -9,7 +9,7 @@
 
 // module.exports = pool;
 
-const mysql = require('mysql');
+const mysql = require('promise-mysql');
 
 // const dbSocketAddr = process.env.DB_HOST.split(':');
 

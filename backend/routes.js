@@ -2,9 +2,32 @@ const { group } = require('console');
 const { response } = require('express');
 const createPool = require('./hangout')
 
-const pool = createPool();
+const createPoolConnection = async () => //modified version of createPoolAndEnsureSchema from google example
+  await createPool()
+    .then(async pool => {
+      return pool;
+    })
+    .catch(err => {
+      logger.error(err);
+      throw err;
+    });
+
+let pool;
 
 module.exports = function routes(app, logger) {
+
+app.use(async (req, res, next) => {
+  if (pool) {
+    return next();
+  }
+  try {
+    pool = await createPoolConnection();
+    next();
+  } catch (err) {
+    logger.error(err);
+    return next(err);
+  }
+});
 
 //JACK
 app.get('/users/:user_id/groups', (req, res) => {
