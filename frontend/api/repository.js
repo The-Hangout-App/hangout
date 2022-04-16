@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export class Repository {
 
-    url = "http://ec2-15-223-77-234.ca-central-1.compute.amazonaws.com:8000";
+    url = "https://hangout-api-emzxyeiygq-uc.a.run.app";
 
     config = {
         headers: {
