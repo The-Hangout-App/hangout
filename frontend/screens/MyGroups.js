@@ -7,6 +7,7 @@ import { Repository } from "../api/repository";
 class MyGroups extends React.Component {
 
     state = {
+        groupIds: [],
         groups: [],
         refreshing: false
     }
@@ -24,14 +25,25 @@ class MyGroups extends React.Component {
     }
 
     componentDidMount() {
-        //need to add proper route
+        //Get list of group ids for this user
         this.repo.getUsersGroups(this.props.getUid()).then(act => {
             console.log("users groups")
             console.log(act)
-            this.setState({groups: act})
+            this.setState({groupIds: act})
             console.log("check for id")
             console.log(this.state.groups)
-        }).catch(e => console.log(e));
+        })
+        .then(() => {
+            //Get group objects based on ids
+            this.state.groupIds.map((gid, index) => {
+                this.repo.getGroupById(gid)
+                .then(data => {
+                    this.setState((state, props) => {
+                        return {groups: [...state.groups, data]};
+                    })
+                })
+            })
+        })
     }
 
     _onRefresh = () => {
@@ -42,8 +54,20 @@ class MyGroups extends React.Component {
             this.setState({groups: act})
             console.log("check for id")
             console.log(this.state.groups)
-            this.setState({refreshing: false})
         }).catch(e => console.log(e));
+
+        //Get group objects based on ids
+        this.state.groupIds.map((gid, index) => {
+            this.repo.getGroupById(gid)
+            .then(data => {
+                console.log("group data", data)
+                this.setState((state, props) => {
+                    state.groups.push(data);
+                    return {groups: state.groups};
+                })
+            })
+        })
+        this.setState({refreshing: false})
       }
 
     render() {
