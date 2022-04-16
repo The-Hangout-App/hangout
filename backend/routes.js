@@ -30,6 +30,7 @@ app.use(async (req, res, next) => {
 });
 
 //JACK
+//gets the groups that a user is in
 app.get('/users/:user_id/groups', (req, res) => {
   pool.getConnection(function (err, connection){
     if(err){
@@ -53,6 +54,7 @@ app.get('/users/:user_id/groups', (req, res) => {
   });
 });
 
+//adds a user to a group
 app.put('/groups/:groupid/:userid', (req, res) => {
   pool.getConnection(function (err, connection){
   if(err){
@@ -91,6 +93,7 @@ app.put('/groups/:groupid/:userid', (req, res) => {
   });
 });
 
+//creates a user for register page
 app.post('/createUser', (req, res) =>  {
   console.log(req.body);
 
@@ -111,6 +114,7 @@ app.post('/createUser', (req, res) =>  {
 });
 });
 
+//logs in a user
 app.post('/auth', function(req, res, next) {
   var username = req.body.username;
   var userPassword = req.body.password;
@@ -147,6 +151,7 @@ app.post('/auth', function(req, res, next) {
 });
 
 
+//creates a new group
 app.post('/groups', (req, res) => {
 
   // obtain a connection from our pool of connections
@@ -182,6 +187,8 @@ app.post('/groups', (req, res) => {
   });
 });
 
+
+//gets a user information given the userid
 app.get('/user/:userID/profile', (req, res) => {
 
   pool.getConnection(function (err, connection){
@@ -211,7 +218,7 @@ app.get('/user/:userID/profile', (req, res) => {
   });
 });
 
-
+//gets information about activity based on id
 app.get('/activities/:activityID', (req, res) => {
 
   pool.getConnection(function (err, connection){
@@ -279,125 +286,98 @@ app.post('/user/create', (req, res) => {
   });
 });
 
-app.get('/chatmembers/:chat_id', (req, res) => {
-  // obtain a connection from our pool of connections
-  pool.getConnection(function (err, connection){
-    if(err){
-      // if there is an issue obtaining a connection, release the connection instance and log the error
-      logger.error('Problem obtaining MySQL connection',err)
-      res.status(400).send('Problem obtaining MySQL connection'); 
-    } else {
-      // if there is no issue obtaining a connection, execute query and release connection
-      var chat_id = req.param('chat_id');
-      connection.query("SELECT * FROM chat_members WHERE chat_id = ?", chat_id, function (err, result, fields) {
-        connection.release();
-        if (err) {
-          logger.error("Error while fetching values: \n", err);
-          res.status(400).json({
-            "data": [],
-            "error": "Error obtaining values"
-          })
-        } else {
-          res.end(JSON.stringify(result)); // Result in JSON format
-          // res.status(200).json({
-          //   "data": rows
-          // });
-        }
-      });
-    }
-  });
-});
+// app.get('/chatmembers/:chat_id', (req, res) => {
+//   // obtain a connection from our pool of connections
+//   pool.getConnection(function (err, connection){
+//     if(err){
+//       // if there is an issue obtaining a connection, release the connection instance and log the error
+//       logger.error('Problem obtaining MySQL connection',err)
+//       res.status(400).send('Problem obtaining MySQL connection'); 
+//     } else {
+//       // if there is no issue obtaining a connection, execute query and release connection
+//       var chat_id = req.param('chat_id');
+//       connection.query("SELECT * FROM chat_members WHERE chat_id = ?", chat_id, function (err, result, fields) {
+//         connection.release();
+//         if (err) {
+//           logger.error("Error while fetching values: \n", err);
+//           res.status(400).json({
+//             "data": [],
+//             "error": "Error obtaining values"
+//           })
+//         } else {
+//           res.end(JSON.stringify(result)); // Result in JSON format
+//           // res.status(200).json({
+//           //   "data": rows
+//           // });
+//         }
+//       });
+//     }
+//   });
+// });
 
-app.get('/messages/:chat_id', (req, res) => {
-  // obtain a connection from our pool of connections
-  pool.getConnection(function (err, connection){
-    if(err){
-      // if there is an issue obtaining a connection, release the connection instance and log the error
-      logger.error('Problem obtaining MySQL connection',err)
-      res.status(400).send('Problem obtaining MySQL connection'); 
-    } else {
-      // if there is no issue obtaining a connection, execute query and release connection
-      var chat_id = req.param('chat_id');
-      connection.query("SELECT * FROM messages WHERE chat_id = ?", chat_id, function (err, result, fields) {
-        connection.release();
-        if (err) {
-          logger.error("Error while fetching values: \n", err);
-          res.status(400).json({
-            "data": [],
-            "error": "Error obtaining values"
-          })
-        } else {
-          res.end(JSON.stringify(result)); // Result in JSON format
-          // res.status(200).json({
-          //   "data": rows
-          // });
-        }
-      });
-    }
-  });
-});
+// app.get('/messages/:chat_id', (req, res) => {
+//   // obtain a connection from our pool of connections
+//   pool.getConnection(function (err, connection){
+//     if(err){
+//       // if there is an issue obtaining a connection, release the connection instance and log the error
+//       logger.error('Problem obtaining MySQL connection',err)
+//       res.status(400).send('Problem obtaining MySQL connection'); 
+//     } else {
+//       // if there is no issue obtaining a connection, execute query and release connection
+//       var chat_id = req.param('chat_id');
+//       connection.query("SELECT * FROM messages WHERE chat_id = ?", chat_id, function (err, result, fields) {
+//         connection.release();
+//         if (err) {
+//           logger.error("Error while fetching values: \n", err);
+//           res.status(400).json({
+//             "data": [],
+//             "error": "Error obtaining values"
+//           })
+//         } else {
+//           res.end(JSON.stringify(result)); // Result in JSON format
+//           // res.status(200).json({
+//           //   "data": rows
+//           // });
+//         }
+//       });
+//     }
+//   });
+// });
 
-app.post('/user/register', (req, res) => {
-  // obtain a connection from our pool of connections
-  pool.getConnection(function (err, connection){
-      if(err){
-          // if there is an issue obtaining a connection, release the connection instance and log the error
-          logger.error('Problem obtaining MySQL connection',err)
-          res.status(400).send('Problem obtaining MySQL connection'); 
-      } else {
+// app.post('/user/register', (req, res) => {
+//   // obtain a connection from our pool of connections
+//   pool.getConnection(function (err, connection){
+//       if(err){
+//           // if there is an issue obtaining a connection, release the connection instance and log the error
+//           logger.error('Problem obtaining MySQL connection',err)
+//           res.status(400).send('Problem obtaining MySQL connection'); 
+//       } else {
 
-          var username = req.body.username
-          var password = req.body.password
-          // if there is no issue obtaining a connection, execute query
-          connection.query('INSERT INTO users (username, password) VALUES(?, ?)',[username, password], function (err, rows, fields) {
-              if (err) { 
-                  // if there is an error with the query, release the connection instance and log the error
-                  connection.release()
-                  logger.error("Error while creating user: \n", err); 
-                  res.status(400).json({
-                      "data": [],
-                      "error": "MySQL error"
-                  })
-              } else{
-                  res.status(200).json({
-                      "data": rows
-                  });
-              }
-          });
-      }
-  });
-});
-
-app.get('/chat/:chat_id', (req, res) => {
-  // obtain a connection from our pool of connections
-  pool.getConnection(function (err, connection){
-    if(err){
-      // if there is an issue obtaining a connection, release the connection instance and log the error
-      logger.error('Problem obtaining MySQL connection',err)
-      res.status(400).send('Problem obtaining MySQL connection'); 
-    } else {
-      // if there is no issue obtaining a connection, execute query and release connection
-      var chat_id = req.param('chat_id');
-      connection.query("SELECT * FROM chat WHERE chat_id = ?", chat_id, function (err, result, fields) {
-        connection.release();
-        if (err) {
-          logger.error("Error while fetching values: \n", err);
-          res.status(400).json({
-            "data": [],
-            "error": "Error obtaining values"
-          })
-        } else {
-          res.end(JSON.stringify(result)); // Result in JSON format
-          // res.status(200).json({
-          //   "data": rows
-          // });
-        }
-      });
-    }
-  });
-});
+//           var username = req.body.username
+//           var password = req.body.password
+//           // if there is no issue obtaining a connection, execute query
+//           connection.query('INSERT INTO users (username, password) VALUES(?, ?)',[username, password], function (err, rows, fields) {
+//               if (err) { 
+//                   // if there is an error with the query, release the connection instance and log the error
+//                   connection.release()
+//                   logger.error("Error while creating user: \n", err); 
+//                   res.status(400).json({
+//                       "data": [],
+//                       "error": "MySQL error"
+//                   })
+//               } else{
+//                   res.status(200).json({
+//                       "data": rows
+//                   });
+//               }
+//           });
+//       }
+//   });
+// });
 
 
+
+//figures out which group is newest
 app.get('/newestGroup', (req, res) => {
   pool.getConnection(function (err, connection){
     if(err){
