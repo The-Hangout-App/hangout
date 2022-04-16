@@ -13,11 +13,10 @@ class Profile extends React.Component {
 
     state = {
       username: "",
-      password: "",
       firstName: "",
       lastName: "",
       bio: "",
-      age: 0,
+      age: "",
       gender: "",
       pronoun: "",
     }
@@ -27,13 +26,12 @@ class Profile extends React.Component {
 
         let body = {
           username: this.state.username,
-          password: this.state.password,
           first_name: this.state.firstName,
           last_name: this.state.lastName,
           pronoun: this.state.pronoun,
           gender: this.state.gender,
-          age: this.state.age,
-          bio:this.state.bio 
+          age: Number(this.state.age),
+          bio:this.state.bio
         }
         this.repo.updateUser(this.props.getUid(), body);
       }
@@ -113,15 +111,14 @@ class Profile extends React.Component {
       this.repo.getUserByID(this.props.getUid())
       .then(data => this.setState({
         username: data[0].username,
-        password: data[0].password,
         firstName: data[0].first_name,
         lastName: data[0].last_name,
         bio: data[0].bio,
-        age: data[0].age,
+        age: data[0].age.toString(),
         gender: data[0].gender,
         pronoun: data[0].pronoun,
       })
-      );}
+      )}
 
     
 
@@ -134,6 +131,7 @@ const styles = StyleSheet.create({
       backgroundColor: '#fff',
       alignItems: 'center',
       justifyContent: 'center',
+      paddingVertical: 10
     },
     inputs: {
       width: "30%",
@@ -144,7 +142,8 @@ const styles = StyleSheet.create({
         width: "50%",
         marginTop: 10,
         borderColor: '#000000',
-        borderWidth: 1
+        borderWidth: 1,
+        paddingHorizontal: 5
       },
     txtLink: {
       color: "#71B6BF"
