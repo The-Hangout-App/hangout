@@ -1,0 +1,44 @@
+# This is a basic workflow that is manually triggered
+# This workflow build and push a Docker image to GCP Container Registry and deploy it on Cloud Run
+
+name: Build and Push Docker image to GCP Container Registry
+
+# Controls when the action will run. Workflow runs when manually triggered using the UI
+# or API.
+on:
+  workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      name:
+        # Friendly description to be shown in the UI instead of 'name'
+        description: 'Pushing image to GCR'
+        # Input doesn't have to be provided for the workflow to run
+        required: false
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: 'actions/checkout@v3'
+    - id: 'auth'
+      name: 'Authenticate to Google Cloud'
+      uses: 'google-github-actions/auth@v0'
+      with:
+        credentials_json: '${{ secrets.GCR_DEVOPS_SERVICE_ACCOUNT_KEY }}'
+       
+    - name: 'Set up Cloud SDK'
+      uses: 'google-github-actions/setup-gcloud@v0'
+      
+    - name: 'Submit to cloud build'
+      run: |
+        cd backend
+        gcloud builds submit --tag us.gcr.io/hangout-344918/hangout-api:latest
+
+    - name: 'Deploy to Cloud Run'
+      run: gcloud run deploy hangout-api --image=us.gcr.io/hangout-344918/hangout-api:latest --region=us-central1 --allow-unauthenticated 
+        --port=8000
+        --set-secrets=DB_HOST=DB_HOST:1,DB_NAME=DB_NAME:1,DB_PASS=DB_PASS:1,DB_USER=DB_USER:1,INSTANCE_CONNECTION_NAME=INSTANCE_CONNECTION_NAME:1
+        --add-cloudsql-instances=hangout-344918:us-central1:hangout-db
+      

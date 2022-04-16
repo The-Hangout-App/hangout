@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export class Repository {
 
-    url = "http://ec2-15-223-77-234.ca-central-1.compute.amazonaws.com:8000";
+    url = "https://hangout-api-emzxyeiygq-uc.a.run.app";
 
     config = {
         headers: {
@@ -66,7 +66,7 @@ export class Repository {
 
     getUsersGroups(userId) {
         return new Promise((resolve, reject) => {
-            axios.get(`${this.url}/users/${userId}/groups`, this.config)
+            axios.get(`${this.url}/users/groups/${userId}`, this.config)
             .then(x => resolve(x.data))
             .catch(e => {
                 alert(e);

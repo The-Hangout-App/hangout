@@ -1,8 +1,33 @@
 const { group } = require('console');
 const { response } = require('express');
-const pool = require('./hangout')
+const createPool = require('./hangout')
+
+const createPoolConnection = async () => //modified version of createPoolAndEnsureSchema from google example
+  await createPool()
+    .then(async pool => {
+      return pool;
+    })
+    .catch(err => {
+      logger.error(err);
+      throw err;
+    });
+
+let pool;
 
 module.exports = function routes(app, logger) {
+
+app.use(async (req, res, next) => {
+  if (pool) {
+    return next();
+  }
+  try {
+    pool = await createPoolConnection();
+    next();
+  } catch (err) {
+    logger.error(err);
+    return next(err);
+  }
+});
 
 //JACK
 //gets the groups that a user is in
@@ -442,7 +467,7 @@ app.get('/getUserByID/:userID', (req, res) => {
       res.status(400).send('Problem obtaining MySQL connection'); 
     } else {
       var user_id = req.param('userID');
-      connection.query("SELECT * FROM hangout.users WHERE user_id = ?", user_id, function (err, result, fields) {
+      connection.query("SELECT username, first_name, last_name, bio, age, gender, pronoun FROM hangout.users WHERE user_id = ?", user_id, function (err, result, fields) {
         connection.release();
         if (err) {
           logger.error("Error while fetching values: \n", err);
@@ -546,7 +571,6 @@ if(err){
 } else {
     var user_id = req.param('userID');
     var username_new = req.body.username
-    var password_new = req.body.password
     var first_name_new = req.body.first_name
     var last_name_new = req.body.last_name
     var pronoun_new = req.body.pronoun
@@ -554,7 +578,7 @@ if(err){
     var age_new = req.body.age
     var bio_new = req.body.bio
 
-    connection.query("UPDATE users SET username = ?, password = ?, first_name = ?, last_name = ?, pronoun = ?, gender = ?, age = ?, bio = ? WHERE user_id = ?", [username_new, password_new, first_name_new, last_name_new, pronoun_new, gender_new, age_new, bio_new, user_id], function (err, result, fields) {
+    connection.query("UPDATE users SET username = ?, first_name = ?, last_name = ?, pronoun = ?, gender = ?, age = ?, bio = ? WHERE user_id = ?", [username_new, first_name_new, last_name_new, pronoun_new, gender_new, age_new, bio_new, user_id], function (err, result, fields) {
     connection.release();
     if (err) {
       logger.error("Error while fetching values: \n", err);
@@ -732,7 +756,7 @@ app.get('/users/groups/:user_id', (req, res) => {
       res.status(400).send('Problem obtaining MySQL connection'); 
     } else {
       var user_id = req.param('user_id');
-      connection.query("SELECT group_id FROM `users_in_groups` WHERE user_id = ?", user_id, function (err, result, fields) {
+      connection.query("select card_id, numMembers, maxMembers, date, time from users_in_groups u join hangout.groups g on u.group_id = g.group_id where u.user_id = ?", user_id, function (err, result, fields) {
         connection.release();
         if (err) {
           logger.error("Error while fetching values: \n", err);
@@ -751,7 +775,7 @@ app.get('/users/groups/:user_id', (req, res) => {
 //zech
 //given a groupID, return a single group object
 app.get('/groups/groupid/:group_id', (req, res) => {
-  pool.getConnection(function (err, connection){
+  pool.getConnection(function (err, connection) {
     if(err){
       logger.error('Problem obtaining MySQL connection',err)
       res.status(400).send('Problem obtaining MySQL connection'); 

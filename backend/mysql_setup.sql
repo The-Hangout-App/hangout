@@ -1,5 +1,4 @@
--- create database hangout
-CREATE DATABASE hangout;
+create database hangout;
 
 -- use newly create database
 USE hangout;
@@ -20,8 +19,10 @@ CREATE TABLE `hangout`.`users` (
 
 -- insert sample entry
 INSERT INTO `hangout`.`users` 
-(`username`, `password`, `first_name`, `last_name`, `pronoun`, `age`, `gender`, `bio`,) 
-VALUES ('bpulins', 'soccerislife17', 'Brigitta', 'Pulins', 'She', 21, 'Female', 'I love soccer');
+(`username`, `password`, `first_name`, `last_name`, `pronoun`, `age`, `gender`, `bio`) 
+VALUES ('bpulins', 'soccerislife17', 'Brigitta', 'Pulins', 'She', 21, 'Female', 'I love soccer'),
+('jackd', 'ilovecs', 'Jack', 'Davenport', 'He', 21, 'Male', 'I love computer science'),
+('zechw', 'ilovecloudcomputing', 'Zech', 'Wolf', 'He', 21, 'Male', 'I love cloud computing');
 
 CREATE TABLE `hangout`.`user_likes` (
 	`likes_id` INT NOT NULL AUTO_INCREMENT, -- primary key
@@ -48,39 +49,42 @@ CREATE TABLE `hangout`.`activity_category` (
 CREATE TABLE `hangout`.`cards` (
 	`card_id` INT NOT NULL AUTO_INCREMENT, -- primary key
     `activity_category_id` INT, -- foreign key
-    `activity_name` VARCHAR(30),
+    `activity_name` VARCHAR(100),
     `address` VARCHAR(30),
     `phone_number` VARCHAR(30),
-    `photo_url` VARCHAR(30),
+    `photo_url` VARCHAR(300),
     `min_num_participants` INT,
     `max_num_participants` INT,
     `min_age` INT,
     `max_age` INT,
+	`city` VARCHAR(20),
+	`state` VARCHAR(10),
+	`zipcode` VARCHAR(10),
     PRIMARY KEY (`card_id`),
     FOREIGN KEY (`activity_category_id`) REFERENCES activity_category(`activity_category_id`)
 );
 
-CREATE TABLE `hangout`.`logs` (
-	`log_id` INT NOT NULL AUTO_INCREMENT, -- primary key
-    `card_id` INT, -- foreign key
-    `user_id` INT, -- foreign key
-    `swipe_direction` VARCHAR(10),
-    `preferred_gender` VARCHAR(10),
-    `preferred_num_participants` INT, 
-    `preferred_age_min` INT, 
-    `preferred_age_max` INT, 
-    `preferred_timeframe` VARCHAR(20),
-    `add_friend` VARCHAR(10),
-    `num_added_friends` INT,
-    PRIMARY KEY (log_id),
-    FOREIGN KEY (`card_id`) REFERENCES cards(`card_id`),
-    FOREIGN KEY (`user_id`) REFERENCES users(`user_id`)
-);
+-- CREATE TABLE `hangout`.`logs` (
+-- 	`log_id` INT NOT NULL AUTO_INCREMENT, -- primary key
+--     `card_id` INT, -- foreign key
+--     `user_id` INT, -- foreign key
+--     `swipe_direction` VARCHAR(10),
+--     `preferred_gender` VARCHAR(10),
+--     `preferred_num_participants` INT, 
+--     `preferred_age_min` INT, 
+--     `preferred_age_max` INT, 
+--     `preferred_timeframe` VARCHAR(20),
+--     `add_friend` VARCHAR(10),
+--     `num_added_friends` INT,
+--     PRIMARY KEY (log_id),
+--     FOREIGN KEY (`card_id`) REFERENCES cards(`card_id`),
+--     FOREIGN KEY (`user_id`) REFERENCES users(`user_id`)
+-- );
 
-CREATE TABLE `hangout`.`matches` ( -- still figuring this one out
-	match_id INT NOT NULL AUTO_INCREMENT,
-    PRIMARY KEY (`match_id`)
-);
+-- CREATE TABLE `hangout`.`matches` ( -- still figuring this one out
+-- 	match_id INT NOT NULL AUTO_INCREMENT,
+--     PRIMARY KEY (`match_id`)
+-- );
 
 CREATE TABLE `hangout`.`chat` (
 	`chat_id` INT NOT NULL AUTO_INCREMENT, -- primary key
@@ -114,13 +118,6 @@ INSERT INTO `hangout`.`activity_category`
 VALUES ('Food'),
 ('Physical Activity'),
 ('Arts and Culture');
- 
-INSERT INTO `hangout`.`cards` 
-(`activity_category_id`, `activity_name`, `address`, `phone_number`, `photo_url`, `min_num_participants`, `max_num_participants`, `min_age`, `max_age`) 
-VALUES ('3', 'Perot Museum', '2201 N Field St, Dallas, Texas', '214-428-5555', '', 1, 20, 0, 100);
-
-ALTER TABLE cards 
-MODIFY COLUMN photo_url VARCHAR(200);
 
 INSERT INTO `hangout`.`cards` 
 (`activity_category_id`, `activity_name`, `address`, `phone_number`, `photo_url`, `min_num_participants`, `max_num_participants`, `min_age`, `max_age`, `city`, `state`, `zipcode`) 
@@ -157,13 +154,12 @@ VALUES
 (1, 'Taco Bell Restaurant', '2404 N Washington Ave', '(214)821-4866', 'https://d1ralsognjng37.cloudfront.net/009fb4ac-0445-441f-84aa-86a484351127.jpeg', 1, 10, 0, 100, 'Dallas', 'Texas', '75204'), 
 (1, 'Trader Joes Grocery Shopping', '4525 Cole Avenue', '(214)599-2155', 'https://www.signalsaz.com/wp-content/uploads/2020/03/trader-joes-1.jpg', 1, 5, 0, 100, 'Dallas', 'Texas', '75205');
 
-ALTER TABLE cards
-MODIFY COLUMN image_url VARCHAR(200);
-
-ALTER TABLE `hangout`.`cards` 
-ADD `city` VARCHAR(20),
-ADD `state` VARCHAR(10),
-ADD `zipcode` VARCHAR(10);
+CREATE TABLE `hangout`.`groups` (
+	`group_id` INT NOT NULL AUTO_INCREMENT, -- primary key
+    `card_id` INT, -- forign key
+    PRIMARY KEY (`group_id`),
+    FOREIGN KEY (`card_id`) REFERENCES cards(card_id)
+);
 
 CREATE TABLE `hangout`.`users_in_groups` (
 	`group_pk` INT NOT NULL AUTO_INCREMENT, -- primary key
@@ -174,17 +170,6 @@ CREATE TABLE `hangout`.`users_in_groups` (
     FOREIGN KEY (`user_id`) REFERENCES users(user_id)
 );
 
-CREATE TABLE `hangout`.`groups` (
-	`group_id` INT NOT NULL AUTO_INCREMENT, -- primary key
-    `card_id` INT, -- forign key
-    PRIMARY KEY (`group_id`),
-    FOREIGN KEY (`card_id`) REFERENCES cards(card_id)
-);
-
-DROP TABLE `hangout`.`matches`;
-DROP TABLE `hangout`.`logs`;
-
-
 INSERT INTO `hangout`.`groups` 
 (`group_id`, `card_id`)
 VALUES (1, 3), -- card 3 (The Nutcracker) is associated with group 1 
@@ -194,10 +179,10 @@ VALUES (1, 3), -- card 3 (The Nutcracker) is associated with group 1
 
 INSERT INTO `hangout`.`users_in_groups` 
 (`group_pk`, `group_id`, `user_id`)
-VALUES (1, 1, 3), -- user 3 is in group 1
-(2, 1, 4), -- user 4 is also in group 1
-(3, 1, 5), -- user 5 is also in group 1
-(4, 2, 6); -- user 6 is in group 2
+VALUES (1, 1, 1), -- user 1 is in group 1
+(2, 1, 2), -- user 2 is also in group 1
+(3, 1, 3), -- user 3 is also in group 1
+(4, 2, 1); -- user 1 is in group 2
 
 ALTER TABLE `users` 
 MODIFY COLUMN password VARCHAR(100);
