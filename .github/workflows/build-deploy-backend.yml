@@ -41,5 +41,4 @@ jobs:
         --port=8000
         --set-secrets=DB_HOST=DB_HOST:1,DB_NAME=DB_NAME:1,DB_PASS=DB_PASS:1,DB_USER=DB_USER:1,INSTANCE_CONNECTION_NAME=INSTANCE_CONNECTION_NAME:1
         --add-cloudsql-instances=hangout-344918:us-central1:hangout-db
-        --set-env-vars=DB_ROOT_CERT=./sslCerts/server-ca.pem,DB_KEY=./sslCerts/client-key.pem,DB_CERT=./sslCerts/client-cert.pem
       
