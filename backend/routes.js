@@ -753,10 +753,10 @@ app.get('/users/groups/:user_id', (req, res) => {
   pool.getConnection(function (err, connection){
     if(err){
       logger.error('Problem obtaining MySQL connection',err)
-      res.status(400).send('Problem obtaining MySQL connection'); 
+      res.status(400).send('Problem obtaining MySQL connection');
     } else {
       var user_id = req.param('user_id');
-      connection.query("select card_id, numMembers, maxMembers, date, time from users_in_groups u join hangout.groups g on u.group_id = g.group_id where u.user_id = ?", user_id, function (err, result, fields) {
+      connection.query("select c.card_id, activity_name, numMembers, maxMembers, date, time from users_in_groups u join hangout.groups g on u.group_id = g.group_id join cards c on c.card_id = g.card_id where u.user_id = ?", user_id, function (err, result, fields) {
         connection.release();
         if (err) {
           logger.error("Error while fetching values: \n", err);
