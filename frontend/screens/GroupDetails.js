@@ -50,6 +50,7 @@ class GroupDetails extends React.Component {
             console.log("groupdetails")
             console.log(this.state.group);
         })
+        console.log("groupdetails", this.state.group);
     }
 
     _onRefresh = () => {
