@@ -26,23 +26,26 @@ class MyGroups extends React.Component {
 
     componentDidMount() {
         //Get list of group ids for this user
-        this.repo.getUsersGroups(this.props.getUid()).then(act => {
-            console.log("users groups")
-            console.log(act)
-            this.setState({groupIds: act})
-            console.log("check for id")
-            console.log(this.state.groups)
-        })
-        .then(() => {
-            //Get group objects based on ids
-            this.state.groupIds.map((gid, index) => {
-                this.repo.getGroupById(gid)
-                .then(data => {
-                    this.setState((state, props) => {
-                        return {groups: [...state.groups, data]};
-                    })
-                })
-            })
+        // this.repo.getUsersGroups(this.props.getUid()).then(act => {
+        //     console.log("users groups")
+        //     console.log(act)
+        //     this.setState({groupIds: act})
+        //     console.log("check for id")
+        //     console.log(this.state.groups)
+        // })
+        // .then(() => {
+        //     //Get group objects based on ids
+        //     this.state.groupIds.map((gid, index) => {
+        //         this.repo.getGroupById(gid)
+        //         .then(data => {
+        //             this.setState((state, props) => {
+        //                 return {groups: [...state.groups, data]};
+        //             })
+        //         })
+        //     })
+        // })
+        this.repo.getUsersGroups(this.props.getUid()).then(data => {
+            this.setState({groups: data});
         })
     }
 
