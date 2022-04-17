@@ -10,6 +10,7 @@
 // module.exports = pool;
 
 const mysql = require('promise-mysql');
+const fs = require('fs');
 
 // const dbSocketAddr = process.env.DB_HOST.split(':');
 
