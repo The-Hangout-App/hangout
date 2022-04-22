@@ -10,6 +10,7 @@ import Login from './screens/Login';
 import Register from './screens/Register';
 import { StyleSheet } from 'react-native';
 import ProfileReadOnly from './screens/ProfileReadOnly';
+import { Icon } from 'react-native-elements';
 
 const Stack = createNativeStackNavigator();
 
@@ -35,7 +36,6 @@ const HomeNav = (props) => {
             headerTitle: "Hangout",
             headerTitleStyle: styles.title
         }}>
-
             <Stack.Screen name="Homepage" component={Homepage}/>
             <Stack.Screen name="Groups">
                 {(props2) => <Groups {...props2} getUid={props.getUid}/>}
