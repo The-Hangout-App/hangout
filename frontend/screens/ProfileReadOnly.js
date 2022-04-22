@@ -17,7 +17,7 @@ class ProfileReadOnly extends React.Component {
       firstName: "",
       lastName: "",
       bio: "",
-      age: 0,
+      age: "",
       gender: "",
       pronoun: "",
     }
@@ -93,7 +93,7 @@ class ProfileReadOnly extends React.Component {
         firstName: data[0].first_name,
         lastName: data[0].last_name,
         bio: data[0].bio,
-        age: data[0].age,
+        age: data[0].age.toString(),
         gender: data[0].gender,
         pronoun: data[0].pronoun,
       })

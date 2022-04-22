@@ -47,11 +47,12 @@ class Profile extends React.Component {
         return (<KeyboardAwareScrollView>
             <View style={styles.container}>
             <Avatar
-                size= "medium"
+                size="xlarge"
                 rounded
                 icon={{name: 'user', type: 'font-awesome'}}
                 activeOpacity={0.7}
-                style = {styles.profilePicWrap}
+                source={{uri: "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.drodd.com%2Fimages10%2Fbeach-pictures3.jpg&f=1&nofb=1"}}
+                //style = {styles.profilePicWrap}
                 title={this.state.username.substr(0,1)}
             />
             <Text>{"\n"}</Text>
@@ -118,7 +119,7 @@ class Profile extends React.Component {
         gender: data[0].gender,
         pronoun: data[0].pronoun,
       })
-      )}
+    )}
 
     
 
