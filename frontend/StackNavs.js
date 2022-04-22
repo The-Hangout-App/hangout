@@ -36,7 +36,9 @@ const HomeNav = (props) => {
             headerTitle: "Hangout",
             headerTitleStyle: styles.title
         }}>
-            <Stack.Screen name="Homepage" component={Homepage}/>
+            <Stack.Screen name="Homepage" component={Homepage} 
+                options={{headerRight: () => <Icon name="plus" type="material-community" color="white"/>}}
+            />
             <Stack.Screen name="Groups">
                 {(props2) => <Groups {...props2} getUid={props.getUid}/>}
             </Stack.Screen>
@@ -47,7 +49,6 @@ const HomeNav = (props) => {
                 {(props2) => <CreateGroup {...props2} getUid={props.getUid}/>}
             </Stack.Screen>
             <Stack.Screen name="ProfileReadOnly" component={ProfileReadOnly}/>
-
         </Stack.Navigator>
     );
 }

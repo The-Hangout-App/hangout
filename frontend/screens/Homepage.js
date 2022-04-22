@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect, Children } from "react";
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import ActivityCard from '../components/ActivityCard'
 import TinderCard from 'react-tinder-card'
 import styled from "styled-components/native";
@@ -150,13 +150,16 @@ export default function Homepage(props) {
     <Container>
       <CardContainer>
         {activities.map((character, index) =>
-          <TinderCard ref={childRefs[index]} key={character.activity_name} onSwipe={(dir) => swiped(dir, character.activity_name)} onCardLeftScreen={() => outOfFrame(character.activity_name)}>
-            <Card>
-              <CardImage source={{uri: character.photo_url}}>
-                <CardTitle>{character.activity_name}</CardTitle>
-              </CardImage>
-            </Card>
-          </TinderCard>
+          <TouchableOpacity onPress={() => props.navigation.navigate("ActivityDetails")}>
+            <TinderCard ref={childRefs[index]} key={character.activity_name} onSwipe={(dir) => swiped(dir, character.activity_name)} onCardLeftScreen={() => outOfFrame(character.activity_name)}>
+              <Card>
+                <CardImage source={{uri: character.photo_url}}>
+                  <CardTitle>{character.activity_name}</CardTitle>
+                </CardImage>
+              </Card>
+            </TinderCard>
+          </TouchableOpacity>
+          
         )}
       </CardContainer>
       <Buttons>
