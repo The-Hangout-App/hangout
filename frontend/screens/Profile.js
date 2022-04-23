@@ -15,6 +15,7 @@ class Profile extends React.Component {
       username: "",
       firstName: "",
       lastName: "",
+      photoURL: "",
       bio: "",
       age: "",
       gender: "",
@@ -46,17 +47,27 @@ class Profile extends React.Component {
     render() {
         return (<KeyboardAwareScrollView>
             <View style={styles.container}>
+            {this.state.photoURL == "" ?
             <Avatar
-                size="xlarge"
-                rounded
-                icon={{name: 'user', type: 'font-awesome'}}
-                activeOpacity={0.7}
-                source={{uri: "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.drodd.com%2Fimages10%2Fbeach-pictures3.jpg&f=1&nofb=1"}}
-                //style = {styles.profilePicWrap}
-                title={this.state.username.substr(0,1)}
+            size="xlarge"
+            rounded
+            icon={{name: 'user', type: 'font-awesome'}}
+            activeOpacity={0.7}
+            //style = {styles.profilePicWrap}
+            source={{uri: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.onlinewebfonts.com%2Fsvg%2Fimg_191958.png&f=1&nofb=1"}}
             />
+            :
+            <Avatar
+            size="xlarge"
+            rounded
+            icon={{name: 'user', type: 'font-awesome'}}
+            activeOpacity={0.7}
+            //style = {styles.profilePicWrap}
+            source={{uri: this.state.photoURL}}
+            title={this.state.username.substr(0,1)}
+            />
+            }
             <Text>{"\n"}</Text>
-            <Text h3>Profile</Text>
             <View style= {styles.flexbox}>
                 <Input  
                 style={styles.text}
@@ -72,6 +83,12 @@ class Profile extends React.Component {
                 onChangeText={text => this.setState({lastName: text})}/>
              </View>
               <Text>{"\n"}{"\n"}</Text>
+                <Input 
+                style={styles.inputs}
+                disabled = {false}
+                value = {this.state.photoURL}
+                placeholder="Profile picture URL" 
+                onChangeText={text => this.setState({photoURL: text})}/>
                 <Input 
                 style={styles.inputs}
                 disabled = {false}

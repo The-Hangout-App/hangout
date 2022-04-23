@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { Image } from "react-native-elements";
+import { Image, Input } from "react-native-elements";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Repository } from "../api/repository";
 
@@ -8,39 +8,42 @@ import { Repository } from "../api/repository";
 class ActivityDetails extends React.Component {
 
     state = {
-        activity_category_id: -1,
-        activity_name: "",
-        address: "",
-        phone_number: "",
-        photo_url: "",
-        min_num_participants: 0,
-        max_num_participants: 0,
-        min_age: 0,
-        max_age: 0,
-        city: "",
-        state: "",
-        zipcode: 0
+        activity: {
+            activity_category_id: -1,
+            activity_name: "",
+            address: "",
+            phone_number: "",
+            photo_url: "",
+            min_num_participants: 0,
+            max_num_participants: 0,
+            min_age: 0,
+            max_age: 0,
+            city: "",
+            state: "",
+            zipcode: 0
+        }
     }
 
     repo = new Repository();
 
     render() {
         return (
-            <KeyboardAwareScrollView style={styles.container}>
-                <Image/>
+            <KeyboardAwareScrollView>
+                
+                <Image source={{uri: this.state.activity.photo_url}} style={{width: 100, height: 100}}/>
 
                 <Input
                     style={styles.text}
                     disabled
-                    label="Activity name"
-                    value = {this.state.activity_name}
+                    label="Activity"
+                    value = {this.state.activity.activity_name}
                     onChangeText={text => this.setState({activity_name: text})}
                 />
                 <Input
                     style={styles.text}
                     disabled
                     label="Address"
-                    value = {this.state.address}
+                    value = {this.state.activity.address}
                     onChangeText={text => this.setState({address: text})}
                 />
                 <Input
@@ -48,7 +51,7 @@ class ActivityDetails extends React.Component {
                     disabled
                     label="Phone number"
                     leftIcon="phone"
-                    value = {this.state.phone_number}
+                    value = {this.state.activity.phone_number}
                     keyboardType="phone-pad"
                     onChangeText={text => this.setState({phone_number: text})}
                 />
@@ -56,21 +59,21 @@ class ActivityDetails extends React.Component {
                     style={styles.text}
                     disabled
                     label="Address"
-                    value = {this.state.address}
+                    value = {this.state.activity.address}
                     onChangeText={text => this.setState({address: text})}
                 />
                 <Input
                     style={styles.text}
                     disabled
                     label="Photo URL"
-                    value = {this.state.photo_url}
+                    value = {this.state.activity.photo_url}
                     onChangeText={text => this.setState({photo_url: text})}
                 />
                 <Input
                     style={styles.text}
                     disabled
                     label="Max group size"
-                    value = {this.state.max_num_participants}
+                    value = {this.state.activity.max_num_participants.toString()}
                     keyboardType="number-pad"
                     onChangeText={text => this.setState({max_num_participants: text})}
                 />
@@ -78,21 +81,21 @@ class ActivityDetails extends React.Component {
                     style={styles.text}
                     disabled
                     label="City"
-                    value = {this.state.city}
+                    value = {this.state.activity.city}
                     onChangeText={text => this.setState({city: text})}
                 />
                 <Input
                     style={styles.text}
                     disabled
                     label="State"
-                    value = {this.state.State}
+                    value = {this.state.activity.state}
                     onChangeText={text => this.setState({state: text})}
                 />
                 <Input
                     style={styles.text}
                     disabled
                     label="Zipcode"
-                    value = {this.state.zipcode}
+                    value = {this.state.activity.zipcode}
                     keyboardType="number-pad"
                     onChangeText={text => this.setState({zipcode: text})}
                 />
@@ -101,13 +104,15 @@ class ActivityDetails extends React.Component {
     }
 
     componentDidMount() {
-        this.repo.getActivity(props.route.params.card_id)
+        this.repo.getActivity(this.props.route.params.card_id)
         .then(data => {
-            
+            this.setState({activity: data[0]})
+            console.log(this.state.activity)
         })
     }
 
 }
+export default ActivityDetails;
 
 const styles = StyleSheet.create({
     container: {

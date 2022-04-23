@@ -11,6 +11,7 @@ import Register from './screens/Register';
 import { StyleSheet } from 'react-native';
 import ProfileReadOnly from './screens/ProfileReadOnly';
 import { Icon } from 'react-native-elements';
+import ActivityDetails from './screens/ActivityDetails';
 
 const Stack = createNativeStackNavigator();
 
@@ -49,6 +50,7 @@ const HomeNav = (props) => {
                 {(props2) => <CreateGroup {...props2} getUid={props.getUid}/>}
             </Stack.Screen>
             <Stack.Screen name="ProfileReadOnly" component={ProfileReadOnly}/>
+            <Stack.Screen name="ActivityDetails" component={ActivityDetails}/>
         </Stack.Navigator>
     );
 }

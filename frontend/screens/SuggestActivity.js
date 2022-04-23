@@ -13,7 +13,7 @@ class SuggestActivity extends React.Component {
     render() {
         return (
             <View>
-
+                
             </View>
         )
     }
