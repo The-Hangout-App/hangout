@@ -10,14 +10,13 @@ import { Repository } from "../api/repository";
 class Profile extends React.Component {
   
   repo = new Repository();
-
     state = {
       username: "",
       firstName: "",
       lastName: "",
       photoURL: "",
       bio: "",
-      age: "",
+      age: 0,
       gender: "",
       pronoun: "",
     }
@@ -43,7 +42,6 @@ class Profile extends React.Component {
   }
 
   render() {
-
     return (
       <KeyboardAwareScrollView>
       <View style={styles.container}>
@@ -111,8 +109,7 @@ class Profile extends React.Component {
                   />
               </View>
               <View style={{justifyContent: 'left'}}>
-                <Text style={{fontSize: 20}}>Age: {this.state.age}</Text>
-                <Text></Text>
+                <Text style={{fontSize: 20, marginBottom:20}}>Age: {this.state.age}</Text>
               </View>
             <Input 
               style={styles.textin}
