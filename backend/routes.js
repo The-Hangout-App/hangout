@@ -467,7 +467,7 @@ app.get('/getUserByID/:userID', (req, res) => {
       res.status(400).send('Problem obtaining MySQL connection'); 
     } else {
       var user_id = req.param('userID');
-      connection.query("SELECT username, first_name, last_name, bio, age, gender, pronoun FROM hangout.users WHERE user_id = ?", user_id, function (err, result, fields) {
+      connection.query("SELECT username, first_name, last_name, bio, age, gender, pronoun, photo_url FROM hangout.users WHERE user_id = ?", user_id, function (err, result, fields) {
         connection.release();
         if (err) {
           logger.error("Error while fetching values: \n", err);
