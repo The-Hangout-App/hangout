@@ -10,7 +10,6 @@ import { Repository } from "../api/repository";
 class Profile extends React.Component {
   
   repo = new Repository();
-
     state = {
       username: "",
       firstName: "",
@@ -43,7 +42,6 @@ class Profile extends React.Component {
   }
 
   render() {
-
     return (
       <KeyboardAwareScrollView>
       <View style={styles.container}>
