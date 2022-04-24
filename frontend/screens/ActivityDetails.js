@@ -108,7 +108,7 @@ class ActivityDetails extends React.Component {
         .then(data => {
             this.setState({activity: data[0]})
             console.log(this.state.activity)
-        })
+        }).catch(e => console.log(e))
     }
 
 }

@@ -50,10 +50,10 @@ export default function CreateGroup(props) {
         repo.createGroup(body).then(result => {
             repo.getNewGid().then(id => {
                 console.log(`the group id is ${id[0].gid}`)
-                repo.joinGroup(id[0].gid, props.getUid())
-            })
+                repo.joinGroup(id[0].gid, props.getUid()).then().catch(e => console.log(e))
+            }).catch(e => console.log(e))
             props.navigation.navigate("Homepage");
-        })
+        }).catch(e => console.log(e))
     }
 
     const dateDisplay = () => {
