@@ -39,7 +39,6 @@ class GroupDetails extends React.Component {
         this.props.navigation.navigate("Homepage");
     }
 
-
     componentDidMount() {
         this.repo.getUsersInGroup(this.props.route.params.group_id).then(users => {
             this.setState({members: users});
@@ -79,7 +78,11 @@ class GroupDetails extends React.Component {
                 {this.state.members.map((user, index) => 
                     <TouchableOpacity key={index} onPress={() => this.toProfile(user.user_id)}>
                         <ListItem bottomDivider>
-                            <Icon name="person" type="ionicon"/>
+                            {user.photo_url ?
+                                <Avatar source={{uri: user.photo_url}} size="small"/>
+                                :
+                                <Icon name="person" type="ionicon"/>
+                            }
                             <ListItem.Content>
                                 <ListItem.Title>{user.username}</ListItem.Title>
                             </ListItem.Content>

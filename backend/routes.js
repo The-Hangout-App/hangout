@@ -572,12 +572,13 @@ if(err){
     var user_id = req.param('userID');
     var first_name_new = req.body.first_name
     var last_name_new = req.body.last_name
+    var photo_url_new = req.body.photo_url
     var pronoun_new = req.body.pronoun
     var gender_new = req.body.gender
     var age_new = req.body.age
     var bio_new = req.body.bio
 
-    connection.query("UPDATE users SET first_name = ?, last_name = ?, pronoun = ?, gender = ?, age = ?, bio = ? WHERE user_id = ?", [first_name_new, last_name_new, pronoun_new, gender_new, age_new, bio_new, user_id], function (err, result, fields) {
+    connection.query("UPDATE users SET first_name = ?, last_name = ?, photo_url = ?, pronoun = ?, gender = ?, age = ?, bio = ? WHERE user_id = ?", [first_name_new, last_name_new, photo_url_new, pronoun_new, gender_new, age_new, bio_new, user_id], function (err, result, fields) {
     connection.release();
     if (err) {
       logger.error("Error while fetching values: \n", err);

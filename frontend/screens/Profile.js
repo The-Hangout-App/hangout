@@ -28,6 +28,7 @@ class Profile extends React.Component {
       username: this.state.username,
       first_name: this.state.firstName,
       last_name: this.state.lastName,
+      photo_url: this.state.photoURL,
       pronoun: this.state.pronoun,
       gender: this.state.gender,
       age: this.state.age,
@@ -45,15 +46,27 @@ class Profile extends React.Component {
     return (
       <KeyboardAwareScrollView>
       <View style={styles.container}>
+        {this.state.photoURL ? 
         <Avatar
           size="xlarge"
           rounded
           icon={{name: 'user', type: 'font-awesome'}}
           activeOpacity={0.7}
-          source={{uri: "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.drodd.com%2Fimages10%2Fbeach-pictures3.jpg&f=1&nofb=1"}}
+          source={{uri: this.state.photoURL}}
           //style = {styles.profilePicWrap}
           title={this.state.username.substr(0,1)}
         />
+        :
+        <Avatar
+          size="xlarge"
+          rounded
+          icon={{name: 'user', type: 'font-awesome'}}
+          activeOpacity={0.7}
+          source={require("../assets/default-profile.jpg")}
+          //style = {styles.profilePicWrap}
+          title={this.state.username.substr(0,1)}
+        />
+        }
         <Text>{"\n"}</Text>
         <View style= {styles.flexbox}>
           <Input  
