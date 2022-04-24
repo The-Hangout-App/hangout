@@ -2,25 +2,23 @@ import React from "react";
 import { Repository } from "../api/repository";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Header, Image, Input, Text, Button } from "react-native-elements";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Alert } from "react-native";
 import { Dropdown } from 'react-native-element-dropdown';
 
 class SuggestActivity extends React.Component {
     state = {
-        activity: {
-            activity_category_id: -1,
-            activity_name: "",
-            address: "",
-            phone_number: "",
-            photo_url: "",
-            min_num_participants: 0,
-            max_num_participants: 0,
-            min_age: 0,
-            max_age: 0,
-            city: "",
-            state: "",
-            zipcode: 0,
-        },
+        activity_category_id: 1,
+        activity_name: "",
+        address: "",
+        phone_number: "",
+        photo_url: "",
+        min_num_participants: 0,
+        max_num_participants: 0,
+        min_age: 0,
+        max_age: 0,
+        city: "",
+        state: "",
+        zipcode: 0,
         //use following for dropdown
         value: 0,
         setValue: 0, 
@@ -34,6 +32,34 @@ class SuggestActivity extends React.Component {
     }
 
     repo = new Repository();
+
+    handleSubmit = () => {
+        console.log(this.state.activity)
+        const activity = {
+            activity_category_id: this.state.activity_category_id,
+            activity_name: this.state.activity_name,
+            address: this.state.address,
+            phone_number: this.state.phone_number,
+            photo_url: this.state.photo_url,
+            min_num_participants: this.state.min_num_participants,
+            max_num_participants: this.state.max_num_participants,
+            min_age: this.state.min_age,
+            max_age: this.state.max_age,
+            city: this.state.city,
+            state: this.state.state,
+            zipcode: this.state.zipcode
+        }
+        this.repo.addNewActivity(activity).then(res => {
+            Alert.alert(
+                "Success",
+                "Activity submitted successfully.",
+                [
+                  { text: "OK" }
+                ]
+            );
+            this.props.navigation.navigate("Homepage")
+        })
+    }
 
     renderLabel = () => {
         if(this.state.value || this.state.isFocus) {
@@ -62,14 +88,14 @@ class SuggestActivity extends React.Component {
                     valueField="value"
                     placeholder={!this.state.isFocus ? 'Select Activity Type' : '...'}
                     searchPlaceholder="Search..."
-                    value={this.state.value}
+                    value={this.state.activity_category_id}
                     onFocus={() => this.setState({setIsFocus: 1})}
                     onBlur={() => this.setState({setIsFocus: 0})}
                     onChange={item => {
                       this.setState({
-                          setValue: item.value,
-                          activity_category_id: this.state.value,
-                          setIsFocus: 0 //0 is false
+                          //setValue: item.value,
+                          activity_category_id: item.value,
+                          //setIsFocus: 0 //0 is false
                       })
                     }}
                   />
@@ -117,7 +143,7 @@ class SuggestActivity extends React.Component {
                     keyboardType="number-pad"
                     onChangeText={text => this.setState({zipcode: text})}
                 />
-                <Button title={"Submit Activity"} buttonStyle={{width: "50%", alignSelf: 'center', marginBottom: 15}} onPress={() => this.repo.addNewActivity(this.state.activity)}></Button>
+                <Button title={"Submit Activity"} buttonStyle={{width: "50%", alignSelf: 'center', marginBottom: 15}} onPress={this.handleSubmit}></Button>
             </KeyboardAwareScrollView>
         )
     }
