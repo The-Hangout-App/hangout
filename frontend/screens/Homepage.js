@@ -165,7 +165,6 @@ export default function Homepage(props) {
     <Container>
       <CardContainer>
         {activities.map((character, index) =>
-        <>
             <TinderCard ref={childRefs[index]} key={character.activity_name} onSwipe={(dir) => swiped(dir, character.activity_name)} onCardLeftScreen={() => outOfFrame(character.activity_name)}>
               <TouchableOpacity onPress={() => {console.log("hi"); props.navigation.navigate("ActivityDetails", {activity: character})}}>
               <Card>
@@ -175,7 +174,6 @@ export default function Homepage(props) {
               </Card>
               </TouchableOpacity>
             </TinderCard>
-        </>
         )}
       </CardContainer>
       <Buttons>
