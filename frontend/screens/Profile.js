@@ -149,6 +149,7 @@ class Profile extends React.Component {
       age: data[0].age,
       gender: data[0].gender,
       pronoun: data[0].pronoun,
+      photoURL: data[0].photo_url
     })
   )}
 }
