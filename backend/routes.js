@@ -800,20 +800,25 @@ app.get('/groups/groupid/:group_id', (req, res) => {
 //adds an activity to the activity table 
 app.post('/newActivity', (req, res) =>  {
   console.log(req.body);
-  var activity_category_id = req.body.activity_category_id;
-  var activity_name = req.body.activity_name;
-  var address = req.body.address;
-  var phone_number = req.body.phone_number;
-  var photo_url = req.body.photo_url;
-  var min_num_participants = req.body.min_num_participants;
-  var max_num_participants = req.body.max_num_participants;
-  var min_age = req.body.min_age;
-  var max_age = req.body.max_age;
-  var city = req.body.city;
-  var state = req.body.state;
-  var zipcode = req.body.zipcode;
   pool.getConnection(function (err, connection){
-    connection.query(`INSERT INTO cards (activity_category_id, activity_name, address, phone_number, photo_url, min_num_participants, max_num_participants, min_age, max_age, city, state, zipcode) VALUES ('${activity_category_id}', '${activity_name}', '${address}', '${phone_number}','${photo_url}','${min_num_participants}','${max_num_participants}','${min_age}','${max_age}','${city}','${state}','${zipcode}');`);
+    if(err){
+      logger.error('Problem obtaining MySQL connection',err)
+      res.status(400).send('Problem obtaining MySQL connection'); 
+    } else {
+      var activity_category_id = req.body.activity_category_id
+      var activity_name = req.body.activity_name
+      var address = req.body.address
+      var phone_number = req.body.phone_number
+      var photo_url = req.body.photo_url
+      var min_num_participants = req.body.min_num_participants
+      var max_num_participants = req.body.max_num_participants
+      var min_age = req.body.min_age
+      var max_age = req.body.max_age
+      var city = req.body.city
+      var state = req.body.state
+      var zipcode = req.body.zipcode
+      connection.query(`INSERT INTO cards (activity_category_id, activity_name, address, phone_number, photo_url, min_num_participants, max_num_participants, min_age, max_age, city, state, zipcode) VALUES ('${activity_category_id}', '${activity_name}', '${address}', '${phone_number}','${photo_url}','${min_num_participants}','${max_num_participants}','${min_age}','${max_age}','${city}','${state}','${zipcode}');`);
+    }
 });
 });
 }

@@ -117,7 +117,7 @@ class SuggestActivity extends React.Component {
                     keyboardType="number-pad"
                     onChangeText={text => this.setState({zipcode: text})}
                 />
-                <Button title={"Submit Activity"} buttonStyle={{width: "50%", alignSelf: 'center', marginBottom: 15}} onPress={this.repo.addNewActivity(this.state.activity)}></Button>
+                <Button title={"Submit Activity"} buttonStyle={{width: "50%", alignSelf: 'center', marginBottom: 15}} onPress={() => this.repo.addNewActivity(this.state.activity)}></Button>
             </KeyboardAwareScrollView>
         )
     }
