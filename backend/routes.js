@@ -817,9 +817,19 @@ app.post('/newActivity', (req, res) =>  {
       var city = req.body.city
       var state = req.body.state
       var zipcode = req.body.zipcode
-      connection.query(`INSERT INTO cards (activity_category_id, activity_name, address, phone_number, photo_url, min_num_participants, max_num_participants, min_age, max_age, city, state, zipcode) VALUES ('${activity_category_id}', '${activity_name}', '${address}', '${phone_number}','${photo_url}','${min_num_participants}','${max_num_participants}','${min_age}','${max_age}','${city}','${state}','${zipcode}');`);
-      connection.release();
-      console.log("Posted new activity!")
+      connection.query(`INSERT INTO cards (activity_category_id, activity_name, address, phone_number, photo_url, min_num_participants, max_num_participants, min_age, max_age, city, state, zipcode) VALUES ('${activity_category_id}', '${activity_name}', '${address}', '${phone_number}','${photo_url}','${min_num_participants}','${max_num_participants}','${min_age}','${max_age}','${city}','${state}','${zipcode}');`, 
+      function (err, result, fields) {
+        connection.release();
+        if (err) {
+          logger.error("Error while fetching values: \n", err);
+          res.status(400).json({
+            "data": [],
+            "error": "Error obtaining values"
+          })
+        } else {
+          res.end(JSON.stringify(result)); 
+        }
+      });
     }
 });
 });

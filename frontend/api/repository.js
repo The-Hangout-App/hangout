@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export class Repository {
 
-    url = "https://hangout-api-emzxyeiygq-uc.a.run.app";
+    url = "http://34.120.26.99";
 
     config = {
         headers: {
