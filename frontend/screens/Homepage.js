@@ -177,11 +177,13 @@ export default function Homepage(props) {
         )}
       </CardContainer>
       <Buttons>
-        <Button icon={{name: "close", color: "white"}}
-            buttonStyle={styles.btnReject}
-            iconContainerStyle={{width: "100%"}}
+        <Button icon={{name: "navigate-next", color: "white"}}
+            buttonStyle={{marginBottom: 10}}
+            //iconContainerStyle={{width: "100%"}}
             onPress={() => navToDetails()}
             disabled={activities.length === 0}
+            title="Details"
+            iconRight
         />
         <Button icon={{name: "close", color: "white"}}
             buttonStyle={styles.btnReject}
@@ -196,9 +198,9 @@ export default function Homepage(props) {
             disabled={activities.length === 0}
         />
       </Buttons>
-      <View>
+      {/* <View>
         <Button title="Refresh" buttonStyle={styles.btnRefresh} onPress={refresh}/>
-      </View>
+      </View> */}
     </Container>
   )
 
@@ -234,7 +236,7 @@ const styles = StyleSheet.create({
       width: "100%",
     },
     btnAccept: {
-        backgroundColor: "#71B6BF",
+        backgroundColor: "#2bb227",
         width: "100%",
         marginTop: 10
     },
