@@ -13,9 +13,10 @@ class SuggestActivity extends React.Component {
     render() {
         return (
             <View>
-
+                
             </View>
         )
     }
 
 }
+export default SuggestActivity
