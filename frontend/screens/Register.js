@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet } from 'react-native';
+import { Alert, StyleSheet } from 'react-native';
 import { Button, Text, Input, Icon } from "react-native-elements";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Repository } from "../api/repository";
@@ -24,6 +24,13 @@ class Register extends React.Component {
       const body = {username: this.state.username, password: this.state.password};
       this.repo.createAccount({username: this.state.username, password: this.state.password}).then(data => {
         this.props.navigation.navigate("Login");
+        Alert.alert(
+          "Welcome to Hangout!",
+          "Your profile was created successfully",
+          [
+            { text: "OK" }
+          ]
+        );
       }).catch(e => console.log(e));
       
     }

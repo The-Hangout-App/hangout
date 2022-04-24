@@ -1,5 +1,5 @@
 import React from "react";
-import { KeyboardAvoidingView, ScrollView, StyleSheet, View } from 'react-native';
+import { Alert, KeyboardAvoidingView, ScrollView, StyleSheet, View } from 'react-native';
 import { Slider, Button, Text, Input, Icon, Avatar } from "react-native-elements";
 import { Card } from "react-native-elements/dist/card/Card";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -34,7 +34,23 @@ class Profile extends React.Component {
       age: this.state.age,
       bio:this.state.bio
     }
-    this.repo.updateUser(this.props.getUid(), body);
+    this.repo.updateUser(this.props.getUid(), body).then(res => {
+      Alert.alert(
+        "Success",
+        "Your profile was updated successfully",
+        [
+          { text: "OK" }
+        ]
+      );
+    }).catch(e => {
+      Alert.alert(
+        "Error",
+        e,
+        [
+          { text: "OK" }
+        ]
+      );
+    });
   }
 
   handleLogout = () => {

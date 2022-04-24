@@ -1,4 +1,4 @@
-import { RefreshControl, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Alert, RefreshControl, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import React, { useEffect, useState } from 'react'
 import { Avatar, Button, Icon, ListItem, Text } from "react-native-elements";
 import { Repository } from "../api/repository";
@@ -35,7 +35,25 @@ class GroupDetails extends React.Component {
     }
 
     handleJoin = (gid) => {
-        this.repo.joinGroup(gid, this.props.getUid()).then().catch(e => console.log(e));
+        if (this.state.group.numMembers == this.state.group.maxMembers) {
+            Alert.alert(
+                "Error",
+                "This group is already full",
+                [
+                  { text: "OK" }
+                ]
+            );
+            return;
+        }
+        this.repo.joinGroup(gid, this.props.getUid()).then(res => {
+            Alert.alert(
+                "Success",
+                "Group joined successfully",
+                [
+                  { text: "OK" }
+                ]
+            );
+        }).catch(e => console.log(e));
         this.props.navigation.navigate("Homepage");
     }
 
@@ -79,7 +97,7 @@ class GroupDetails extends React.Component {
                     <TouchableOpacity key={index} onPress={() => this.toProfile(user.user_id)}>
                         <ListItem bottomDivider>
                             {user.photo_url ?
-                                <Avatar source={{uri: user.photo_url}} size="small"/>
+                                <Avatar source={{uri: user.photo_url}} size="small" rounded/>
                                 :
                                 <Icon name="person" type="ionicon"/>
                             }

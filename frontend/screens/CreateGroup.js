@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Alert, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import React, { useEffect, useState } from 'react'
 import { Avatar, Button, Input, ListItem, Text } from "react-native-elements";
 import DateTimePicker from '@react-native-community/datetimepicker'
@@ -52,6 +52,13 @@ export default function CreateGroup(props) {
                 console.log(`the group id is ${id[0].gid}`)
                 repo.joinGroup(id[0].gid, props.getUid()).then().catch(e => console.log(e))
             }).catch(e => console.log(e))
+            Alert.alert(
+                "Success",
+                "Group created successfully",
+                [
+                  { text: "OK" }
+                ]
+            );
             props.navigation.navigate("Homepage");
         }).catch(e => console.log(e))
     }
