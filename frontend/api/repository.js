@@ -198,6 +198,29 @@ export class Repository {
         })
     }
 
+    addNewActivity(passedState){
+        return new Promise((resolve, reject) => {
+            axios.post(`${this.url}/newActivity`,{
+                "activity_category_id": passedState.activity_category_id,
+                "activity_name": passedState.activity_name,
+                "address": passedState.address,
+                "phone_number": passedState.phone_number,
+                "photo_url": passedState.photo_url,
+                "min_num_participants": passedState.min_num_participants,
+                "max_num_participants": passedState.max_num_participants,
+                "min_age": passedState.min_age,
+                "max_age": passedState.max_age,
+                "city": passedState.city,
+                "state": passedState.state,
+                "zipcode": passedState.zipcode
+            }, this.config)
+            .then(x => resolve(x.data))
+            .catch(e => {
+                alert(e);
+                reject();
+            });
+        })
+    }
 
 };
 
