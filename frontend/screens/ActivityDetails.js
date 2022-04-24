@@ -1,6 +1,6 @@
 import React from "react";
-import { StyleSheet } from "react-native";
-import { Image, Input } from "react-native-elements";
+import { StyleSheet, View } from "react-native";
+import { Image, Input, Text } from "react-native-elements";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Repository } from "../api/repository";
 
@@ -29,16 +29,19 @@ class ActivityDetails extends React.Component {
     render() {
         return (
             <KeyboardAwareScrollView>
-                
-                <Image source={{uri: this.state.activity.photo_url}} style={{width: 100, height: 100}}/>
+                <Text h2 style={{marginTop: 10, textAlign: "center"}}>{this.state.activity.activity_name}</Text>
+                <View style={{marginVertical: 20, alignItems: "center"}}>
+                    <Image style={{borderRadius: 10, width: 200, height: 200}}
+                    source={{uri: this.state.activity.photo_url}}/>
+                </View>
 
-                <Input
+                {/* <Input
                     style={styles.text}
                     disabled
                     label="Activity"
                     value = {this.state.activity.activity_name}
                     onChangeText={text => this.setState({activity_name: text})}
-                />
+                /> */}
                 <Input
                     style={styles.text}
                     disabled

@@ -17,7 +17,7 @@ class Profile extends React.Component {
       lastName: "",
       photoURL: "",
       bio: "",
-      age: "",
+      age: 0,
       gender: "",
       pronoun: "",
     }
@@ -31,7 +31,7 @@ class Profile extends React.Component {
       last_name: this.state.lastName,
       pronoun: this.state.pronoun,
       gender: this.state.gender,
-      age: Number(this.state.age),
+      age: this.state.age,
       bio:this.state.bio
     }
     this.repo.updateUser(this.props.getUid(), body);
@@ -110,7 +110,7 @@ class Profile extends React.Component {
                     }}
                   />
               </View>
-              <View style={{justifyContent: 'left'}}>
+              <View style={{justifyContent: "flex-start"}}>
                 <Text style={{fontSize: 20}}>Age: {this.state.age}</Text>
                 <Text></Text>
               </View>
@@ -135,7 +135,7 @@ class Profile extends React.Component {
       firstName: data[0].first_name,
       lastName: data[0].last_name,
       bio: data[0].bio,
-      age: data[0].age.toString(),
+      age: data[0].age,
       gender: data[0].gender,
       pronoun: data[0].pronoun,
     })
