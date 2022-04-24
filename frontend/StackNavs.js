@@ -11,6 +11,8 @@ import Register from './screens/Register';
 import { StyleSheet } from 'react-native';
 import ProfileReadOnly from './screens/ProfileReadOnly';
 import { Icon } from 'react-native-elements';
+import { NavigationContainer } from '@react-navigation/native';
+import SuggestActivity from './screens/SuggestActivity';
 
 const Stack = createNativeStackNavigator();
 
@@ -37,7 +39,12 @@ const HomeNav = (props) => {
             headerTitleStyle: styles.title
         }}>
             <Stack.Screen name="Homepage" component={Homepage} 
-                options={{headerRight: () => <Icon name="plus" type="material-community" color="white"/>}}
+                options={({ navigation }) => ({
+                    headerRight: () => (
+                        <Icon name="plus" type="material-community" color="white" 
+                            onPress={() => navigation.navigate("SuggestActivity")}/> //when you press + icon navigate to SuggestActivity screen
+                    ), 
+                })}
             />
             <Stack.Screen name="Groups">
                 {(props2) => <Groups {...props2} getUid={props.getUid}/>}
@@ -49,10 +56,12 @@ const HomeNav = (props) => {
                 {(props2) => <CreateGroup {...props2} getUid={props.getUid}/>}
             </Stack.Screen>
             <Stack.Screen name="ProfileReadOnly" component={ProfileReadOnly}/>
+            <Stack.Screen name="SuggestActivity" component={SuggestActivity}/>
         </Stack.Navigator>
     );
 }
 export {HomeNav}
+
 
 const GroupsNav = (props) => {
     return (
