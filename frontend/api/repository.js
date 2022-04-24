@@ -199,7 +199,11 @@ export class Repository {
     }
 
     addNewActivity(passedState){
+        console.log("ACTIVITY INFORMATION: ")
         console.log(passedState.activity_category_id)
+        console.log(passedState.activity_name)
+        console.log(passedState.address)
+        console.log(passedState.phone_number)
         return new Promise((resolve, reject) => {
             axios.post(`${this.url}/newActivity`, {
                 "activity_category_id": passedState.activity_category_id,
