@@ -19,3 +19,4 @@ class SuggestActivity extends React.Component {
     }
 
 }
+export default SuggestActivity
