@@ -1,10 +1,10 @@
 import React, { useState, useMemo, useEffect, Children } from "react";
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Pressable, StyleSheet, TouchableOpacity, View } from 'react-native';
 import ActivityCard from '../components/ActivityCard'
 import TinderCard from 'react-tinder-card'
 import styled from "styled-components/native";
 
-import { Button } from "react-native-elements";
+import { Button, Image, Text } from "react-native-elements";
 import { Repository } from "../api/repository";
 
 //Swiping functionality code is adapted from here: 
@@ -31,15 +31,25 @@ const CardContainer = styled.View`
     marginTop: 40px;
 `
 
+// const Card = styled.View`
+//     position: absolute;
+//     background-color: #fff;
+//     width: 100%;
+//     max-width: 260px;
+//     height: 300px;
+//     shadow-color: black;
+//     shadow-opacity: 0.2;
+//     shadow-radius: 20px;
+//     border-radius: 20px;
+//     resize-mode: cover;
+// `
+
 const Card = styled.View`
     position: absolute;
     background-color: #fff;
     width: 100%;
     max-width: 260px;
     height: 300px;
-    shadow-color: black;
-    shadow-opacity: 0.2;
-    shadow-radius: 20px;
     border-radius: 20px;
     resize-mode: cover;
 `
@@ -138,6 +148,11 @@ export default function Homepage(props) {
     }
   }
 
+  const navToDetails = () => {
+    const act = activities[activities.length - 1];
+    props.navigation.navigate("ActivityDetails", {card_id: act.card_id})
+  }
+
   useEffect(() => {
     repo.getCards().then(cards => {
       setActitivies(cards)
@@ -150,19 +165,26 @@ export default function Homepage(props) {
     <Container>
       <CardContainer>
         {activities.map((character, index) =>
-          <TouchableOpacity onPress={() => props.navigation.navigate("ActivityDetails")}>
+        <>
             <TinderCard ref={childRefs[index]} key={character.activity_name} onSwipe={(dir) => swiped(dir, character.activity_name)} onCardLeftScreen={() => outOfFrame(character.activity_name)}>
+              <TouchableOpacity onPress={() => {console.log("hi"); props.navigation.navigate("ActivityDetails", {activity: character})}}>
               <Card>
                 <CardImage source={{uri: character.photo_url}}>
                   <CardTitle>{character.activity_name}</CardTitle>
                 </CardImage>
               </Card>
+              </TouchableOpacity>
             </TinderCard>
-          </TouchableOpacity>
-          
+        </>
         )}
       </CardContainer>
       <Buttons>
+        <Button icon={{name: "close", color: "white"}}
+            buttonStyle={styles.btnReject}
+            iconContainerStyle={{width: "100%"}}
+            onPress={() => navToDetails()}
+            disabled={activities.length === 0}
+        />
         <Button icon={{name: "close", color: "white"}}
             buttonStyle={styles.btnReject}
             iconContainerStyle={{width: "100%"}}

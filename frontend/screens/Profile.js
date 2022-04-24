@@ -11,15 +11,16 @@ class Profile extends React.Component {
   
   repo = new Repository();
 
-  state = {
-    username: "",      
-    firstName: "",
-    lastName: "",
-    bio: "",
-    age: 0, 
-    gender: "",
-    pronoun: "",
-  }
+    state = {
+      username: "",
+      firstName: "",
+      lastName: "",
+      photoURL: "",
+      bio: "",
+      age: "",
+      gender: "",
+      pronoun: "",
+    }
     
   handleSave = () =>{
     console.log("saving profile")
@@ -42,15 +43,6 @@ class Profile extends React.Component {
   }
 
   render() {
-    type SlidersComponentProps = {};
-
-    const Sliders: React.FunctionComponent<SlidersComponentProps> = () => { 
-      console.log("inside slider func")  
-      const interpolate = (start: number, end: number) => {
-        let k = (this.state.value - 0) / 10; // 0 =>min  && 10 => MAX
-        return Math.ceil((1 - k) * start + k * end) % 256;
-      };
-    };
 
     return (
       <KeyboardAwareScrollView>
@@ -79,6 +71,12 @@ class Profile extends React.Component {
             placeholder="Last Name" 
             onChangeText={text => this.setState({lastName: text})}/>
           </View>
+            <Input 
+                style={styles.inputs}
+                disabled = {false}
+                value = {this.state.photoURL}
+                placeholder="Profile picture URL" 
+                onChangeText={text => this.setState({photoURL: text})}/>
             <Input 
               style={styles.inputs}
               disabled = {false}
@@ -128,7 +126,7 @@ class Profile extends React.Component {
             <Button title="Logout" onPress={this.handleLogout} buttonStyle={{backgroundColor: "red", marginTop: 15}}/>
           </View>
         </KeyboardAwareScrollView>)
-    }
+  }
 
   componentDidMount() {
     this.repo.getUserByID(this.props.getUid())

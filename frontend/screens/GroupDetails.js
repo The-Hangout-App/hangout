@@ -35,7 +35,7 @@ class GroupDetails extends React.Component {
     }
 
     handleJoin = (gid) => {
-        this.repo.joinGroup(gid, this.props.getUid())
+        this.repo.joinGroup(gid, this.props.getUid()).then().catch(e => console.log(e));
         this.props.navigation.navigate("Homepage");
     }
 

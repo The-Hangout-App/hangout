@@ -11,8 +11,12 @@ import Register from './screens/Register';
 import { StyleSheet } from 'react-native';
 import ProfileReadOnly from './screens/ProfileReadOnly';
 import { Icon } from 'react-native-elements';
+<<<<<<< HEAD
+import ActivityDetails from './screens/ActivityDetails';
+=======
 import { NavigationContainer } from '@react-navigation/native';
 import SuggestActivity from './screens/SuggestActivity';
+>>>>>>> 529375deb4c576af2c28a75bfb40c5442ddb8ed6
 
 const Stack = createNativeStackNavigator();
 
@@ -56,7 +60,11 @@ const HomeNav = (props) => {
                 {(props2) => <CreateGroup {...props2} getUid={props.getUid}/>}
             </Stack.Screen>
             <Stack.Screen name="ProfileReadOnly" component={ProfileReadOnly}/>
+<<<<<<< HEAD
+            <Stack.Screen name="ActivityDetails" component={ActivityDetails}/>
+=======
             <Stack.Screen name="SuggestActivity" component={SuggestActivity}/>
+>>>>>>> 529375deb4c576af2c28a75bfb40c5442ddb8ed6
         </Stack.Navigator>
     );
 }
