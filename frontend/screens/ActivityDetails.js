@@ -61,13 +61,6 @@ class ActivityDetails extends React.Component {
                 <Input
                     style={styles.text}
                     disabled
-                    label="Address"
-                    value = {this.state.activity.address}
-                    onChangeText={text => this.setState({address: text})}
-                />
-                <Input
-                    style={styles.text}
-                    disabled
                     label="Photo URL"
                     value = {this.state.activity.photo_url}
                     onChangeText={text => this.setState({photo_url: text})}
