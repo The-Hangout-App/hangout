@@ -1,4 +1,4 @@
-import { Alert, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Alert, Keyboard, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import React, { useEffect, useState } from 'react'
 import { Avatar, Button, Input, ListItem, Text } from "react-native-elements";
 import DateTimePicker from '@react-native-community/datetimepicker'
@@ -30,13 +30,15 @@ export default function CreateGroup(props) {
     const showMode = (currentMode) => {
         setShow(true);
         setMode(currentMode);
-      };
+    };
     
     const showDatepicker = () => {
+        Keyboard.dismiss()
         showMode('date');
     };
 
     const showTimepicker = () => {
+        Keyboard.dismiss()
         showMode('time');
     };
 
@@ -76,21 +78,22 @@ export default function CreateGroup(props) {
         <View style={styles.container}>
             <Text h3 style={styles.txt}>Create a group</Text>
             <Input placeholder="Max group members" keyboardType="number-pad" onChangeText={text => setMaxMembers(text)}/>
+
             <Button title="Choose date" buttonStyle={styles.btn} onPress={showDatepicker}/>
             <Button title="Choose time" buttonStyle={styles.btn} onPress={showTimepicker}/>
 
             <Text>{`Chosen date: ${dateDisplay()}`}</Text>
 
             <Button title="Create group" buttonStyle={{marginVertical: 20}} onPress={onCreate}/>
-            
-            {show && <DateTimePicker
-                testID="dateTimePicker"
-                value={date}
-                mode={mode}
-                is24Hour={false}
-                display="default"
-                onChange={onChange}
-            />}
+                {show && <DateTimePicker
+                    style={{width: 80, backgroundColor: "white"}}
+                    testID="dateTimePicker"
+                    value={date}
+                    mode={mode}
+                    is24Hour={false}
+                    display="default"
+                    onChange={onChange}
+                />}
             
         </View>
     );
